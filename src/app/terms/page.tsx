@@ -46,8 +46,8 @@ export default function TermsPage() {
         it. Do not treat another reader’s experience as advice about your own.
       </p>
       <p>
-        Posting a property for sale or rent, a price for a specific unit, or any
-        other advertisement is not permitted and will be rejected. Advertising
+        Posting a property advertisement, a price attached to a specific unit, or
+        any other listing is not permitted and will be rejected. Advertising
         property in Dubai requires a permit that neither we nor most posters hold.
       </p>
 
