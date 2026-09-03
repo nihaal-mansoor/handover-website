@@ -1,17 +1,23 @@
 @import "tailwindcss";
 
 /* Self-hosted, subset, woff2 — never a render-blocking CDN import. (§4.1) */
+@import "@fontsource-variable/inter/index.css";
 @import "@fontsource-variable/newsreader/index.css";
-@import "@fontsource/ibm-plex-sans/400.css";
-@import "@fontsource/ibm-plex-sans/500.css";
-@import "@fontsource/ibm-plex-sans/600.css";
 
 /*
   Handover — editorial broadsheet.
 
   Newsprint ground, near-black ink, a single spot red reserved entirely for the
-  numbered process spine. Nothing else in the page is allowed to use the red:
-  it means "this is a stage of the transaction" and nothing else.
+  numbered process spine. Nothing else in the page uses the red: it means "this
+  is a stage of the transaction" and nothing else.
+
+  Type and spacing both run on the golden ratio (φ = 1.618), with √φ (1.272) as
+  the half-step where φ alone jumps too far. Nothing is chosen by eye.
+
+  Readability first: Inter carries all running text — a tall x-height and open
+  apertures hold up at small sizes far better than a serif. Newsreader is kept
+  for display sizes only, where its character shows and legibility is not at
+  risk.
 
   Every token is declared here at :root before any media query. A colour whose
   only definition sits inside prefers-color-scheme is the classic unreadable
@@ -21,12 +27,12 @@
   color-scheme: light dark;
 
   --paper:      #FBFAF7;
-  --surface:    #FFFFFF;
-  --sunk:       #F2EFE9;
+  --surface:    #F5F2EC;
+  --sunk:       #EFEBE3;
   --ink:        #14161A;
   --ink-2:      #3C4048;
-  --muted:      #6E6B66;
-  --faint:      #97938C;
+  --muted:      #64615C;
+  --faint:      #8E8A84;
   --rule:       #DCD8D0;
   --rule-heavy: #14161A;
   --spot:       #B3271E;
@@ -34,19 +40,42 @@
   --ok:         #1F6B47;
   --focus:      #1F5FA8;
 
-  --measure: 66ch;
+  /* ---- golden ratio type scale, φ = 1.618, √φ = 1.272, base 17px ---- */
+  --step--2: 0.656rem;   /* 10.5px  base / φ            */
+  --step--1: 0.835rem;   /* 13.4px  base / √φ           */
+  --step-0:  1.0625rem;  /* 17px    base                */
+  --step-1:  1.351rem;   /* 21.6px  base × √φ           */
+  --step-2:  1.719rem;   /* 27.5px  base × φ            */
+  --step-3:  2.186rem;   /* 35px    base × φ × √φ       */
+  --step-4:  2.781rem;   /* 44.5px  base × φ²           */
+  --step-5:  4.5rem;     /* 72px    base × φ³           */
+
+  /* ---- golden ratio spacing, φ from 1rem ---- */
+  --space-2xs: 0.382rem;
+  --space-xs:  0.618rem;
+  --space-s:   1rem;
+  --space-m:   1.618rem;
+  --space-l:   2.618rem;
+  --space-xl:  4.236rem;
+  --space-2xl: 6.854rem;
+
+  /* φ also sets the reading rhythm */
+  --leading-body: 1.618;
+  --leading-tight: 1.15;
+
+  --measure: 68ch;
   --gutter: clamp(1.25rem, 4vw, 3rem);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper:      #131418;
-    --surface:    #1A1C21;
+    --surface:    #1B1D22;
     --sunk:       #202329;
     --ink:        #EDEAE4;
-    --ink-2:      #C3BFB8;
-    --muted:      #98948D;
-    --faint:      #726E68;
+    --ink-2:      #C6C2BB;
+    --muted:      #9C988F;
+    --faint:      #77736C;
     --rule:       #2C2F36;
     --rule-heavy: #EDEAE4;
     --spot:       #E4796A;
@@ -58,12 +87,12 @@
 
 :root[data-theme="dark"] {
   --paper:      #131418;
-  --surface:    #1A1C21;
+  --surface:    #1B1D22;
   --sunk:       #202329;
   --ink:        #EDEAE4;
-  --ink-2:      #C3BFB8;
-  --muted:      #98948D;
-  --faint:      #726E68;
+  --ink-2:      #C6C2BB;
+  --muted:      #9C988F;
+  --faint:      #77736C;
   --rule:       #2C2F36;
   --rule-heavy: #EDEAE4;
   --spot:       #E4796A;
@@ -85,8 +114,24 @@
   --color-spot-sunk: var(--spot-sunk);
   --color-ok: var(--ok);
 
-  --font-display: "Newsreader Variable", "Newsreader", Georgia, "Times New Roman", serif;
-  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Newsreader Variable", "Newsreader", Georgia, serif;
+  --font-sans: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --text-step--2: var(--step--2);
+  --text-step--1: var(--step--1);
+  --text-step-0: var(--step-0);
+  --text-step-1: var(--step-1);
+  --text-step-2: var(--step-2);
+  --text-step-3: var(--step-3);
+  --text-step-4: var(--step-4);
+
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-s: var(--space-s);
+  --spacing-m: var(--space-m);
+  --spacing-l: var(--space-l);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
 }
 
 /* ---------- base ---------- */
@@ -110,15 +155,18 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 img, svg { max-width: 100%; height: auto; }
+
+/* No shadows anywhere. Depth comes from surface value, not from blur. */
+* { box-shadow: none; }
 
 :focus-visible {
   outline: 3px solid var(--focus);
@@ -133,39 +181,37 @@ img, svg { max-width: 100%; height: auto; }
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 500;
-  line-height: 1.14;
+  line-height: var(--leading-tight);
   letter-spacing: -0.018em;
   text-wrap: balance;
   margin: 0;
 }
 
-h1 { font-size: clamp(2.35rem, 6vw, 4.1rem); font-weight: 400; letter-spacing: -0.028em; }
-h2 { font-size: clamp(1.6rem, 3.4vw, 2.15rem); }
-h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.008em; }
+h1 {
+  font-size: clamp(var(--step-4), 6vw, var(--step-5));
+  font-weight: 400;
+  letter-spacing: -0.028em;
+}
+h2 { font-size: clamp(var(--step-2), 3.4vw, var(--step-4)); }
+h3 { font-size: var(--step-1); font-weight: 600; letter-spacing: -0.01em; }
 
-p { margin: 0 0 1.05em; }
+p { margin: 0 0 var(--space-s); }
 
 a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-color: var(--spot); }
 
 strong { font-weight: 600; }
 
-/* Sans is for apparatus: labels, data, UI. Prose stays in the serif. */
-.label {
-  font-family: var(--font-sans);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.data { font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+.data { font-variant-numeric: tabular-nums; }
 
 .measure { max-width: var(--measure); }
 
-.rule-heavy { border-top: 3px solid var(--rule-heavy); }
-.rule-thin { border-top: 1px solid var(--rule); }
+/* Small print: still Inter, still readable. Never a tracked-out eyebrow. */
+.meta {
+  font-size: var(--step--1);
+  color: var(--muted);
+  line-height: 1.5;
+}
 
 /* ---------- layout ---------- */
 
@@ -175,18 +221,49 @@ strong { font-weight: 600; }
   padding-inline: var(--gutter);
 }
 
+/* Cards are separated by surface value alone — no border, no shadow. */
+.panel {
+  background: var(--surface);
+  padding: var(--space-m);
+}
+
+/* ---------- call to action ---------- */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  font-weight: 500;
+  line-height: 1.2;
+  padding: var(--space-xs) var(--space-m);
+  text-decoration: none;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.cta-primary {
+  background: var(--rule-heavy);
+  color: var(--paper);
+}
+.cta-primary:hover { background: var(--spot); color: #FFFFFF; }
+
+.cta-quiet {
+  background: var(--surface);
+  color: var(--ink);
+}
+.cta-quiet:hover { background: var(--spot-sunk); color: var(--ink); }
+
+.cta svg { flex: none; }
+
 .skip-link {
   position: absolute;
   left: -9999px;
   top: 0;
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  padding: 0.75rem 1.25rem;
+  font-size: var(--step--1);
+  padding: var(--space-xs) var(--space-m);
   z-index: 100;
 }
-.skip-link:focus {
-  left: 0.5rem;
-  top: 0.5rem;
-}
+.skip-link:focus { left: 0.5rem; top: 0.5rem; }

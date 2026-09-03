@@ -1,0 +1,48 @@
+---
+import { Icon } from "astro-icon/components";
+import config from "../../site.config.ts";
+import { whatsappUrl } from "@uaeprop/site-kit/leads";
+
+/**
+ * Section-level call to action. Every section on the site ends with one, and
+ * each carries its own context so the WhatsApp prefill says which part of the
+ * guide produced the enquiry.
+ */
+interface Props {
+  /** The ask, written as the reader's own words. */
+  label: string;
+  /** Prefilled into the WhatsApp message. */
+  context: string;
+  /** Lucide icon name. */
+  icon?: string;
+  variant?: "primary" | "quiet";
+  /** Optional line under the button. */
+  note?: string;
+}
+
+const {
+  label,
+  context,
+  icon = "message-circle",
+  variant = "quiet",
+  note,
+} = Astro.props;
+
+const href = whatsappUrl(config, {
+  message: `Hi, I'm reading ${config.brand}. ${context}`,
+});
+---
+
+<div class="mt-m">
+  <a
+    href={href}
+    rel="noopener noreferrer"
+    target="_blank"
+    class={`cta ${variant === "primary" ? "cta-primary" : "cta-quiet"}`}
+  >
+    <Icon name={`lucide:${icon}`} size={19} aria-hidden="true" />
+    <span>{label}</span>
+    <Icon name="lucide:arrow-up-right" size={17} aria-hidden="true" />
+  </a>
+  {note && <p class="meta mt-2xs mb-0">{note}</p>}
+</div>

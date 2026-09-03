@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import type { Stage } from "../content/process.ts";
 
 /**
@@ -14,23 +15,28 @@ interface Props {
   stages: readonly Stage[];
 }
 const { stages } = Astro.props;
+
+const facts = [
+  { key: "signs", label: "Who signs", icon: "pen-line", accent: false },
+  { key: "cost", label: "Cost", icon: "banknote", accent: false },
+  { key: "timing", label: "Typical timing", icon: "clock", accent: false },
+  { key: "stalls", label: "Where it stalls", icon: "triangle-alert", accent: true },
+] as const;
 ---
 
 <div data-checklist>
-  <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
-    <p class="label m-0">Your progress</p>
-    <p class="data m-0 text-sm text-muted" data-progress aria-live="polite">
-      {stages.length} stages
-    </p>
+  <div class="flex flex-wrap items-baseline justify-between gap-xs border-b border-rule pb-xs">
+    <p class="meta m-0">Your progress</p>
+    <p class="data meta m-0" data-progress aria-live="polite">{stages.length} stages</p>
   </div>
 
   <ol class="m-0 list-none p-0">
     {stages.map((stage) => (
       <li class="border-b border-rule" id={stage.id}>
-        <div class="flex gap-4 py-6 sm:gap-6">
-          <div class="shrink-0 pt-1" aria-hidden="true">
+        <div class="flex gap-s py-m sm:gap-m">
+          <div class="shrink-0" aria-hidden="true">
             <span
-              class="data block text-3xl leading-none font-semibold tabular-nums sm:text-4xl"
+              class="data block text-step-3 leading-none font-semibold tabular-nums"
               style="color: var(--spot)"
               data-number
             >
@@ -42,42 +48,49 @@ const { stages } = Astro.props;
             <details class="group">
               <summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                 <h3 class="inline" data-title>{stage.title}</h3>
-                <span class="label ml-3 inline-block align-middle" style="color: var(--spot)">
+                <span
+                  class="ml-xs inline-flex items-center gap-1 align-middle text-step--1 font-medium"
+                  style="color: var(--spot)"
+                >
                   <span class="group-open:hidden">Open</span>
                   <span class="hidden group-open:inline">Close</span>
+                  <Icon
+                    name="lucide:chevron-down"
+                    size={15}
+                    class="transition-transform group-open:rotate-180"
+                    aria-hidden="true"
+                  />
                 </span>
-                <span class="mt-1 block text-ink-2">{stage.summary}</span>
+                <span class="mt-2xs block text-ink-2">{stage.summary}</span>
               </summary>
 
-              <div class="mt-4">
+              <div class="mt-s">
                 {stage.detail.map((para) => (
                   <p class="measure text-ink-2">{para}</p>
                 ))}
 
-                <dl class="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-rule pt-4 sm:grid-cols-2">
-                  <div>
-                    <dt class="label">Who signs</dt>
-                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.signs}</dd>
-                  </div>
-                  <div>
-                    <dt class="label">Cost</dt>
-                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.cost}</dd>
-                  </div>
-                  <div>
-                    <dt class="label">Typical timing</dt>
-                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.timing}</dd>
-                  </div>
-                  <div>
-                    <dt class="label" style="color: var(--spot)">Where it stalls</dt>
-                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.stalls}</dd>
-                  </div>
+                <dl class="mt-s grid grid-cols-1 gap-x-m gap-y-s border-t border-rule pt-s sm:grid-cols-2">
+                  {facts.map((f) => (
+                    <div>
+                      <dt class="flex items-center gap-1.5 text-step--1 font-semibold">
+                        <Icon
+                          name={`lucide:${f.icon}`}
+                          size={15}
+                          style={f.accent ? "color: var(--spot)" : "color: var(--muted)"}
+                          aria-hidden="true"
+                        />
+                        <span style={f.accent ? "color: var(--spot)" : undefined}>{f.label}</span>
+                      </dt>
+                      <dd class="mt-2xs mb-0 text-step--1 text-ink-2">{stage[f.key]}</dd>
+                    </div>
+                  ))}
                 </dl>
               </div>
             </details>
 
-            <label class="mt-4 inline-flex cursor-pointer items-center gap-2.5 select-none">
+            <label class="mt-s inline-flex cursor-pointer items-center gap-xs select-none">
               <input type="checkbox" class="h-4 w-4" data-stage={stage.id} />
-              <span class="label" data-stage-label>Mark complete</span>
+              <span class="text-step--1 font-medium" data-stage-label>Mark complete</span>
             </label>
           </div>
         </div>
@@ -87,7 +100,7 @@ const { stages } = Astro.props;
 
   <button
     type="button"
-    class="label mt-5 hidden cursor-pointer border-0 bg-transparent p-0 underline"
+    class="mt-s hidden cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-step--1 font-medium underline"
     style="color: var(--spot)"
     data-reset
   >

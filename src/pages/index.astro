@@ -1,7 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
 import LeadForm from "../components/LeadForm.astro";
+import Cta from "../components/Cta.astro";
 import ProcessChecklist from "../components/ProcessChecklist.astro";
+import { Icon } from "astro-icon/components";
 import { STAGES, COSTS, FAQS, SOURCE } from "../content/process.ts";
 import config from "../../site.config.ts";
 import { originOf, sourcedAsOf } from "@uaeprop/site-kit";
@@ -52,93 +54,118 @@ const reviewed = new Date(`${SOURCE.reviewed}T00:00:00Z`).toLocaleDateString("en
   year: "numeric",
   timeZone: "UTC",
 });
+
+const decisions = [
+  {
+    icon: "git-branch",
+    q: "Is it ready or off-plan?",
+    a: "A ready property is bought from an owner and the seven stages below apply. Off-plan is bought from the developer, follows a payment schedule into escrow, and skips the NOC and mortgage-settlement stages entirely.",
+  },
+  {
+    icon: "landmark",
+    q: "Are you financing?",
+    a: "A mortgage adds a valuation, and the valuation is where more Dubai transactions collapse than at any other point. Get pre-approved before you sign, not after.",
+  },
+];
 ---
 
 <Base title={title} description={description} schema={schema}>
   <article class="shell">
     <!-- Lede -->
-    <div class="border-b border-rule py-12 md:py-16">
-      <p class="label mb-5">The process, end to end</p>
+    <section class="border-b border-rule py-xl">
       <h1 class="max-w-[19ch]">How buying property in Dubai actually works</h1>
-      <p class="measure mt-6 text-[1.2rem] leading-[1.55] text-ink-2">
+      <p class="measure mt-m text-step-1 text-ink-2">
         Seven stages, from the first signature to the title deed. What each one costs,
         who has to sign it, and &mdash; the part most guides leave out &mdash; where
         transactions actually stall.
       </p>
-      <p class="label mt-7 mb-0">
+      <p class="meta mt-s mb-0">
         Reviewed {reviewed} &middot; No listings &middot; Nothing is sold here
       </p>
-    </div>
 
-    <!-- Orientation -->
-    <div class="grid gap-x-14 gap-y-6 border-b border-rule py-10 md:grid-cols-[0.8fr_1.2fr]">
-      <div>
-        <h2 class="text-[1.45rem]">Before anything else</h2>
-        <p class="measure mt-3 text-ink-2">
-          Two things decide how your purchase will go, and both are settled before you
-          view a single property.
-        </p>
+      <Cta
+        variant="primary"
+        icon="compass"
+        label="Tell us where you are in the process"
+        context="I'd like help working out which stage I'm at."
+        note="A real answer, usually within the hour. No cost, and we are not brokers."
+      />
+    </section>
+
+    <!-- Two decisions -->
+    <section class="border-b border-rule py-l">
+      <h2>Before anything else</h2>
+      <p class="measure mt-xs text-ink-2">
+        Two things decide how your purchase will go, and both are settled before you
+        view a single property.
+      </p>
+
+      <div class="mt-m grid gap-s md:grid-cols-2">
+        {decisions.map((d) => (
+          <div class="panel">
+            <div class="flex items-center gap-xs">
+              <Icon name={`lucide:${d.icon}`} size={20} style="color: var(--spot)" aria-hidden="true" />
+              <h3 class="m-0">{d.q}</h3>
+            </div>
+            <p class="mt-xs mb-0 text-ink-2">{d.a}</p>
+          </div>
+        ))}
       </div>
-      <div class="space-y-4">
-        <p class="m-0 text-ink-2">
-          <strong class="block">Is it ready or off-plan?</strong>
-          A ready property is bought from an owner and the seven stages below apply. Off-plan
-          is bought from the developer, follows a payment schedule into escrow, and skips the
-          NOC and mortgage-settlement stages entirely.
-        </p>
-        <p class="m-0 text-ink-2">
-          <strong class="block">Are you financing?</strong>
-          A mortgage adds a valuation, and the valuation is where more Dubai transactions
-          collapse than at any other point. Get pre-approved before you sign, not after.
-        </p>
-      </div>
-    </div>
+
+      <Cta
+        icon="help-circle"
+        label="Not sure which applies to you?"
+        context="I'm not sure whether I should be looking at ready or off-plan."
+      />
+    </section>
 
     <!-- The spine -->
-    <section id="stages" class="py-12">
-      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="label mb-2">Stages</p>
-          <h2>The seven stages</h2>
-        </div>
-        <p class="label m-0 pb-1">Open any stage for detail</p>
-      </div>
+    <section id="stages" class="border-b border-rule py-l">
+      <h2>The seven stages</h2>
+      <p class="measure mt-xs mb-m text-ink-2">
+        Open any stage for the detail: who signs it, what it costs, how long it takes,
+        and where it goes wrong. Tick them off as you go.
+      </p>
 
       <ProcessChecklist stages={STAGES} />
+
+      <Cta
+        icon="life-buoy"
+        label="Stuck on one of these stages?"
+        context="I'm stuck on one of the seven stages and need help getting past it."
+        note="Stage 3 and stage 4 are where most people need a hand."
+      />
     </section>
 
     <!-- Costs -->
-    <section id="costs" class="border-t-[3px] border-[var(--rule-heavy)] pt-10">
-      <p class="label mb-3">Costs</p>
+    <section id="costs" class="border-b border-rule py-l">
       <h2>What it costs to transfer</h2>
-      <p class="measure mt-4 text-ink-2">
+      <p class="measure mt-xs text-ink-2">
         Budget <strong>6.5% to 7%</strong> of the purchase price in total if you are paying
         cash, and <strong>7.5% to 9%</strong> if you are financing. The 4% transfer fee is
         the part everyone knows about; the rest is what surprises people.
       </p>
 
-      <div class="mt-7 overflow-x-auto">
+      <div class="mt-m overflow-x-auto">
         <table class="w-full min-w-[38rem] border-collapse text-left">
           <caption class="sr-only">
             Indicative transaction costs for a Dubai property purchase
           </caption>
           <thead>
             <tr class="border-b-2 border-[var(--rule-heavy)]">
-              <th scope="col" class="label py-3 pr-4">Item</th>
-              <th scope="col" class="label py-3 pr-4">Typical amount</th>
-              <th scope="col" class="label py-3 pr-4">Usually paid by</th>
+              <th scope="col" class="py-xs pr-s text-step--1 font-semibold">Item</th>
+              <th scope="col" class="py-xs pr-s text-step--1 font-semibold">Typical amount</th>
+              <th scope="col" class="py-xs pr-s text-step--1 font-semibold">Usually paid by</th>
             </tr>
           </thead>
           <tbody>
             {COSTS.map((row) => (
               <tr class="border-b border-rule align-top">
-                <th scope="row" class="py-4 pr-4 font-medium">{row.item}</th>
-                <td class="data py-4 pr-4 whitespace-nowrap">{row.amount}</td>
-                <td class="py-4 pr-4">
-                  <span class="data text-[0.95rem]">{row.payer}</span>
-                  {row.note && (
-                    <span class="mt-1 block text-sm text-muted">{row.note}</span>
-                  )}
+                <th scope="row" class="py-s pr-s font-medium">{row.item}</th>
+                <td class="data py-s pr-s whitespace-nowrap">{row.amount}</td>
+                <td class="py-s pr-s">
+                  <span>{row.payer}</span>
+                  {row.note && <span class="meta mt-2xs block">{row.note}</span>}
                 </td>
               </tr>
             ))}
@@ -146,27 +173,38 @@ const reviewed = new Date(`${SOURCE.reviewed}T00:00:00Z`).toLocaleDateString("en
         </table>
       </div>
 
-      <p class="label mt-5 mb-0">
+      <p class="meta mt-s mb-0">
         {sourcedAsOf(SOURCE.name, SOURCE.reviewed)} Fees change &mdash; confirm current
         figures with the Dubai Land Department before you budget.
       </p>
+
+      <Cta
+        icon="calculator"
+        label="Get these costs worked out for your budget"
+        context="Can you work out the total transaction cost for my budget?"
+      />
     </section>
 
     <!-- FAQ -->
-    <section id="questions" class="mt-16 border-t-[3px] border-[var(--rule-heavy)] pt-10">
-      <p class="label mb-3">Questions</p>
+    <section id="questions" class="border-b border-rule py-l">
       <h2>What buyers ask most</h2>
 
-      <dl class="mt-8">
+      <dl class="mt-m grid gap-s md:grid-cols-2">
         {FAQS.map((faq) => (
-          <div class="border-b border-rule py-6">
-            <dt class="text-[1.15rem] font-medium" style="font-family: var(--font-display)">
+          <div class="panel">
+            <dt class="text-step-1 font-medium" style="font-family: var(--font-display)">
               {faq.q}
             </dt>
-            <dd class="measure mt-2 mb-0 text-ink-2">{faq.a}</dd>
+            <dd class="mt-xs mb-0 text-ink-2">{faq.a}</dd>
           </div>
         ))}
       </dl>
+
+      <Cta
+        icon="message-circle-question"
+        label="Ask something that isn't here"
+        context="I have a question that isn't answered in your FAQ."
+      />
     </section>
 
     <LeadForm />

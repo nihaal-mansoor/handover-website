@@ -1,17 +1,30 @@
 ---
+import { Icon } from "astro-icon/components";
 import config from "../../site.config.ts";
+import { whatsappUrl } from "@uaeprop/site-kit/leads";
+
+const wa = whatsappUrl(config, {
+  message: `Hi, I'm reading ${config.brand}. I have a question about buying in Dubai.`,
+});
 ---
 
-<header class="rule-heavy border-b border-rule">
-  <div class="shell flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-4">
+<header class="border-b-[3px] border-[var(--rule-heavy)]">
+  <div class="shell flex flex-wrap items-center justify-between gap-x-m gap-y-xs py-s">
     <a href="/" class="no-underline">
       <span
-        class="block text-[1.6rem] leading-none font-medium tracking-[-0.03em]"
+        class="block text-step-2 leading-none font-medium tracking-[-0.03em]"
         style="font-family: var(--font-display)"
       >
         {config.brand}
       </span>
     </a>
-    <p class="label m-0">{config.tagline}</p>
+
+    <div class="flex items-center gap-m">
+      <p class="meta m-0 hidden sm:block">{config.tagline}</p>
+      <a href={wa} rel="noopener noreferrer" target="_blank" class="cta cta-primary">
+        <Icon name="lucide:message-circle" size={18} aria-hidden="true" />
+        <span>Ask a question</span>
+      </a>
+    </div>
   </div>
 </header>
