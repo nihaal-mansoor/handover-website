@@ -13,7 +13,7 @@ export default defineSiteConfig({
   },
   og: {
     image: "/og.png",
-    imageAlt: "Handover — an independent guide to buying property in Dubai",
+    imageAlt: "Handover, an independent guide to buying property in Dubai",
   },
   contentReviewedAt: "2026-09-03",
 });

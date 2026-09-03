@@ -28,7 +28,7 @@ export const STAGES: readonly Stage[] = [
     summary:
       "Form F is RERA's standard contract of sale. Everything before it is conversation.",
     detail: [
-      "Form F — the Memorandum of Understanding — is the standard contract published by RERA for a sale between two parties. It sets the price, the deposit, the target transfer date and who carries which cost.",
+      "Form F, the Memorandum of Understanding, is the standard contract published by RERA for a sale between two parties. It sets the price, the deposit, the target transfer date and who carries which cost.",
       "Behind it sit Forms A, B and I, which register the agency relationships: the seller with their agent, the buyer with theirs, and the two agents with each other. If an agent cannot show you a Form A for the property, they are not instructed to sell it.",
       "Read the completion date clause carefully. It is the clause that decides what happens when the seller's bank is slow, and it is the clause most often left at a default that suits neither party.",
     ],
@@ -45,7 +45,7 @@ export const STAGES: readonly Stage[] = [
     summary:
       "A security cheque, not a payment. Who holds it matters more than most buyers realise.",
     detail: [
-      "The buyer provides a manager's cheque for 10% of the price. It is security against the buyer walking away, not an instalment — it should not reach the seller's account before transfer.",
+      "The buyer provides a manager's cheque for 10% of the price. It is security against the buyer walking away, not an instalment, and it should not reach the seller's account before transfer.",
       "Convention is that the seller's agent holds it. Establish in writing what triggers its release and what triggers its return, because Form F alone does not always spell this out.",
       "If either side defaults, the deposit is the agreed remedy. That cuts both ways: it is also roughly what you can expect if the seller changes their mind.",
     ],
@@ -99,7 +99,7 @@ export const STAGES: readonly Stage[] = [
     detail: [
       "The No Objection Certificate is the developer's confirmation that nothing is outstanding on the unit and that they do not object to the transfer.",
       "The application usually needs the title deed, both parties' identification, Form F and the settlement of any service charge arrears.",
-      "Service charges are billed per square foot and vary widely between buildings. Ask for the current rate and the last two years of statements before you reach this stage — not because the NOC will fail, but because the ongoing cost is a real part of what you are buying.",
+      "Service charges are billed per square foot and vary widely between buildings. Ask for the current rate and the last two years of statements before you reach this stage. Not because the NOC will fail, but because the ongoing cost is a real part of what you are buying.",
     ],
     signs: "Seller applies; developer issues",
     cost: "AED 500–5,000 depending on the developer",
@@ -114,9 +114,9 @@ export const STAGES: readonly Stage[] = [
     summary:
       "Both parties attend in person or by power of attorney. About an hour, if the paperwork is right.",
     detail: [
-      "Transfer happens at a Dubai Land Department registration trustee office — a private office licensed to process registrations on DLD's behalf, not a government counter.",
+      "Transfer happens at a Dubai Land Department registration trustee office, which is a private office licensed to process registrations on DLD's behalf rather than a government counter.",
       "The buyer brings manager's cheques for the balance, made out as the trustee directs. The DLD transfer fee and trustee fee are paid here.",
-      "You do not need to be in the country. A properly notarised and attested power of attorney lets a representative sign for you, but it must be drafted for this purpose specifically — a general POA is often rejected.",
+      "You do not need to be in the country. A properly notarised and attested power of attorney lets a representative sign for you, but it must be drafted for this purpose specifically. A general POA is often rejected.",
     ],
     signs: "Buyer and seller, in person or by POA",
     cost: "4% DLD transfer fee, plus trustee fee of roughly AED 4,000 including VAT",
@@ -130,7 +130,7 @@ export const STAGES: readonly Stage[] = [
     title: "Title deed issued",
     summary: "Issued electronically, usually the same day. You are the registered owner.",
     detail: [
-      "The title deed is issued in your name, normally within hours of the transfer appointment. It is a digital record — there is no paper certificate to safeguard.",
+      "The title deed is issued in your name, normally within hours of the transfer appointment. It is a digital record, so there is no paper certificate to safeguard.",
       "Handover of keys and access is arranged separately with the seller or the building management. Register for the utilities and, if you intend to let the property, for Ejari.",
       "Keep the title deed, the Form F and the transfer receipt together. You will need them for a future sale, for a mortgage, and for a Golden Visa application if the value qualifies.",
     ],
@@ -222,7 +222,7 @@ export const FAQS: readonly Faq[] = [
   },
   {
     q: "What is different about buying off-plan?",
-    a: "You buy from the developer rather than an owner, payments follow a construction-linked schedule into a regulated escrow account, and your interest is recorded as an Oqood registration rather than a title deed until handover. There is no NOC stage and no seller mortgage to settle, so the process is shorter — but you carry delivery risk that a ready property does not have.",
+    a: "You buy from the developer rather than an owner, payments follow a construction-linked schedule into a regulated escrow account, and your interest is recorded as an Oqood registration rather than a title deed until handover. There is no NOC stage and no seller mortgage to settle, so the process is shorter. But you carry delivery risk that a ready property does not have.",
   },
 ];
 
