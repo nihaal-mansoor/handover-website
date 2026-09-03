@@ -20,14 +20,15 @@
 :root {
   color-scheme: light dark;
 
-  --paper:      #FFFFFF;
-  --surface:    #FAFAFA;
+  --paper:      #F7F4ED;
+  --surface:    #FFFFFF;
+  --sunk:       #EFEBE1;
   --ink:        #242424;
   --ink-2:      #454545;
   --muted:      #6B6B6B;
   --faint:      #A0A0A0;
-  --rule:       #E6E6E6;
-  --rule-2:     #D4D4D4;
+  --rule:       #E3DFD4;
+  --rule-2:     #CFCABC;
   --accent:     #1A7F4B;
   --accent-ink: #FFFFFF;
   --accent-dim: #E8F4ED;
@@ -60,8 +61,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:      #0F0F0F;
-    --surface:    #1A1A1A;
+    --paper:      #0F0F0E;
+    --surface:    #191918;
+    --sunk:       #1F1F1E;
     --ink:        #E8E8E8;
     --ink-2:      #C4C4C4;
     --muted:      #9A9A9A;
@@ -76,8 +78,9 @@
 }
 
 :root[data-theme="dark"] {
-  --paper:      #0F0F0F;
-  --surface:    #1A1A1A;
+  --paper:      #0F0F0E;
+  --surface:    #191918;
+  --sunk:       #1F1F1E;
   --ink:        #E8E8E8;
   --ink-2:      #C4C4C4;
   --muted:      #9A9A9A;
@@ -93,6 +96,7 @@
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
+  --color-sunk: var(--sunk);
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-muted: var(--muted);
@@ -181,9 +185,93 @@
 }
 
 @layer components {
-  /* One column. No sidebar, no cards, no boxes. */
+  /* Reading column, used on articles and legal pages. Medium keeps prose narrow
+     even though the shell is wide, and that is the right call. */
   .col { max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
-  .col-wide { max-width: 60rem; margin-inline: auto; padding-inline: var(--gutter); }
+
+  /* The shell. Nearly the full viewport, with a hard cap so line lengths on a
+     very wide monitor stay sane. */
+  .shell {
+    max-width: 100rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Three columns: nav rail, feed, side rail. Columns drop away as space runs
+     out rather than compressing. */
+  .app-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  @media (min-width: 60rem) {
+    .app-grid { grid-template-columns: 13rem minmax(0, 1fr); }
+  }
+  @media (min-width: 84rem) {
+    .app-grid { grid-template-columns: 13.5rem minmax(0, 1fr) 21rem; }
+  }
+
+  .rail-left {
+    display: none;
+    border-right: 1px solid var(--rule);
+    padding: var(--space-m) var(--space-m) var(--space-m) 0;
+  }
+  @media (min-width: 60rem) { .rail-left { display: block; } }
+
+  .rail-right {
+    display: none;
+    border-left: 1px solid var(--rule);
+    padding: var(--space-m) 0 var(--space-m) var(--space-m);
+  }
+  @media (min-width: 84rem) { .rail-right { display: block; } }
+
+  .rail-sticky { position: sticky; top: 4.5rem; }
+
+  .feed { padding: var(--space-m) 0; }
+  @media (min-width: 60rem) { .feed { padding-inline: var(--space-l); } }
+
+  .rail-heading {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 var(--space-s);
+  }
+
+  .rail-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.45rem 0;
+  }
+  .rail-link:hover { color: var(--ink); }
+  .rail-link[aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--sunk);
+    border: 0;
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    min-width: 0;
+  }
+  .search input {
+    border: 0;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--ink);
+    width: 100%;
+    min-width: 0;
+  }
+  .search input::placeholder { color: var(--faint); }
 
   .ui { font-family: var(--font-sans); }
 
@@ -271,4 +359,11 @@
     padding: 0.75rem 1.25rem; z-index: 100;
   }
   .skip-link:focus { left: 0.5rem; top: 0.5rem; }
+}
+
+@layer components {
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
 }

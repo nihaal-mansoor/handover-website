@@ -1,0 +1,43 @@
+import Link from "next/link";
+import config from "../../site.config";
+import { whatsappUrl } from "@uaeprop/site-kit/leads";
+
+/** Full-width, sticky, quiet. Search posts to /search so it works without JS. */
+export function TopBar() {
+  const wa = whatsappUrl(config, {
+    message: `Hi, I'm reading ${config.brand}. I have a question about buying in Dubai.`,
+  });
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-rule bg-[var(--paper)]">
+      <div className="shell flex items-center gap-s py-xs">
+        <Link href="/" className="no-underline shrink-0">
+          <span className="font-serif text-step-1 font-semibold tracking-[-0.03em]">
+            {config.brand}
+          </span>
+        </Link>
+
+        <form action="/search" method="get" role="search" className="search max-w-[22rem] flex-1">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               strokeWidth="2" aria-hidden="true" className="text-faint shrink-0">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+          </svg>
+          <label htmlFor="q" className="sr-only">Search answers</label>
+          <input id="q" name="q" type="search" placeholder="Search" autoComplete="off" />
+        </form>
+
+        <nav aria-label="Main" className="ml-auto flex items-center gap-s">
+          <Link href="/topics" className="meta hidden no-underline hover:text-ink sm:block">
+            Topics
+          </Link>
+          <Link href="/forum" className="meta hidden no-underline hover:text-ink sm:block">
+            Forum
+          </Link>
+          <a href={wa} rel="noopener noreferrer" target="_blank" className="btn shrink-0">
+            Ask a question
+          </a>
+        </nav>
+      </div>
+    </header>
+  );
+}

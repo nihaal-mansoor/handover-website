@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { allTopics } from "@/lib/content";
+import { RailLeft } from "@/components/RailLeft";
+import { RailRight } from "@/components/RailRight";
 
 export const metadata: Metadata = {
   title: "Topics",
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
 export default function TopicsPage() {
   const topics = allTopics();
   return (
-    <div className="col py-xl">
+    <div className="shell">
+      <div className="app-grid">
+      <RailLeft current="/topics" />
+      <div className="feed">
       <h1>Topics</h1>
       <ul className="mt-l list-none p-0">
         {topics.map((t) => (
@@ -25,6 +30,9 @@ export default function TopicsPage() {
           </li>
         ))}
       </ul>
+      </div>
+      <RailRight />
+      </div>
     </div>
   );
 }

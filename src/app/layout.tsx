@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import config from "../../site.config";
 import { originOf } from "@uaeprop/site-kit";
-import { Masthead } from "@/components/Masthead";
+import { TopBar } from "@/components/TopBar";
 import { SiteFooter } from "@/components/SiteFooter";
 
 const origin = originOf(config);
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-AE">
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
-        <Masthead />
+        <TopBar />
         <main id="main">{children}</main>
         <SiteFooter />
       </body>

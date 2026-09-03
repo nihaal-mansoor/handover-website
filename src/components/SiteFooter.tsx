@@ -9,7 +9,7 @@ export function SiteFooter() {
 
   return (
     <footer className="mt-2xl border-t border-rule">
-      <div className="col-wide grid gap-m py-l md:grid-cols-[2fr_1fr]">
+      <div className="shell grid gap-m py-l md:grid-cols-[2fr_1fr]">
         <div>
           {/* Required on every page. Do not soften. (CLAUDE.md §1.4) */}
           <p className="meta m-0 max-w-[52ch]">{disclaimer(config.brand)}</p>
@@ -30,7 +30,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="col-wide flex flex-wrap justify-between gap-s border-t border-rule py-s">
+      <div className="shell flex flex-wrap justify-between gap-s border-t border-rule py-s">
         <p className="meta m-0">
           &copy; {year} {config.brand}
         </p>
