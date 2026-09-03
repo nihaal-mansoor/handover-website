@@ -1,0 +1,17 @@
+---
+import config from "../../site.config.ts";
+---
+
+<header class="rule-heavy border-b border-rule">
+  <div class="shell flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-4">
+    <a href="/" class="no-underline">
+      <span
+        class="block text-[1.6rem] leading-none font-medium tracking-[-0.03em]"
+        style="font-family: var(--font-display)"
+      >
+        {config.brand}
+      </span>
+    </a>
+    <p class="label m-0">{config.tagline}</p>
+  </div>
+</header>

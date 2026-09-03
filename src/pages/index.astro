@@ -1,0 +1,174 @@
+---
+import Base from "../layouts/Base.astro";
+import LeadForm from "../components/LeadForm.astro";
+import ProcessChecklist from "../components/ProcessChecklist.astro";
+import { STAGES, COSTS, FAQS, SOURCE } from "../content/process.ts";
+import config from "../../site.config.ts";
+import { originOf, sourcedAsOf } from "@uaeprop/site-kit";
+
+const title = "How buying property in Dubai actually works | Handover";
+const description =
+  "The seven stages of a Dubai property purchase, what each one costs, who signs what, and where transactions actually stall. Independent, no listings.";
+
+const origin = originOf(config);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      name: "How to buy property in Dubai",
+      description,
+      totalTime: "P28D",
+      step: STAGES.map((s) => ({
+        "@type": "HowToStep",
+        position: s.n,
+        name: s.title,
+        text: s.summary,
+        url: `${origin}/#${s.id}`,
+      })),
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+    {
+      "@type": "WebSite",
+      name: config.brand,
+      url: origin,
+      description: config.tagline,
+      publisher: { "@type": "Organization", name: config.brand, url: origin },
+    },
+  ],
+};
+
+const reviewed = new Date(`${SOURCE.reviewed}T00:00:00Z`).toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<Base title={title} description={description} schema={schema}>
+  <article class="shell">
+    <!-- Lede -->
+    <div class="border-b border-rule py-12 md:py-16">
+      <p class="label mb-5">The process, end to end</p>
+      <h1 class="max-w-[19ch]">How buying property in Dubai actually works</h1>
+      <p class="measure mt-6 text-[1.2rem] leading-[1.55] text-ink-2">
+        Seven stages, from the first signature to the title deed. What each one costs,
+        who has to sign it, and &mdash; the part most guides leave out &mdash; where
+        transactions actually stall.
+      </p>
+      <p class="label mt-7 mb-0">
+        Reviewed {reviewed} &middot; No listings &middot; Nothing is sold here
+      </p>
+    </div>
+
+    <!-- Orientation -->
+    <div class="grid gap-x-14 gap-y-6 border-b border-rule py-10 md:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <h2 class="text-[1.45rem]">Before anything else</h2>
+        <p class="measure mt-3 text-ink-2">
+          Two things decide how your purchase will go, and both are settled before you
+          view a single property.
+        </p>
+      </div>
+      <div class="space-y-4">
+        <p class="m-0 text-ink-2">
+          <strong class="block">Is it ready or off-plan?</strong>
+          A ready property is bought from an owner and the seven stages below apply. Off-plan
+          is bought from the developer, follows a payment schedule into escrow, and skips the
+          NOC and mortgage-settlement stages entirely.
+        </p>
+        <p class="m-0 text-ink-2">
+          <strong class="block">Are you financing?</strong>
+          A mortgage adds a valuation, and the valuation is where more Dubai transactions
+          collapse than at any other point. Get pre-approved before you sign, not after.
+        </p>
+      </div>
+    </div>
+
+    <!-- The spine -->
+    <section id="stages" class="py-12">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="label mb-2">Stages</p>
+          <h2>The seven stages</h2>
+        </div>
+        <p class="label m-0 pb-1">Open any stage for detail</p>
+      </div>
+
+      <ProcessChecklist stages={STAGES} />
+    </section>
+
+    <!-- Costs -->
+    <section id="costs" class="border-t-[3px] border-[var(--rule-heavy)] pt-10">
+      <p class="label mb-3">Costs</p>
+      <h2>What it costs to transfer</h2>
+      <p class="measure mt-4 text-ink-2">
+        Budget <strong>6.5% to 7%</strong> of the purchase price in total if you are paying
+        cash, and <strong>7.5% to 9%</strong> if you are financing. The 4% transfer fee is
+        the part everyone knows about; the rest is what surprises people.
+      </p>
+
+      <div class="mt-7 overflow-x-auto">
+        <table class="w-full min-w-[38rem] border-collapse text-left">
+          <caption class="sr-only">
+            Indicative transaction costs for a Dubai property purchase
+          </caption>
+          <thead>
+            <tr class="border-b-2 border-[var(--rule-heavy)]">
+              <th scope="col" class="label py-3 pr-4">Item</th>
+              <th scope="col" class="label py-3 pr-4">Typical amount</th>
+              <th scope="col" class="label py-3 pr-4">Usually paid by</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COSTS.map((row) => (
+              <tr class="border-b border-rule align-top">
+                <th scope="row" class="py-4 pr-4 font-medium">{row.item}</th>
+                <td class="data py-4 pr-4 whitespace-nowrap">{row.amount}</td>
+                <td class="py-4 pr-4">
+                  <span class="data text-[0.95rem]">{row.payer}</span>
+                  {row.note && (
+                    <span class="mt-1 block text-sm text-muted">{row.note}</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="label mt-5 mb-0">
+        {sourcedAsOf(SOURCE.name, SOURCE.reviewed)} Fees change &mdash; confirm current
+        figures with the Dubai Land Department before you budget.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="questions" class="mt-16 border-t-[3px] border-[var(--rule-heavy)] pt-10">
+      <p class="label mb-3">Questions</p>
+      <h2>What buyers ask most</h2>
+
+      <dl class="mt-8">
+        {FAQS.map((faq) => (
+          <div class="border-b border-rule py-6">
+            <dt class="text-[1.15rem] font-medium" style="font-family: var(--font-display)">
+              {faq.q}
+            </dt>
+            <dd class="measure mt-2 mb-0 text-ink-2">{faq.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <LeadForm />
+  </article>
+</Base>

@@ -1,0 +1,41 @@
+---
+import config from "../../site.config.ts";
+import { disclaimer } from "@uaeprop/site-kit";
+import { whatsappUrl, whatsappDisplay } from "@uaeprop/site-kit/leads";
+
+const year = new Date().getFullYear();
+const wa = whatsappUrl(config);
+---
+
+<footer class="mt-20 border-t border-rule">
+  <div class="shell grid gap-8 py-10 md:grid-cols-[2fr_1fr]">
+    <div>
+      <p class="label mb-2">About this site</p>
+      <!-- Required on every page. Do not soften. (CLAUDE.md §1.4) -->
+      <p class="measure m-0 text-[0.95rem] text-ink-2">{disclaimer(config.brand)}</p>
+    </div>
+
+    <div>
+      <p class="label mb-2">Contact</p>
+      <ul class="m-0 list-none space-y-1.5 p-0 text-[0.95rem]">
+        <li>
+          <a href={wa} rel="noopener noreferrer" target="_blank">
+            WhatsApp {whatsappDisplay(config.contact.whatsapp)}
+          </a>
+        </li>
+        <li><a href={`mailto:${config.contact.email}`}>{config.contact.email}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="shell flex flex-wrap justify-between gap-4 border-t border-rule py-5">
+    <p class="label m-0">&copy; {year} {config.brand}</p>
+    <nav aria-label="Legal">
+      <ul class="m-0 flex list-none gap-5 p-0">
+        <li><a class="label" href="/privacy">Privacy</a></li>
+        <li><a class="label" href="/terms">Terms</a></li>
+        <li><a class="label" href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>

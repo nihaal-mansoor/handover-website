@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/* Self-hosted, subset, woff2 — never a render-blocking CDN import. (§4.1) */
+@import "@fontsource-variable/newsreader/index.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+
+/*
+  Handover — editorial broadsheet.
+
+  Newsprint ground, near-black ink, a single spot red reserved entirely for the
+  numbered process spine. Nothing else in the page is allowed to use the red:
+  it means "this is a stage of the transaction" and nothing else.
+
+  Every token is declared here at :root before any media query. A colour whose
+  only definition sits inside prefers-color-scheme is the classic unreadable
+  page bug. (CLAUDE.md §6.2)
+*/
+:root {
+  color-scheme: light dark;
+
+  --paper:      #FBFAF7;
+  --surface:    #FFFFFF;
+  --sunk:       #F2EFE9;
+  --ink:        #14161A;
+  --ink-2:      #3C4048;
+  --muted:      #6E6B66;
+  --faint:      #97938C;
+  --rule:       #DCD8D0;
+  --rule-heavy: #14161A;
+  --spot:       #B3271E;
+  --spot-sunk:  #F7E8E6;
+  --ok:         #1F6B47;
+  --focus:      #1F5FA8;
+
+  --measure: 66ch;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #131418;
+    --surface:    #1A1C21;
+    --sunk:       #202329;
+    --ink:        #EDEAE4;
+    --ink-2:      #C3BFB8;
+    --muted:      #98948D;
+    --faint:      #726E68;
+    --rule:       #2C2F36;
+    --rule-heavy: #EDEAE4;
+    --spot:       #E4796A;
+    --spot-sunk:  #2C1A17;
+    --ok:         #5FBF92;
+    --focus:      #7FB2E8;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #131418;
+  --surface:    #1A1C21;
+  --sunk:       #202329;
+  --ink:        #EDEAE4;
+  --ink-2:      #C3BFB8;
+  --muted:      #98948D;
+  --faint:      #726E68;
+  --rule:       #2C2F36;
+  --rule-heavy: #EDEAE4;
+  --spot:       #E4796A;
+  --spot-sunk:  #2C1A17;
+  --ok:         #5FBF92;
+  --focus:      #7FB2E8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunk: var(--sunk);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-rule: var(--rule);
+  --color-spot: var(--spot);
+  --color-spot-sunk: var(--spot-sunk);
+  --color-ok: var(--ok);
+
+  --font-display: "Newsreader Variable", "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ---------- base ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { max-width: 100%; height: auto; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--spot-sunk); color: var(--ink); }
+
+/* ---------- typography ---------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+h1 { font-size: clamp(2.35rem, 6vw, 4.1rem); font-weight: 400; letter-spacing: -0.028em; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.15rem); }
+h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.008em; }
+
+p { margin: 0 0 1.05em; }
+
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-color: var(--spot); }
+
+strong { font-weight: 600; }
+
+/* Sans is for apparatus: labels, data, UI. Prose stays in the serif. */
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.data { font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+
+.measure { max-width: var(--measure); }
+
+.rule-heavy { border-top: 3px solid var(--rule-heavy); }
+.rule-thin { border-top: 1px solid var(--rule); }
+
+/* ---------- layout ---------- */
+
+.shell {
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}

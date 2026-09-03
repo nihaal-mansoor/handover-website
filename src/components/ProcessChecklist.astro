@@ -1,0 +1,96 @@
+---
+import type { Stage } from "../content/process.ts";
+
+/**
+ * The seven stages, as a working checklist.
+ *
+ * Deliberately not a React island. Native <details> gives the disclosure and
+ * native checkboxes give the ticking, both without a line of JavaScript;
+ * /enhance.js adds only progress persistence on top. React would have cost
+ * ~61 KB gzipped to do what 1 KB of DOM code does here. (CLAUDE.md §4.1)
+ */
+
+interface Props {
+  stages: readonly Stage[];
+}
+const { stages } = Astro.props;
+---
+
+<div data-checklist>
+  <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
+    <p class="label m-0">Your progress</p>
+    <p class="data m-0 text-sm text-muted" data-progress aria-live="polite">
+      {stages.length} stages
+    </p>
+  </div>
+
+  <ol class="m-0 list-none p-0">
+    {stages.map((stage) => (
+      <li class="border-b border-rule" id={stage.id}>
+        <div class="flex gap-4 py-6 sm:gap-6">
+          <div class="shrink-0 pt-1" aria-hidden="true">
+            <span
+              class="data block text-3xl leading-none font-semibold tabular-nums sm:text-4xl"
+              style="color: var(--spot)"
+              data-number
+            >
+              {String(stage.n).padStart(2, "0")}
+            </span>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <details class="group">
+              <summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <h3 class="inline" data-title>{stage.title}</h3>
+                <span class="label ml-3 inline-block align-middle" style="color: var(--spot)">
+                  <span class="group-open:hidden">Open</span>
+                  <span class="hidden group-open:inline">Close</span>
+                </span>
+                <span class="mt-1 block text-ink-2">{stage.summary}</span>
+              </summary>
+
+              <div class="mt-4">
+                {stage.detail.map((para) => (
+                  <p class="measure text-ink-2">{para}</p>
+                ))}
+
+                <dl class="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-rule pt-4 sm:grid-cols-2">
+                  <div>
+                    <dt class="label">Who signs</dt>
+                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.signs}</dd>
+                  </div>
+                  <div>
+                    <dt class="label">Cost</dt>
+                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.cost}</dd>
+                  </div>
+                  <div>
+                    <dt class="label">Typical timing</dt>
+                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.timing}</dd>
+                  </div>
+                  <div>
+                    <dt class="label" style="color: var(--spot)">Where it stalls</dt>
+                    <dd class="m-0 mt-1 text-[0.95rem] text-ink-2">{stage.stalls}</dd>
+                  </div>
+                </dl>
+              </div>
+            </details>
+
+            <label class="mt-4 inline-flex cursor-pointer items-center gap-2.5 select-none">
+              <input type="checkbox" class="h-4 w-4" data-stage={stage.id} />
+              <span class="label" data-stage-label>Mark complete</span>
+            </label>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <button
+    type="button"
+    class="label mt-5 hidden cursor-pointer border-0 bg-transparent p-0 underline"
+    style="color: var(--spot)"
+    data-reset
+  >
+    Reset progress
+  </button>
+</div>
