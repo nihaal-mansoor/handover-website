@@ -1,0 +1,30 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { allTopics } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "Topics",
+  description: "Every topic covered, from the buying process to service charges.",
+  alternates: { canonical: "/topics" },
+};
+
+export default function TopicsPage() {
+  const topics = allTopics();
+  return (
+    <div className="col py-xl">
+      <h1>Topics</h1>
+      <ul className="mt-l list-none p-0">
+        {topics.map((t) => (
+          <li key={t.slug} className="border-b border-rule py-s">
+            <Link href={`/topics/${t.slug}`} className="flex items-baseline justify-between no-underline">
+              <span className="text-step-1 font-semibold" style={{ fontFamily: "var(--font-sans)" }}>
+                {t.name}
+              </span>
+              <span className="meta">{t.count}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
