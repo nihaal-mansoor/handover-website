@@ -4,36 +4,30 @@ import config from "../../site.config.ts";
 import { whatsappUrl } from "@uaeprop/site-kit/leads";
 
 /**
- * Section-level call to action. Every section on the site ends with one, and
- * each carries its own context so the WhatsApp prefill says which part of the
- * guide produced the enquiry.
+ * Section-level call to action.
+ *
+ * No caption, no supporting line. The button is the only thing here, and the
+ * space around it is what makes it read. (CLAUDE.md §6.2a)
  */
 interface Props {
   /** The ask, written as the reader's own words. */
   label: string;
-  /** Prefilled into the WhatsApp message. */
+  /** Prefilled into the WhatsApp message so the source is obvious. */
   context: string;
-  /** Lucide icon name. */
   icon?: string;
   variant?: "primary" | "quiet";
-  /** Optional line under the button. */
-  note?: string;
 }
 
-const {
-  label,
-  context,
-  icon = "message-circle",
-  variant = "quiet",
-  note,
-} = Astro.props;
+const { label, context, icon = "message-circle", variant = "quiet" } = Astro.props;
 
 const href = whatsappUrl(config, {
   message: `Hi, I'm reading ${config.brand}. ${context}`,
 });
 ---
 
-<div class="mt-s">
+{/* Block wrapper: .cta is inline-flex, so margins on it collapse unpredictably
+    against sibling blocks. The wrapper owns the vertical rhythm. */}
+<div class="mt-l">
   <a
     href={href}
     rel="noopener noreferrer"
@@ -44,5 +38,4 @@ const href = whatsappUrl(config, {
     <span>{label}</span>
     <Icon name="lucide:arrow-up-right" size={17} aria-hidden="true" />
   </a>
-  {note && <p class="meta mt-2xs mb-0">{note}</p>}
 </div>

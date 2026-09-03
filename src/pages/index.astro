@@ -59,12 +59,12 @@ const decisions = [
   {
     icon: "git-branch",
     q: "Is it ready or off-plan?",
-    a: "A ready property is bought from an owner and the seven stages below apply. Off-plan is bought from the developer, follows a payment schedule into escrow, and skips the NOC and mortgage-settlement stages entirely.",
+    a: "A ready property is bought from an owner. Off-plan is bought from the developer, follows a payment schedule into escrow, and skips two of the stages below.",
   },
   {
     icon: "landmark",
     q: "Are you financing?",
-    a: "A mortgage adds a valuation, and the valuation is where more Dubai transactions collapse than at any other point. Get pre-approved before you sign, not after.",
+    a: "A mortgage adds a valuation, and that is where most Dubai deals collapse. Get pre-approved before you sign, not after.",
   },
 ];
 ---
@@ -72,15 +72,11 @@ const decisions = [
 <Base title={title} description={description} schema={schema}>
   <article class="shell">
     <!-- Lede -->
-    <section class="border-b border-rule pt-l pb-m">
+    <section class="border-b border-rule pt-xl pb-l">
       <h1 class="max-w-[19ch]">How buying property in Dubai actually works</h1>
       <p class="measure mt-m text-step-1 text-ink-2">
-        Seven stages, from the first signature to the title deed. What each one costs,
-        who has to sign it, and the part most guides leave out: where transactions
-        actually stall.
-      </p>
-      <p class="meta mt-s mb-0">
-        Reviewed {reviewed} &middot; No listings &middot; Nothing is sold here
+        Seven stages, from the first signature to the title deed. What each costs,
+        who signs it, and where transactions actually stall.
       </p>
 
       <Cta
@@ -88,19 +84,22 @@ const decisions = [
         icon="compass"
         label="Tell us where you are in the process"
         context="I'd like help working out which stage I'm at."
-        note="A real answer, usually within the hour. No cost, and we are not brokers."
       />
+
+      <p class="meta mt-l mb-0">
+        Reviewed {reviewed} &middot; No listings &middot; Nothing is sold here
+      </p>
     </section>
 
     <!-- Two decisions -->
-    <section class="border-b border-rule pt-l pb-m">
+    <section class="border-b border-rule pt-xl pb-l">
       <h2>Before anything else</h2>
       <p class="measure mt-xs text-ink-2">
         Two things decide how your purchase will go, and both are settled before you
         view a single property.
       </p>
 
-      <div class="mt-m grid gap-s md:grid-cols-2">
+      <div class="mt-l grid gap-s md:grid-cols-2">
         {decisions.map((d) => (
           <div class="panel">
             <div class="flex items-center gap-xs">
@@ -120,11 +119,10 @@ const decisions = [
     </section>
 
     <!-- The spine -->
-    <section id="stages" class="border-b border-rule pt-l pb-m">
+    <section id="stages" class="border-b border-rule pt-xl pb-l">
       <h2>The seven stages</h2>
-      <p class="measure mt-xs mb-m text-ink-2">
-        Open any stage for the detail: who signs it, what it costs, how long it takes,
-        and where it goes wrong. Tick them off as you go.
+      <p class="measure mt-xs mb-l text-ink-2">
+        Open any stage for the detail. Tick them off as you go.
       </p>
 
       <ProcessChecklist stages={STAGES} />
@@ -133,12 +131,11 @@ const decisions = [
         icon="life-buoy"
         label="Stuck on one of these stages?"
         context="I'm stuck on one of the seven stages and need help getting past it."
-        note="Stage 3 and stage 4 are where most people need a hand."
       />
     </section>
 
     <!-- Costs -->
-    <section id="costs" class="border-b border-rule pt-l pb-m">
+    <section id="costs" class="border-b border-rule pt-xl pb-l">
       <h2>What it costs to transfer</h2>
       <p class="measure mt-xs text-ink-2">
         Budget <strong>6.5% to 7%</strong> of the purchase price in total if you are paying
@@ -146,7 +143,7 @@ const decisions = [
         the part everyone knows about; the rest is what surprises people.
       </p>
 
-      <div class="mt-m overflow-x-auto">
+      <div class="mt-l overflow-x-auto">
         <table class="w-full min-w-[38rem] border-collapse text-left">
           <caption class="sr-only">
             Indicative transaction costs for a Dubai property purchase
@@ -186,10 +183,10 @@ const decisions = [
     </section>
 
     <!-- FAQ -->
-    <section id="questions" class="border-b border-rule pt-l pb-m">
+    <section id="questions" class="border-b border-rule pt-xl pb-l">
       <h2>What buyers ask most</h2>
 
-      <dl class="mt-m grid gap-s md:grid-cols-2">
+      <dl class="mt-l grid gap-s md:grid-cols-2">
         {FAQS.map((faq) => (
           <div class="panel">
             <dt class="text-step-1 font-medium" style="font-family: var(--font-display)">
