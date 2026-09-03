@@ -37,6 +37,9 @@
   --rule-heavy: #14161A;
   --spot:       #B3271E;
   --spot-sunk:  #F7E8E6;
+  --cta-bg:     #B3271E;  /* 6.51:1 on white text */
+  --cta-bg-hover: #9E1F16;
+  --cta-fg:     #FFFFFF;
   --ok:         #1F6B47;
   --focus:      #1F5FA8;
 
@@ -80,6 +83,9 @@
     --rule-heavy: #EDEAE4;
     --spot:       #E4796A;
     --spot-sunk:  #2C1A17;
+    --cta-bg:     #C9392B;  /* 5.12:1 on white text */
+    --cta-bg-hover: #DA4B3C;
+    --cta-fg:     #FFFFFF;
     --ok:         #5FBF92;
     --focus:      #7FB2E8;
   }
@@ -97,6 +103,9 @@
   --rule-heavy: #EDEAE4;
   --spot:       #E4796A;
   --spot-sunk:  #2C1A17;
+  --cta-bg:     #C9392B;
+  --cta-bg-hover: #DA4B3C;
+  --cta-fg:     #FFFFFF;
   --ok:         #5FBF92;
   --focus:      #7FB2E8;
 }
@@ -198,11 +207,11 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: clamp(var(--step-4), 6vw, var(--step-5));
+  font-size: clamp(var(--step-2), 7vw, var(--step-5));
   font-weight: 400;
   letter-spacing: -0.028em;
 }
-h2 { font-size: clamp(var(--step-2), 3.4vw, var(--step-4)); }
+h2 { font-size: clamp(var(--step-1), 4.5vw, var(--step-4)); }
 h3 { font-size: var(--step-1); font-weight: 600; letter-spacing: -0.01em; }
 
 p { margin: 0 0 var(--space-s); }
@@ -242,32 +251,36 @@ strong { font-weight: 600; }
 
 /* ---------- call to action ---------- */
 
+/* One colour for every CTA on the site. Consistency is the point: the reader
+   learns the shape once. White text on red clears AA in both themes. */
 .cta {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-xs);
   font-family: var(--font-sans);
   font-size: var(--step-0);
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.25;
   padding: var(--space-xs) var(--space-m);
+  background: var(--cta-bg);
+  color: var(--cta-fg);
   text-decoration: none;
-  transition: background-color 140ms ease, color 140ms ease;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 140ms ease;
 }
 
-.cta-primary {
-  background: var(--rule-heavy);
-  color: var(--paper);
-}
-.cta-primary:hover { background: var(--spot); color: #FFFFFF; }
-
-.cta-quiet {
-  background: var(--surface);
-  color: var(--ink);
-}
-.cta-quiet:hover { background: var(--spot-sunk); color: var(--ink); }
-
+.cta:hover { background: var(--cta-bg-hover); color: var(--cta-fg); }
+.cta:disabled { opacity: 0.5; cursor: not-allowed; }
 .cta svg { flex: none; }
+
+/* Phones: section CTAs span the column so they are never a small target.
+   The header CTA opts out, or it breaks the masthead row. */
+@media (max-width: 40rem) {
+  .cta-block { width: 100%; }
+  .cta { padding-inline: var(--space-s); }
+}
 
 .skip-link {
   position: absolute;

@@ -23,7 +23,7 @@ const field =
         you to a broker who handles that stage. No cost to you.
       </p>
 
-      <a href={wa} rel="noopener noreferrer" target="_blank" class="cta cta-primary mt-m">
+      <a href={wa} rel="noopener noreferrer" target="_blank" class="cta cta-block mt-m">
         <Icon name="lucide:message-circle" size={20} aria-hidden="true" />
         <span>WhatsApp {whatsappDisplay(config.contact.whatsapp)}</span>
         <Icon name="lucide:arrow-up-right" size={17} aria-hidden="true" />
@@ -103,7 +103,7 @@ const field =
             <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="auto"></div>
           )}
 
-          <button type="submit" class="cta cta-primary w-full justify-center disabled:opacity-50">
+          <button type="submit" class="cta w-full cta-block">
             <Icon name="lucide:send" size={18} aria-hidden="true" />
             <span>Send message</span>
           </button>

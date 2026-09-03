@@ -15,10 +15,9 @@ interface Props {
   /** Prefilled into the WhatsApp message so the source is obvious. */
   context: string;
   icon?: string;
-  variant?: "primary" | "quiet";
 }
 
-const { label, context, icon = "message-circle", variant = "quiet" } = Astro.props;
+const { label, context, icon = "message-circle" } = Astro.props;
 
 const href = whatsappUrl(config, {
   message: `Hi, I'm reading ${config.brand}. ${context}`,
@@ -32,7 +31,7 @@ const href = whatsappUrl(config, {
     href={href}
     rel="noopener noreferrer"
     target="_blank"
-    class={`cta ${variant === "primary" ? "cta-primary" : "cta-quiet"}`}
+    class="cta cta-block"
   >
     <Icon name={`lucide:${icon}`} size={19} aria-hidden="true" />
     <span>{label}</span>
