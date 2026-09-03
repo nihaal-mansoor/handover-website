@@ -48,13 +48,6 @@ const schema = {
   ],
 };
 
-const reviewed = new Date(`${SOURCE.reviewed}T00:00:00Z`).toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
 const decisions = [
   {
     icon: "git-branch",
@@ -84,10 +77,6 @@ const decisions = [
         label="Tell us where you are in the process"
         context="I'd like help working out which stage I'm at."
       />
-
-      <p class="meta mt-l mb-0">
-        Reviewed {reviewed} &middot; No listings &middot; Nothing is sold here
-      </p>
     </section>
 
     <!-- Two decisions -->

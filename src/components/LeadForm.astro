@@ -29,23 +29,6 @@ const field =
         <Icon name="lucide:arrow-up-right" size={17} aria-hidden="true" />
       </a>
 
-      <ul class="mt-m m-0 list-none space-y-xs p-0">
-        {[
-          ["shield-check", "We never sell your details on to a list."],
-          ["clock", "Most questions answered the same day."],
-          ["scale", "Independent. We hold no listings and sell nothing."],
-        ].map(([icon, text]) => (
-          <li class="flex items-start gap-xs text-step--1 text-ink-2">
-            <Icon
-              name={`lucide:${icon}`}
-              size={17}
-              style="color: var(--ok); margin-top: 0.15rem"
-              aria-hidden="true"
-            />
-            <span>{text}</span>
-          </li>
-        ))}
-      </ul>
     </div>
 
     <div class="panel p-l">
