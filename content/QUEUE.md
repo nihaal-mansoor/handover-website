@@ -14,22 +14,22 @@ or a threshold wrong on a page people act on is worse than not having the page.
 The strongest cluster. Specific, checkable, high intent, and almost nobody covers it
 without trying to sell you something at the end.
 
-| # | Question | The fact behind it |
-|---|---|---|
-| A1 | What does the Golden Visa property route actually require now? | Feb 2026: the 50% paid / AED 1m upfront requirement was removed. Only the DLD-assessed value ≥ AED 2m matters, mortgage balance included |
-| A2 | Can you combine several properties to reach the AED 2m threshold? | Yes, multiple properties can now be aggregated |
-| A3 | Can you get residency on a mortgaged property? | Yes since Feb 2026, which reverses what most sites still say |
-| A4 | What happened to the 2-year investor visa threshold? | 29 Apr 2026: minimum value scrapped for sole owners; AED 400k per co-owner for joint ownership |
-| A5 | Does commercial property qualify for the Golden Visa? | Yes if ≥ AED 2m and DLD-registered. Almost never covered |
-| A6 | What protects your money in an off-plan escrow account? | Dubai Law No. 4 of 2026 ties developer withdrawals to construction milestones verified by DLD-approved inspectors |
-| A7 | What happens if an off-plan project is cancelled? | DLD-backed Investor Compensation Fund, reported up to AED 1m per investor |
-| A8 | How does Abu Dhabi's off-plan protection differ from Dubai's? | Abu Dhabi Law No. 2 of 2025 amending Law No. 3 of 2015: the 20% rule, no escrow withdrawal until 20% of works complete |
-| A9 | How much can your landlord actually raise the rent? | Rent increases are capped against the index; 90 days' notice required for non-renewal or changes |
-| A10 | How does the Smart Rental Index decide your rent? | AI plus real-time DLD transaction data, weighted for property age and building quality |
-| A11 | What changed in the 2026 rental index? | Sub-community tracking, separate furnished and unfurnished bands, new studio categories in JVC, Dubai South and Arjan |
-| A12 | What are the Ejari rules you can actually be fined for? | Registration updated within 30 days of any occupancy or term change; 2026 all-occupant registration requirement |
-| A13 | Do you still need paper for a property transaction? | Digital registration through the Dubai REST platform |
-| A14 | How do you check an agent is real before you hand over money? | ORN, BRN and Trakheesi permit are all publicly verifiable. DLD is enforcing hard and moving to AI ad monitoring |
+| # | Status | Question | The fact behind it |
+|---|---|---|---|
+| ~~A1~~ | ✅ published | What does the Golden Visa property route actually require now? | Feb 2026: the 50% paid / AED 1m upfront requirement was removed. Only the DLD-assessed value ≥ AED 2m matters, mortgage balance included |
+| ~~A2~~ | ✅ folded into A1 | Can you combine several properties to reach the AED 2m threshold? | Yes, multiple properties can now be aggregated |
+| ~~A3~~ | ✅ folded into A1 | Can you get residency on a mortgaged property? | Yes since Feb 2026, which reverses what most sites still say |
+| ~~A4~~ | ✅ published | What happened to the 2-year investor visa threshold? | 29 Apr 2026: minimum value scrapped for sole owners; AED 400k per co-owner for joint ownership |
+| ~~A5~~ | ✅ published | Does commercial property qualify for the Golden Visa? | Yes if ≥ AED 2m and DLD-registered. Almost never covered |
+| A6 | — | What protects your money in an off-plan escrow account? | Dubai Law No. 4 of 2026 ties developer withdrawals to construction milestones verified by DLD-approved inspectors |
+| A7 | — | What happens if an off-plan project is cancelled? | DLD-backed Investor Compensation Fund, reported up to AED 1m per investor |
+| A8 | — | How does Abu Dhabi's off-plan protection differ from Dubai's? | Abu Dhabi Law No. 2 of 2025 amending Law No. 3 of 2015: the 20% rule, no escrow withdrawal until 20% of works complete |
+| A9 | — | How much can your landlord actually raise the rent? | Rent increases are capped against the index; 90 days' notice required for non-renewal or changes |
+| A10 | — | How does the Smart Rental Index decide your rent? | AI plus real-time DLD transaction data, weighted for property age and building quality |
+| A11 | — | What changed in the 2026 rental index? | Sub-community tracking, separate furnished and unfurnished bands, new studio categories in JVC, Dubai South and Arjan |
+| A12 | — | What are the Ejari rules you can actually be fined for? | Registration updated within 30 days of any occupancy or term change; 2026 all-occupant registration requirement |
+| A13 | — | Do you still need paper for a property transaction? | Digital registration through the Dubai REST platform |
+| A14 | — | How do you check an agent is real before you hand over money? | ORN, BRN and Trakheesi permit are all publicly verifiable. DLD is enforcing hard and moving to AI ad monitoring |
 
 ## Cluster B — What the market actually did
 
@@ -90,3 +90,26 @@ the same thing as a "founded in 2011" claim, which §1.2 rules out for the same 
 Depth comes from coverage, not from dates. Thirty answers published over eight weeks
 is a real archive. Thirty answers stamped 2024 is a fabricated one, and the fabricated
 version is worth less.
+
+
+---
+
+## Verification log
+
+**Golden Visa cluster, checked 4 Sept 2026.**
+
+Sources genuinely disagree, and the disagreement is now written into the articles
+rather than smoothed over:
+
+- **DLD investor application page**: AED 2m, *10-year* renewable, mortgaged permitted
+  with lender NOC, "one or more properties" may be combined. Also still carries
+  wording about a bank letter evidencing an amount paid, which reads pre-February.
+- **u.ae federal portal**: describes real estate investor residence as *5 years*,
+  reserving its 10-year public-investment category for capital rather than property.
+- **Federal circular, 22 Feb 2026**: removed the 50% / AED 1m paid requirement.
+  Widely reported; not read directly from a government page.
+- **29 Apr 2026, 2-year investor visa**: minimum scrapped for sole owners, AED 400k
+  per co-owner. Secondary reporting only, and hedged in the article accordingly.
+
+Every one of these articles tells the reader to confirm with ICP or GDRFA. That is
+not boilerplate: I could not resolve the 5 vs 10 year question from official sources.
