@@ -338,6 +338,19 @@
   }
   .btn-quiet:hover { background: var(--surface); opacity: 1; }
 
+  .field {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    padding: 0.65rem 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--rule-2);
+    border-radius: 6px;
+    color: var(--ink);
+  }
+  .field:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  textarea.field { min-height: 7rem; resize: vertical; line-height: 1.5; }
+
   .avatar {
     display: grid;
     place-items: center;
