@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { articleSlugs, getArticle, formatDate, topicSlug } from "@/lib/content";
 import config from "../../../../site.config";
 import { originOf } from "@uaeprop/site-kit";
+import { Comments } from "@/components/Comments";
 
 export function generateStaticParams() {
   return articleSlugs().map((slug) => ({ slug }));
@@ -90,6 +91,8 @@ export default async function AnswerPage({
           {article.topic}
         </Link>
       </div>
+
+      <Comments articleSlug={slug} />
     </article>
   );
 }

@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/queries";
+import { SignOutButton } from "@/components/SignOutButton";
 import config from "../../site.config";
 import { whatsappUrl } from "@uaeprop/site-kit/leads";
 
 /** Full-width, sticky, quiet. Search posts to /search so it works without JS. */
-export function TopBar() {
+export async function TopBar() {
+  const account = await getCurrentUser();
   const wa = whatsappUrl(config, {
     message: `Hi, I'm reading ${config.brand}. I have a question about buying in Dubai.`,
   });
@@ -33,9 +36,24 @@ export function TopBar() {
           <Link href="/forum" className="meta hidden no-underline hover:text-ink sm:block">
             Forum
           </Link>
-          <a href={wa} rel="noopener noreferrer" target="_blank" className="btn shrink-0">
-            Ask a question
-          </a>
+          {account ? (
+            <>
+              {(account.role === "moderator" || account.role === "admin") && (
+                <Link href="/admin" className="meta hidden no-underline hover:text-ink sm:block">
+                  Queue
+                </Link>
+              )}
+              <span className="meta hidden md:block">{account.name}</span>
+              <SignOutButton />
+            </>
+          ) : (
+            <>
+              <Link href="/signin" className="meta no-underline hover:text-ink">Sign in</Link>
+              <a href={wa} rel="noopener noreferrer" target="_blank" className="btn shrink-0">
+                Ask a question
+              </a>
+            </>
+          )}
         </nav>
       </div>
     </header>

@@ -32,6 +32,8 @@ const routes = [
   "/",
   "/topics",
   "/forum",
+  "/signin",
+  "/signup",
   "/privacy",
   "/terms",
   ...allArticles().map((a) => `/answers/${a.slug}`),
@@ -71,8 +73,16 @@ try {
   await mkdir(OUT, { recursive: true });
 
   for (const route of routes) {
-    const res = await fetch(`http://localhost:${PORT}${route}`);
-    if (!res.ok) throw new Error(`${route} returned ${res.status}`);
+    let res;
+    try {
+      res = await fetch(`http://localhost:${PORT}${route}`, { redirect: "follow" });
+    } catch (e) {
+      throw new Error(
+        `Fetching ${route} failed: ${e instanceof Error ? e.message : e}\n` +
+        `--- server output ---\n${serverLog.slice(-2000) || "(none)"}`,
+      );
+    }
+    if (!res.ok) throw new Error(`${route} returned ${res.status}\n${serverLog.slice(-1200)}`);
     const name = route === "/" ? "index" : route.slice(1).replace(/\//g, "__");
     await writeFile(`${OUT}/${name}.html`, await res.text(), "utf8");
   }
