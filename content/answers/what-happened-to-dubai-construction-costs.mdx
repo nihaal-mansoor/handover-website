@@ -1,0 +1,103 @@
+---
+title: "Dubai construction costs rose almost as much in six months as in the previous seven years"
+dek: "Official index data, and what a jump like this means if you are waiting on an off-plan handover."
+topic: "Market data"
+published: "2026-09-04"
+sourceNote: "Dubai Statistics Center CCI, downloaded 4 Sep 2026. Derived figures in /data/construction-cost.json, reproducible with /data/construction-cost.py."
+---
+
+Dubai's Construction Cost Index sat at **110.84** at the end of 2025, against a 2019
+base of 100. Seven years of building had added about **10%** to the cost of putting
+up a residential building.
+
+By June 2026 the same index read **123.05**.
+
+That is **8.8% in six months**, against 10.2% in the preceding seven years. The
+second quarter of 2026 alone added **5.9%**, which is more than any full year in the
+series.
+
+## The series
+
+Residential buildings, general index, 2019 = 100.
+
+| Period | Index | Change |
+| --- | --- | --- |
+| 2019 Q1 | 100.60 | base |
+| 2020 Q4 | 98.27 | below base |
+| 2022 Q4 | 103.65 | |
+| 2024 Q4 | 107.88 | |
+| 2025 Q4 | 110.84 | +10.2% over seven years |
+| 2026 Q1 | 113.87 | +2.7% in one quarter |
+| 2026 Q2 | 120.61 | +5.9% in one quarter |
+
+The monthly series shows where it happened. January 113.1, February 113.75, March
+114.76, April 117.03, then **May 121.76** and June 123.05. Most of the move lands in
+a single month.
+
+## It is the shell, not the fit-out
+
+The interesting part is which trades moved. Since 2019:
+
+| Building stage | Change since 2019 |
+| --- | --- |
+| Block works | +46.2% |
+| Super structure | +40.7% |
+| Concrete works, substructure and above | +37.9% |
+| Foundations | +36.0% |
+| Electrical works | +32.6% |
+| Air conditioning | +30.0% |
+| Finishing work (all) | +21.0% |
+| Floor and wall tiles | +9.8% |
+| Wages of workers and others | +9.1% |
+
+Structural work has risen roughly four to five times as fast as labour and as the
+finishes buyers actually look at.
+
+The material price series says the same thing. Hollow blocks are up around 50%,
+ready-mix concrete about 30%, cement about 29% and aggregates about 29%. Meanwhile
+gypsum has roughly halved and reinforcing mesh is down more than 20%.
+
+So the expensive part of a building is now the part nobody photographs.
+
+## Why this matters if you are buying
+
+**It squeezes projects sold before it happened.** An off-plan project priced in 2023
+or 2024 and built through 2026 was costed against a very different index. That
+pressure lands on the developer's margin, and margin pressure is what turns into
+specification changes and slipped handover dates. It is not a reason to panic; it is
+a reason to check your developer's delivery record and your contract's completion
+clause rather than assuming the anticipated date.
+
+**It changes what "cheap" means.** If replacing a building costs materially more
+than it did eighteen months ago, a completed building is a different proposition
+against a new one than it was. That is an argument about replacement cost, not a
+forecast about prices.
+
+**It feeds service charges eventually.** Maintenance, repairs and replacement all
+track the same materials. Charges tend to move a year or two behind, not
+immediately.
+
+## What this data does not tell you
+
+Being clear about the limits, because this is one index and the jump is unusual:
+
+- **An index is not a price.** It measures the cost of building, not what anything
+  sells for. Costs and prices move independently and often in opposite directions.
+- **A 4% single-month move is exceptional** and worth watching for revision in later
+  releases. The quarterly and monthly files agree, but they are published by the
+  same body and may share underlying inputs.
+- **It says nothing about where prices go next.** We do not forecast, and anyone
+  reading a construction index as a price prediction is over-reading it.
+- **Two stages look like placeholders.** Lift works records no change at all since
+  2019, and communications is down more than 30%, both of which suggest imputed
+  rather than observed data. Treat those lines with suspicion.
+
+## Method
+
+Figures are from the Dubai Statistics Center Construction Cost Index and its average
+construction material prices series, downloaded 4 September 2026, unmodified.
+
+Every number above is derived by a script kept with the site, so the arithmetic can
+be checked rather than taken on trust. Index levels are the residential general
+index on a 2019 base; material comparisons run from the first to the latest
+observation in the published series, which for materials begins earlier than 2019.

@@ -1,0 +1,451 @@
+{
+  "source": "Dubai Statistics Center, Construction Cost Index and average construction material prices",
+  "downloaded": "2026-09-04",
+  "base": "2019 = 100 for index levels; material prices in AED",
+  "quarterly_residential_general_index": {
+    "2013-Q1": 94.04,
+    "2013-Q2": 94.17,
+    "2013-Q3": 94.39,
+    "2013-Q4": 94.5,
+    "2014-Q1": 94.42,
+    "2014-Q2": 94.86,
+    "2014-Q3": 95.07,
+    "2014-Q4": 95.26,
+    "2015-Q1": 94.88,
+    "2015-Q2": 94.71,
+    "2015-Q3": 94.05,
+    "2015-Q4": 93.34,
+    "2016-Q1": 93.87,
+    "2016-Q2": 94.45,
+    "2016-Q3": 93.84,
+    "2016-Q4": 93.47,
+    "2017-Q1": 93.95,
+    "2017-Q2": 94.83,
+    "2017-Q3": 95.29,
+    "2017-Q4": 95.22,
+    "2018-Q1": 99.08,
+    "2018-Q2": 99.34,
+    "2018-Q3": 100.56,
+    "2018-Q4": 100.65,
+    "2019-Q1": 100.6,
+    "2019-Q2": 100.19,
+    "2019-Q3": 99.89,
+    "2019-Q4": 99.33,
+    "2020-Q1": 99.2,
+    "2020-Q2": 98.59,
+    "2020-Q3": 98.17,
+    "2020-Q4": 98.27,
+    "2021-Q1": 99.36,
+    "2021-Q2": 100.58,
+    "2021-Q3": 101.09,
+    "2021-Q4": 100.98,
+    "2022-Q1": 102.21,
+    "2022-Q2": 103.75,
+    "2022-Q3": 103.49,
+    "2022-Q4": 103.65,
+    "2023-Q1": 103.61,
+    "2023-Q2": 106.73,
+    "2023-Q3": 105.98,
+    "2023-Q4": 105.92,
+    "2024-Q1": 107.41,
+    "2024-Q2": 106.75,
+    "2024-Q3": 107.14,
+    "2024-Q4": 107.88,
+    "2025-Q1": 108.31,
+    "2025-Q2": 108.84,
+    "2025-Q3": 109.76,
+    "2025-Q4": 110.84,
+    "2026-Q1": 113.87,
+    "2026-Q2": 120.61
+  },
+  "monthly_residential_general_index": {
+    "2026-01": 113.1,
+    "2026-02": 113.75,
+    "2026-03": 114.76,
+    "2026-04": 117.03,
+    "2026-05": 121.76,
+    "2026-06": 123.05
+  },
+  "headline": {
+    "2019Q1_to_2025Q4": {
+      "from": 100.6,
+      "to": 110.84,
+      "change_pct": 10.18,
+      "span": "7 years"
+    },
+    "2026Q1_to_2026Q2": {
+      "from": 113.87,
+      "to": 120.61,
+      "change_pct": 5.92
+    },
+    "2026_jan_to_jun": {
+      "from": 113.1,
+      "to": 123.05,
+      "change_pct": 8.8
+    }
+  },
+  "by_building_stage_since_2019": {
+    "Block Works": {
+      "base_2019": 100.57,
+      "latest": 147.07,
+      "latest_period": "2026-Q2",
+      "change_pct": 46.24
+    },
+    "Super Structure": {
+      "base_2019": 102.76,
+      "latest": 144.55,
+      "latest_period": "2026-Q2",
+      "change_pct": 40.67
+    },
+    "Second: Construction works": {
+      "base_2019": 102.05,
+      "latest": 142.41,
+      "latest_period": "2026-Q2",
+      "change_pct": 39.55
+    },
+    "Concrete works Sub Structure and above": {
+      "base_2019": 102.66,
+      "latest": 141.61,
+      "latest_period": "2026-Q2",
+      "change_pct": 37.94
+    },
+    "Sub Structure works  (foundations)": {
+      "base_2019": 102.53,
+      "latest": 139.46,
+      "latest_period": "2026-Q2",
+      "change_pct": 36.02
+    },
+    "Other exterior Works": {
+      "base_2019": 100.69,
+      "latest": 135.75,
+      "latest_period": "2026-Q2",
+      "change_pct": 34.82
+    },
+    "Water Proofing works": {
+      "base_2019": 100.42,
+      "latest": 134.23,
+      "latest_period": "2026-Q2",
+      "change_pct": 33.67
+    },
+    "Electrical Works": {
+      "base_2019": 100.4,
+      "latest": 133.09,
+      "latest_period": "2026-Q2",
+      "change_pct": 32.56
+    },
+    "Interior and Exterior Paint": {
+      "base_2019": 100.14,
+      "latest": 132.17,
+      "latest_period": "2026-Q2",
+      "change_pct": 31.99
+    },
+    "Air Conditioning Works": {
+      "base_2019": 99.9,
+      "latest": 129.86,
+      "latest_period": "2026-Q2",
+      "change_pct": 29.99
+    },
+    "Fire Extinguishers": {
+      "base_2019": 98.66,
+      "latest": 128.13,
+      "latest_period": "2026-Q2",
+      "change_pct": 29.87
+    },
+    "Metal fittings": {
+      "base_2019": 100.2,
+      "latest": 126.06,
+      "latest_period": "2026-Q2",
+      "change_pct": 25.81
+    },
+    "Third: Finishing work": {
+      "base_2019": 100.49,
+      "latest": 121.55,
+      "latest_period": "2026-Q2",
+      "change_pct": 20.96
+    },
+    "General Index": {
+      "base_2019": 100.6,
+      "latest": 120.61,
+      "latest_period": "2026-Q2",
+      "change_pct": 19.89
+    },
+    "False Ceiling & Decoration Works": {
+      "base_2019": 100.0,
+      "latest": 118.83,
+      "latest_period": "2026-Q2",
+      "change_pct": 18.83
+    },
+    "Outdoor Plumbing": {
+      "base_2019": 101.33,
+      "latest": 118.82,
+      "latest_period": "2026-Q2",
+      "change_pct": 17.26
+    },
+    "Kitchen Cabinet &Joinery Works": {
+      "base_2019": 101.01,
+      "latest": 116.18,
+      "latest_period": "2026-Q2",
+      "change_pct": 15.02
+    },
+    "Internal finishes except paint": {
+      "base_2019": 101.99,
+      "latest": 116.19,
+      "latest_period": "2026-Q2",
+      "change_pct": 13.92
+    },
+    "Exterior Finishes except paint": {
+      "base_2019": 101.99,
+      "latest": 115.85,
+      "latest_period": "2026-Q2",
+      "change_pct": 13.59
+    },
+    "Floor and Wall Tiles": {
+      "base_2019": 100.01,
+      "latest": 109.77,
+      "latest_period": "2026-Q2",
+      "change_pct": 9.76
+    },
+    "Fourth: Other wages and works": {
+      "base_2019": 99.98,
+      "latest": 109.11,
+      "latest_period": "2026-Q2",
+      "change_pct": 9.13
+    },
+    "Wages of workers and others": {
+      "base_2019": 99.98,
+      "latest": 109.11,
+      "latest_period": "2026-Q2",
+      "change_pct": 9.13
+    },
+    "First: Site preparation": {
+      "base_2019": 100.0,
+      "latest": 108.71,
+      "latest_period": "2026-Q2",
+      "change_pct": 8.71
+    },
+    "Excavation works": {
+      "base_2019": 100.0,
+      "latest": 108.71,
+      "latest_period": "2026-Q2",
+      "change_pct": 8.71
+    },
+    "Internal Plumbing": {
+      "base_2019": 100.57,
+      "latest": 109.05,
+      "latest_period": "2026-Q2",
+      "change_pct": 8.43
+    },
+    "Lift Works": {
+      "base_2019": 100.0,
+      "latest": 100.0,
+      "latest_period": "2026-Q2",
+      "change_pct": 0.0
+    },
+    "TV circuits": {
+      "base_2019": 105.95,
+      "latest": 90.92,
+      "latest_period": "2026-Q2",
+      "change_pct": -14.19
+    },
+    "Communications / Internet": {
+      "base_2019": 109.09,
+      "latest": 75.56,
+      "latest_period": "2026-Q2",
+      "change_pct": -30.74
+    }
+  },
+  "materials": {
+    "Hollow - 4 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 1.97,
+      "latest_period": "2025-Q4",
+      "latest_aed": 2.96,
+      "change_pct": 50.25
+    },
+    "Hollow - 6 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 2.18,
+      "latest_period": "2025-Q4",
+      "latest_aed": 3.13,
+      "change_pct": 43.58
+    },
+    "Hollow - 8 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 2.37,
+      "latest_period": "2025-Q4",
+      "latest_aed": 3.38,
+      "change_pct": 42.62
+    },
+    "Solid - 4 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 3.03,
+      "latest_period": "2025-Q4",
+      "latest_aed": 4.01,
+      "change_pct": 32.34
+    },
+    "Concrete Ready Mix / Sulphate Resistance - neutin 40": {
+      "unit": "m3",
+      "first_period": "2012-Q1",
+      "first_aed": 235.42,
+      "latest_period": "2025-Q4",
+      "latest_aed": 305.57,
+      "change_pct": 29.8
+    },
+    "Cement sulphate Resistance": {
+      "unit": "50 kg bag",
+      "first_period": "2012-Q1",
+      "first_aed": 12.5,
+      "latest_period": "2025-Q4",
+      "latest_aed": 16.14,
+      "change_pct": 29.12
+    },
+    "Aggreates 3/16": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 1062.5,
+      "latest_period": "2025-Q4",
+      "latest_aed": 1370.0,
+      "change_pct": 28.94
+    },
+    "Solid - 6 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 3.28,
+      "latest_period": "2025-Q4",
+      "latest_aed": 4.2,
+      "change_pct": 28.05
+    },
+    "Concrete Ready Mix / Normal - neutin 40": {
+      "unit": "m3",
+      "first_period": "2012-Q1",
+      "first_aed": 229.58,
+      "latest_period": "2025-Q4",
+      "latest_aed": 291.5,
+      "change_pct": 26.97
+    },
+    "Aggreates 3/8": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 1000.0,
+      "latest_period": "2025-Q4",
+      "latest_aed": 1267.5,
+      "change_pct": 26.75
+    },
+    "Solid - 8 cm": {
+      "unit": "Piece",
+      "first_period": "2012-Q1",
+      "first_aed": 3.55,
+      "latest_period": "2025-Q4",
+      "latest_aed": 4.44,
+      "change_pct": 25.07
+    },
+    "Sand / Black": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 875.0,
+      "latest_period": "2025-Q4",
+      "latest_aed": 1083.33,
+      "change_pct": 23.81
+    },
+    "Aggreates 3/4": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 1000.0,
+      "latest_period": "2025-Q4",
+      "latest_aed": 1190.83,
+      "change_pct": 19.08
+    },
+    "Cement Portland Cement": {
+      "unit": "50 kg bag",
+      "first_period": "2012-Q1",
+      "first_aed": 12.94,
+      "latest_period": "2025-Q4",
+      "latest_aed": 14.12,
+      "change_pct": 9.12
+    },
+    "Cement White Cement": {
+      "unit": "50 kg bag",
+      "first_period": "2012-Q1",
+      "first_aed": 34.44,
+      "latest_period": "2025-Q4",
+      "latest_aed": 35.56,
+      "change_pct": 3.25
+    },
+    "Steel Bars 6-8 mm": {
+      "unit": "Tons",
+      "first_period": "2012-Q1",
+      "first_aed": 2785.0,
+      "latest_period": "2025-Q4",
+      "latest_aed": 2624.89,
+      "change_pct": -5.75
+    },
+    "steel Bars 10 - 25": {
+      "unit": "Tons",
+      "first_period": "2012-Q1",
+      "first_aed": 2785.0,
+      "latest_period": "2025-Q4",
+      "latest_aed": 2502.62,
+      "change_pct": -10.14
+    },
+    "B.R.C. Mesh  7 m.m": {
+      "unit": "(8*16) feet",
+      "first_period": "2012-Q1",
+      "first_aed": 117.11,
+      "latest_period": "2025-Q4",
+      "latest_aed": 98.54,
+      "change_pct": -15.86
+    },
+    "Lime": {
+      "unit": "20 kg bag",
+      "first_period": "2012-Q1",
+      "first_aed": 19.83,
+      "latest_period": "2025-Q4",
+      "latest_aed": 15.75,
+      "change_pct": -20.57
+    },
+    "Sand / White": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 995.83,
+      "latest_period": "2025-Q4",
+      "latest_aed": 770.58,
+      "change_pct": -22.62
+    },
+    "B.R.C. Mesh 8 m.m": {
+      "unit": "(8*16) feet",
+      "first_period": "2012-Q1",
+      "first_aed": 147.42,
+      "latest_period": "2025-Q4",
+      "latest_aed": 114.02,
+      "change_pct": -22.66
+    },
+    "B.R.C. Mesh  6 m.m": {
+      "unit": "(8*16) feet",
+      "first_period": "2012-Q1",
+      "first_aed": 86.17,
+      "latest_period": "2025-Q4",
+      "latest_aed": 66.31,
+      "change_pct": -23.05
+    },
+    "Sand / Red": {
+      "unit": "20 m3",
+      "first_period": "2012-Q1",
+      "first_aed": 820.83,
+      "latest_period": "2025-Q4",
+      "latest_aed": 565.0,
+      "change_pct": -31.17
+    },
+    "Gypsum": {
+      "unit": "25 kg bag",
+      "first_period": "2012-Q1",
+      "first_aed": 13.39,
+      "latest_period": "2025-Q4",
+      "latest_aed": 7.0,
+      "change_pct": -47.72
+    }
+  }
+}

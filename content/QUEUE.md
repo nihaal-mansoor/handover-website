@@ -113,3 +113,32 @@ rather than smoothed over:
 
 Every one of these articles tells the reader to confirm with ICP or GDRFA. That is
 not boilerplate: I could not resolve the 5 vs 10 year question from official sources.
+
+
+---
+
+## Data assets
+
+**Dubai Statistics Center construction cost data** is in
+`../../data/dubai-statistics-center/` (19 CSVs, downloaded 4 Sep 2026). Derived
+figures are produced by `data/construction-cost.py` into `data/construction-cost.json`,
+so every number in an article can be re-checked.
+
+Written from it so far:
+
+- ✅ **Costs rose almost as much in six months as in the previous seven years.**
+  Index 110.84 at end-2025 against a 2019 base of 100; 123.05 by June 2026.
+
+Still available from the same data:
+
+| # | Angle |
+|---|---|
+| E1 | What a developer actually pays for materials. 24 materials with AED prices and units, blocks up ~50%, gypsum down ~48% |
+| E2 | Why the shell got expensive and the fit-out did not. Block works +46% against tiles +9.8% and labour +9.1% |
+| E3 | Residential against non-residential construction cost, which track each other almost exactly. Useful for anyone comparing commercial |
+| E4 | The 2020 dip. The index fell below its 2019 base and did not recover until 2021, which is a useful counterweight to "costs only go up" |
+| E5 | A running quarterly cost tracker, updated each release. Cheap to maintain once the script exists, and the sort of page that earns links |
+
+Not yet held: DLD transaction data, rental index data, supply and completion data.
+Those would unlock B1 to B7 in the market cluster. Worth downloading from the same
+portal.
