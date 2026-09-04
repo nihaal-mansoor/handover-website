@@ -22,7 +22,13 @@ export function ArticleCard({ article }: { article: Article }) {
           {article.topic}
         </Link>
         <span aria-hidden="true">·</span>
-        <time dateTime={article.published}>{formatDate(article.published)}</time>
+        {article.updated ? (
+          <span style={{ color: "var(--accent)" }}>
+            Updated <time dateTime={article.updated}>{formatDate(article.updated)}</time>
+          </span>
+        ) : (
+          <time dateTime={article.published}>{formatDate(article.published)}</time>
+        )}
         <span aria-hidden="true">·</span>
         <span>{article.minutes} min read</span>
       </p>

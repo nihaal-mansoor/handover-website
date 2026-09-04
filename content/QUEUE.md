@@ -142,3 +142,51 @@ Still available from the same data:
 Not yet held: DLD transaction data, rental index data, supply and completion data.
 Those would unlock B1 to B7 in the market cluster. Worth downloading from the same
 portal.
+
+
+---
+
+## Living pages, and how to refresh them
+
+Two pages are trackers rather than one-off articles. They carry an `updated` field,
+show "Updated <date>" in the feed and on the page, and re-sort to the top of the feed
+when refreshed.
+
+| Page | Cadence | Series |
+|---|---|---|
+| `dubai-house-prices-tracked` | Quarterly | Residential Property Price Index, 2019 = 100 |
+| `dubai-rents-tracked` | Monthly | Residential Rent Price Index, 2024 = 100 |
+
+**Refresh procedure**
+
+1. Download the updated CSVs from the Dubai Statistics Center portal into
+   `../../data/dubai-statistics-center/<family>/`, keeping the dated filename.
+2. `python3 data/indices.py > data/indices.json`
+3. Add the new row to the table in the article, and revise any sentence that quotes a
+   number. **Do not leave prose saying "seven consecutive months" when it is eight.**
+4. Bump `updated` in the frontmatter.
+5. `npm run gate`
+
+The prose in a tracker is written to survive a refresh, but claims about streaks and
+peaks are the ones that go stale first. Check those specifically.
+
+## Data assets, second batch
+
+Property price and rent indices added 4 Sep 2026. Written from them:
+
+- ✅ Dubai house prices, quarter by quarter (tracker)
+- ✅ Dubai rents, month by month (tracker)
+- ✅ Why villa owners did two and a half times better than apartment owners
+- ✅ Dubai shops are up 197% and hotel rooms are up 7%
+
+Still available from the same files:
+
+| # | Angle |
+|---|---|
+| F1 | Prices rose about six times as far as build costs since 2019 (67% against 11%). Combines the price and construction families. Strong, and not written yet |
+| F2 | The 2020 fall: apartments −7.5% from base, villas barely moved, offices −11%. A useful corrective to "prices only go up" |
+| F3 | Yield compression: prices and rents on different bases, so it needs care, but the direction is arguable from 2024 onward |
+| F4 | Hotel rooms as a case study in why demand for a service does not imply appreciation in the asset |
+
+Still not held: DLD transaction volumes, completions and supply pipeline, building
+permits. Those remain the gap.

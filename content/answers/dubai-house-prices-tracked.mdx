@@ -1,0 +1,73 @@
+---
+title: "Dubai house prices, quarter by quarter"
+dek: "The official index since 2019, updated each release. Villas have risen roughly two and a half times as far as apartments."
+topic: "Market data"
+published: "2026-09-04"
+updated: "2026-09-04"
+sourceNote: "LIVING PAGE. Refresh each quarterly release: rerun data/indices.py, update the table, bump `updated`."
+---
+
+This page tracks Dubai's official Residential Property Price Index and is updated
+each time a new quarter is published. It is a record, not a forecast.
+
+At the latest reading, **2025 Q4**, the general index stood at **167.32** against a
+2019 base of 100. Residential property has risen about **67%** since 2019.
+
+That headline hides the more interesting number.
+
+## Villas and apartments have not moved together
+
+| | 2020 Q1 | 2025 Q4 | Change |
+| --- | --- | --- | --- |
+| Villas | 98.50 | **224.96** | +128.4% |
+| General index | 98.30 | 167.32 | +70.2% |
+| Flats | 98.23 | **147.06** | +49.7% |
+
+Villas have risen roughly **two and a half times as far as apartments** over the same
+six years. Someone who bought a villa in early 2020 has seen the index more than
+double. Someone who bought an apartment has seen about half that.
+
+This is the single most useful thing in the dataset, and it is invisible if you only
+read the headline index, which is what most reporting quotes.
+
+## The full series
+
+Residential general index, 2019 = 100.
+
+| Year | Q1 | Q2 | Q3 | Q4 |
+| --- | --- | --- | --- | --- |
+| 2020 | 98.30 | 97.34 | 93.65 | 94.71 |
+| 2021 | 96.38 | 98.32 | 106.88 | 109.68 |
+| 2022 | 111.94 | 114.58 | 119.17 | 123.14 |
+| 2023 | 128.00 | 131.34 | 135.42 | 135.59 |
+| 2024 | 141.76 | 145.91 | 150.66 | 153.66 |
+| 2025 | 158.77 | 162.00 | 161.96 | 167.32 |
+
+Two details worth noticing.
+
+**The index fell first.** It bottomed at **93.65** in 2020 Q3, more than 6% below its
+2019 base, and did not clear that base again until 2021 Q3. Prices in Dubai have
+gone down within living memory, which is easy to forget six years into a rise.
+
+**2025 Q3 dipped.** The index went 162.00, then 161.96, then 167.32. A single soft
+quarter inside a rising series is normal and is not a turn. It is worth remembering
+next time one quarter is reported as a trend.
+
+## What this index is and is not
+
+- It measures **prices**, not what any individual property is worth. Your building,
+  your floor and your view are not in it.
+- It is **quarterly and it lags.** A market that turned last month will not show here
+  for some time.
+- It says **nothing about yield.** Prices rising faster than rents means yields
+  compress, and this index cannot tell you that on its own. Our rent tracker covers
+  the other half.
+- A **base of 100 is 2019**, not the year you bought.
+
+## Method
+
+Dubai Statistics Center, Residential Property Price Index, base year 2019,
+downloaded 4 September 2026. Every figure above is derived by a script kept with
+this site so the arithmetic can be checked rather than taken on trust.
+
+Updated quarterly.

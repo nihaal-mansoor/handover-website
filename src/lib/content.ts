@@ -57,7 +57,9 @@ export function allArticles(): Article[] {
     .readdirSync(DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map(parse)
-    .sort((a, b) => b.published.localeCompare(a.published));
+    // A tracker that has just been refreshed should surface again, so order by
+    // whichever of published/updated is the more recent.
+    .sort((a, b) => (b.updated ?? b.published).localeCompare(a.updated ?? a.published));
 }
 
 export function articleSlugs(): string[] {

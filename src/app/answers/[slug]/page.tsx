@@ -70,6 +70,14 @@ export default async function AnswerPage({
           <time dateTime={article.published}>{formatDate(article.published)}</time>
           {" · "}
           {article.minutes} min read
+          {article.updated && (
+            <>
+              <br />
+              <span style={{ color: "var(--accent)" }}>
+                Updated <time dateTime={article.updated}>{formatDate(article.updated)}</time>
+              </span>
+            </>
+          )}
         </p>
       </div>
 
