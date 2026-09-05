@@ -38,6 +38,7 @@
     "@types/react-dom": "^19.2.7",
     "drizzle-kit": "^0.31.10",
     "postcss": "^8.5.27",
+    "puppeteer-core": "^25.10.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   }

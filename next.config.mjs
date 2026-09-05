@@ -16,12 +16,14 @@ const nextConfig = {
   async headers() {
     // Security headers come from site-kit so all sites stay in step. (§4.3)
     const { securityHeaders } = await import("@uaeprop/site-kit/security");
+    // CSP is set per request in middleware because it carries a nonce.
+    // Everything else is static and belongs here.
     return [
       {
         source: "/:path*",
-        headers: securityHeaders({ analytics: true, turnstile: true, useNonce: false }).map(
-          (h) => ({ key: h.key, value: h.value }),
-        ),
+        headers: securityHeaders({ analytics: true, turnstile: true, useNonce: false })
+          .filter((h) => h.key !== "Content-Security-Policy")
+          .map((h) => ({ key: h.key, value: h.value })),
       },
     ];
   },
