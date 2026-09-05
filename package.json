@@ -11,12 +11,13 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "gate:compliance": "node scripts/gate.mjs",
-    "gate": "npm run build && npm run typecheck && npm run gate:compliance"
+    "gate": "npm run build && npm run typecheck && npm run gate:compliance",
+    "sync:kit": "node scripts/sync-kit.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@next/mdx": "^16.3.4",
-    "@uaeprop/site-kit": "file:../site-kit",
+    "@uaeprop/site-kit": "file:./packages/site-kit",
     "better-auth": "^1.7.2",
     "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
