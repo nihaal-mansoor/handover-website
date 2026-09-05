@@ -46,3 +46,29 @@ reproducing someone's post verbatim is both a licensing problem and thin content
   raw TypeScript from `node_modules`, hence `transpilePackages` plus a widened
   `turbopack.root` for the symlink.
 - Security headers come from `site-kit/security` via `next.config.mjs`.
+
+
+## Deployment
+
+Headers come from `next.config.mjs` (static) and `src/middleware.ts` (the CSP,
+which carries a per-request nonce). **There is no `vercel.json`, deliberately** —
+a static CSP there overrides the middleware and blocks Next's inline hydration
+bootstrap, which silently degrades every form to a native GET submit.
+
+### Environment
+
+| Variable | Needed for | Without it |
+|---|---|---|
+| `DATABASE_URL` | Accounts, comments, forum | Site builds and reads fine; posting is disabled |
+| `BETTER_AUTH_SECRET` | Sessions | Auth fails |
+| `BETTER_AUTH_URL` | OAuth callbacks | Defaults to localhost |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google sign-in | Button hidden, email/password still works |
+
+The database is optional by design. Reading the site must never depend on it.
+
+### Local database
+
+```bash
+createdb handover
+npx drizzle-kit push
+```

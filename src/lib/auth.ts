@@ -1,12 +1,18 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db, schema } from "@/db";
+import { db, dbEnabled, schema } from "@/db";
 
 const googleId = process.env["GOOGLE_CLIENT_ID"];
 const googleSecret = process.env["GOOGLE_CLIENT_SECRET"];
 
+/**
+ * Without a database there are no accounts, so the adapter is handed a stub.
+ * Every call path that reaches auth checks `dbEnabled` first, so the stub is
+ * never actually used; it exists to keep the module importable during a build
+ * that has no DATABASE_URL.
+ */
 export const auth = betterAuth({
-  database: drizzleAdapter(db, {
+  database: drizzleAdapter(db ?? ({} as NonNullable<typeof db>), {
     provider: "pg",
     schema: {
       user: schema.user,

@@ -6,7 +6,7 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { scanSubmission } from "@/lib/moderation";
-import { db } from "@/db";
+import { db, dbEnabled } from "@/db";
 import { comment, reply, thread, user } from "@/db/schema";
 
 /**
@@ -36,6 +36,7 @@ const titleSchema = z
   .refine((v) => !/<[a-z/]/i.test(v), "Titles cannot contain HTML.");
 
 async function currentUser() {
+  if (!db) return null;
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return null;
   const [row] = await db.select().from(user).where(eq(user.id, session.user.id)).limit(1);
@@ -50,6 +51,7 @@ async function clientIp(): Promise<string | null> {
 
 /** Five posts an hour per account, counted across all three tables. */
 async function overRateLimit(userId: string): Promise<boolean> {
+  if (!db) return true;
   const since = sql`now() - interval '1 hour'`;
   const [c] = await db
     .select({ n: sql<number>`count(*)::int` })
@@ -70,6 +72,9 @@ const PENDING =
   "Thanks. Your post is with a moderator and will appear once it is approved.";
 
 async function guard(body: string) {
+  if (!dbEnabled) {
+    return { error: "Posting is temporarily unavailable. Please try again later." as const };
+  }
   const account = await currentUser();
   if (!account) return { error: "You need to be signed in to post." as const };
   if (account.bannedAt) return { error: "This account cannot post." as const };
@@ -94,7 +99,7 @@ export async function postComment(
   if ("error" in g && g.error) return { ok: false, message: g.error };
   if (!("account" in g) || !g.account || !g.scan) return { ok: false, message: "Something went wrong." };
 
-  await db.insert(comment).values({
+  await db!.insert(comment).values({
     id: crypto.randomUUID(),
     articleSlug,
     userId: g.account.id,
@@ -132,7 +137,7 @@ export async function createThread(
   const titleScan = await scanSubmission(t.data);
   const ok = g.scan.ok && titleScan.ok;
 
-  await db.insert(thread).values({
+  await db!.insert(thread).values({
     id: crypto.randomUUID(),
     slug: `${slugify(t.data)}-${Math.random().toString(36).slice(2, 7)}`,
     title: t.data,
@@ -160,7 +165,7 @@ export async function postReply(
   if ("error" in g && g.error) return { ok: false, message: g.error };
   if (!("account" in g) || !g.account || !g.scan) return { ok: false, message: "Something went wrong." };
 
-  await db.insert(reply).values({
+  await db!.insert(reply).values({
     id: crypto.randomUUID(),
     threadId,
     userId: g.account.id,
@@ -190,6 +195,7 @@ export async function moderate(
   id: string,
   decision: "approved" | "rejected",
 ): Promise<ActionResult> {
+  if (!db) return { ok: false, message: "Database unavailable." };
   const mod = await requireModerator();
   if (!mod) return { ok: false, message: "Not permitted." };
 
@@ -218,7 +224,7 @@ export async function moderate(
 }
 
 export async function pendingQueue() {
-  if (!(await requireModerator())) return null;
+  if (!db || !(await requireModerator())) return null;
   const [comments, threads, replies] = await Promise.all([
     db.select().from(comment).where(eq(comment.status, "pending")).orderBy(desc(comment.createdAt)).limit(50),
     db.select().from(thread).where(eq(thread.status, "pending")).orderBy(desc(thread.createdAt)).limit(50),

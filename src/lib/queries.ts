@@ -1,20 +1,30 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { db } from "@/db";
+import { db, dbEnabled } from "@/db";
 import { comment, reply, thread, user } from "@/db/schema";
 
 /** Reads. Every public query filters on status = 'approved'. */
 
 export async function getSession() {
-  return auth.api.getSession({ headers: await headers() });
+  if (!dbEnabled) return null;
+  try {
+    return await auth.api.getSession({ headers: await headers() });
+  } catch {
+    return null;
+  }
 }
 
 export async function getCurrentUser() {
+  if (!db) return null;
   const s = await getSession();
   if (!s?.user) return null;
-  const [row] = await db.select().from(user).where(eq(user.id, s.user.id)).limit(1);
-  return row ?? null;
+  try {
+    const [row] = await db.select().from(user).where(eq(user.id, s.user.id)).limit(1);
+    return row ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function isModerator() {
@@ -30,7 +40,9 @@ export interface PublicPost {
 }
 
 export async function approvedComments(articleSlug: string): Promise<PublicPost[]> {
-  return db
+  if (!db) return [];
+  try {
+  return await db
     .select({
       id: comment.id,
       body: comment.body,
@@ -41,9 +53,13 @@ export async function approvedComments(articleSlug: string): Promise<PublicPost[
     .innerJoin(user, eq(comment.userId, user.id))
     .where(and(eq(comment.articleSlug, articleSlug), eq(comment.status, "approved")))
     .orderBy(desc(comment.createdAt));
+  } catch {
+    return [];
+  }
 }
 
 export async function approvedThreads() {
+  if (!db) return [];
   return db
     .select({
       id: thread.id,
@@ -64,6 +80,7 @@ export async function approvedThreads() {
 }
 
 export async function threadBySlug(slug: string) {
+  if (!db) return null;
   const [row] = await db
     .select({
       id: thread.id,
@@ -82,6 +99,7 @@ export async function threadBySlug(slug: string) {
 }
 
 export async function approvedReplies(threadId: string): Promise<PublicPost[]> {
+  if (!db) return [];
   return db
     .select({
       id: reply.id,
@@ -97,7 +115,7 @@ export async function approvedReplies(threadId: string): Promise<PublicPost[]> {
 
 /** Author name plus the pending row, for the moderation queue. */
 export async function queueWithAuthors() {
-  if (!(await isModerator())) return null;
+  if (!db || !(await isModerator())) return null;
   const [comments, threads, replies] = await Promise.all([
     db.select({ row: comment, authorName: user.name, authorEmail: user.email })
       .from(comment).innerJoin(user, eq(comment.userId, user.id))
