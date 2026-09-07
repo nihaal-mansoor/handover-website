@@ -115,13 +115,18 @@ export default async function AnswerPage({
         </figure>
       )}
 
-      <div className="prose mt-l">
-        {article.source === "db" && article.body ? (
-          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }} />
-        ) : Body ? (
-          <Body />
-        ) : null}
-      </div>
+      {/* Both branches put the article's own elements directly inside .prose.
+          Wrapping the rendered markdown in an extra div made every
+          `.prose > * + *` rhythm rule miss, so DB articles and MDX articles
+          were spaced differently. */}
+      {article.source === "db" && article.body ? (
+        <div
+          className="prose mt-l"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }}
+        />
+      ) : (
+        <div className="prose mt-l">{Body ? <Body /> : null}</div>
+      )}
 
       <div className="mt-l border-t border-rule pt-m">
         <Link href={`/topics/${topicSlug(article.topic)}`} className="pill">

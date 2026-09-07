@@ -23,13 +23,22 @@ export function renderMarkdown(md: string): string {
         ? `<figure>${img}<figcaption>${alt}</figcaption></figure>`
         : `<figure>${img}</figure>`,
   );
+  // A wide table has to scroll in its own box or it pushes the whole page
+  // sideways on a phone. The MDX path wraps tables the same way.
+  raw = raw.replace(/<table>/g, '<div class="table-scroll"><table>')
+           .replace(/<\/table>/g, "</table></div>");
+
   return sanitizeHtml(raw, {
     allowedTags: [
       "h2", "h3", "h4", "p", "a", "ul", "ol", "li", "blockquote", "strong", "em",
       "code", "pre", "hr", "br", "table", "thead", "tbody", "tr", "th", "td",
-      "img", "figure", "figcaption", "del", "sup", "sub",
+      "img", "figure", "figcaption", "del", "sup", "sub", "div",
     ],
+    // Only the table wrapper may carry a class; everything else is stripped, so
+    // article markdown cannot reach into the stylesheet.
+    allowedClasses: { div: ["table-scroll"] },
     allowedAttributes: {
+      div: ["class"],
       a: ["href", "title", "rel", "target"],
       img: ["src", "alt", "title", "width", "height", "loading"],
       th: ["scope"],

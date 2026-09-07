@@ -7,8 +7,10 @@ import type { MDXComponents } from "mdx/types";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
+    // Mirrors the wrapper the database renderer emits (src/lib/markdown.ts), so
+    // an article reads identically whichever path served it.
     table: (props) => (
-      <div style={{ overflowX: "auto" }}>
+      <div className="table-scroll">
         <table {...props} />
       </div>
     ),

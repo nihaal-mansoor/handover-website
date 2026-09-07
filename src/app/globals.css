@@ -284,11 +284,31 @@
 
   /* Article prose: the one place vertical rhythm is set by the element, not a
      utility, because MDX output has no classes to hang them on. */
+  /* Rhythm is driven by margin-top alone. Block elements carry a bottom margin
+     from the base layer; left in place they compete with these rules and the
+     gap you get depends on which neighbour won, which is how the spacing
+     drifted between sections. */
+  .prose :is(p, ul, ol, figure, table, blockquote, h2, h3, h4, pre) {
+    margin-bottom: 0;
+  }
   .prose > * + * { margin-top: var(--space-m); }
+  .prose > :first-child { margin-top: 0; }
+
+  /* A heading opens a section, so it needs air above it and sits close to the
+     text it introduces. Without the second rule the gap above a heading and the
+     gap below it are the same, and the heading reads as unattached. */
   .prose h2 { margin-top: var(--space-l); }
   .prose h3 { margin-top: var(--space-m); }
+  .prose :is(h2, h3, h4) + * { margin-top: var(--space-s); }
+
+  /* Tailwind's preflight sets `list-style: none` on every ul/ol. Restoring the
+     markers here is what makes a list read as a list rather than as indented
+     paragraphs. */
+  .prose ul { list-style: disc; }
+  .prose ol { list-style: decimal; }
   .prose ul, .prose ol { padding-left: 1.3em; }
   .prose li + li { margin-top: var(--space-2xs); }
+  .prose li > ul, .prose li > ol { margin-top: var(--space-2xs); }
   .prose li::marker { color: var(--muted); }
 
   /* Figures inside an article.
@@ -319,6 +339,11 @@
       margin-inline: -4rem;
     }
   }
+
+  /* The table keeps its own intrinsic width; this box scrolls when that is
+     wider than the reading column. Wrapping rather than setting display:block
+     on the table keeps its semantics intact for a screen reader. */
+  .table-scroll { overflow-x: auto; }
 
   .prose table { width: 100%; border-collapse: collapse; font-family: var(--font-sans);
                  font-size: var(--step--1); }
