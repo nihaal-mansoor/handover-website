@@ -7,13 +7,19 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { scanSubmission } from "@/lib/moderation";
 import { db, dbEnabled } from "@/db";
-import { article, comment, reply, subscriber, thread, user } from "@/db/schema";
+import { article, comment, reply, subscriber, thread, user, vote } from "@/db/schema";
 
 /**
  * Every write goes through here. The order is deliberate: identity, then shape,
- * then rate limit, then content scan, then store as pending.
+ * then rate limit, then content scan, then store.
  *
- * Nothing a reader writes is ever stored as approved. (CLAUDE.md §1.1)
+ * A post that passes the scan is published immediately. The §1.1 and §1.2 rules
+ * are still enforced on every submission, by the same scanners the build runs,
+ * and anything they flag is stored rejected and never becomes readable. What
+ * changed is that a clean post no longer waits for a human: the scanner is the
+ * gate, and a moderator removes afterwards. That is a deliberate trade, because
+ * the scanners match patterns and a carefully worded advertisement could get
+ * through and be public until it is deleted.
  */
 
 export interface ActionResult {
@@ -68,8 +74,7 @@ async function overRateLimit(userId: string): Promise<boolean> {
   return (c?.n ?? 0) + (t?.n ?? 0) + (r?.n ?? 0) >= 5;
 }
 
-const PENDING =
-  "Thanks. Your post is with a moderator and will appear once it is approved.";
+const POSTED = "Posted.";
 
 async function guard(body: string) {
   if (!dbEnabled) {
@@ -105,7 +110,7 @@ export async function postComment(
     userId: g.account.id,
     body: g.body,
     parentId: parentId ?? null,
-    status: g.scan.ok ? "pending" : "rejected",
+    status: g.scan.ok ? "approved" : "rejected",
     autoFlag: g.scan.flag ?? null,
     ipAddress: await clientIp(),
     ...(g.scan.ok ? {} : { moderatedAt: new Date(), moderatedBy: "auto" }),
@@ -113,7 +118,7 @@ export async function postComment(
 
   revalidatePath(`/answers/${articleSlug}`);
   return g.scan.ok
-    ? { ok: true, message: PENDING }
+    ? { ok: true, message: POSTED }
     : { ok: false, message: g.scan.message ?? "That post cannot be published." };
 }
 
@@ -144,7 +149,7 @@ export async function createThread(
     body: g.body,
     category,
     userId: g.account.id,
-    status: ok ? "pending" : "rejected",
+    status: ok ? "approved" : "rejected",
     autoFlag: g.scan.flag ?? titleScan.flag ?? null,
     ipAddress: await clientIp(),
     ...(ok ? {} : { moderatedAt: new Date(), moderatedBy: "auto" }),
@@ -152,7 +157,7 @@ export async function createThread(
 
   revalidatePath("/forum");
   return ok
-    ? { ok: true, message: PENDING }
+    ? { ok: true, message: POSTED }
     : { ok: false, message: g.scan.message ?? titleScan.message ?? "That post cannot be published." };
 }
 
@@ -160,26 +165,179 @@ export async function postReply(
   threadId: string,
   threadSlug: string,
   body: string,
+  parentId?: string,
 ): Promise<ActionResult> {
   const g = await guard(body);
   if ("error" in g && g.error) return { ok: false, message: g.error };
   if (!("account" in g) || !g.account || !g.scan) return { ok: false, message: "Something went wrong." };
+
+  // A reply nests under another reply only if that one really belongs to this
+  // thread. Without the check, a crafted parent id would graft a comment onto a
+  // conversation it was never part of.
+  let parent: string | null = null;
+  if (parentId) {
+    const [row] = await db!
+      .select({ id: reply.id })
+      .from(reply)
+      .where(and(eq(reply.id, parentId), eq(reply.threadId, threadId)))
+      .limit(1);
+    if (!row) return { ok: false, message: "That comment is no longer here." };
+    parent = row.id;
+  }
 
   await db!.insert(reply).values({
     id: crypto.randomUUID(),
     threadId,
     userId: g.account.id,
     body: g.body,
-    status: g.scan.ok ? "pending" : "rejected",
+    parentId: parent,
+    status: g.scan.ok ? "approved" : "rejected",
     autoFlag: g.scan.flag ?? null,
     ipAddress: await clientIp(),
     ...(g.scan.ok ? {} : { moderatedAt: new Date(), moderatedBy: "auto" }),
   });
 
+  // Counted at insert now that a clean reply is public straight away. Doing it
+  // on approval left the count stuck at zero.
+  if (g.scan.ok) {
+    await db!
+      .update(thread)
+      .set({ replyCount: sql`${thread.replyCount} + 1`, lastReplyAt: new Date() })
+      .where(eq(thread.id, threadId));
+  }
+
   revalidatePath(`/forum/${threadSlug}`);
   return g.scan.ok
-    ? { ok: true, message: PENDING }
+    ? { ok: true, message: POSTED }
     : { ok: false, message: g.scan.message ?? "That post cannot be published." };
+}
+
+/* ---------- votes ---------- */
+
+/**
+ * One vote per person per target. Voting the same way twice takes the vote back,
+ * which is what the arrows do on Reddit. The denormalised score moves by the
+ * difference so it never has to be recounted from the vote table.
+ */
+export async function castVote(
+  targetType: "thread" | "reply",
+  targetId: string,
+  value: 1 | -1,
+  revalidate: string,
+): Promise<ActionResult> {
+  if (!db) return { ok: false, message: "Voting is unavailable." };
+  const account = await currentUser();
+  if (!account) return { ok: false, message: "Sign in to vote." };
+  if (account.bannedAt) return { ok: false, message: "This account cannot vote." };
+  if (value !== 1 && value !== -1) return { ok: false, message: "Invalid vote." };
+
+  const [existing] = await db
+    .select()
+    .from(vote)
+    .where(and(
+      eq(vote.userId, account.id),
+      eq(vote.targetType, targetType),
+      eq(vote.targetId, targetId),
+    ))
+    .limit(1);
+
+  let delta: number = value;
+  if (existing) {
+    if (existing.value === value) {
+      await db.delete(vote).where(eq(vote.id, existing.id));
+      delta = -value;
+    } else {
+      await db.update(vote).set({ value }).where(eq(vote.id, existing.id));
+      delta = value * 2;
+    }
+  } else {
+    await db.insert(vote).values({
+      id: crypto.randomUUID(),
+      userId: account.id,
+      targetType,
+      targetId,
+      value,
+    });
+  }
+
+  if (targetType === "thread") {
+    await db.update(thread).set({ score: sql`${thread.score} + ${delta}` }).where(eq(thread.id, targetId));
+  } else {
+    await db.update(reply).set({ score: sql`${reply.score} + ${delta}` }).where(eq(reply.id, targetId));
+  }
+
+  revalidatePath(revalidate);
+  return { ok: true, message: "Voted." };
+}
+
+/* ---------- deleting your own post ---------- */
+
+/**
+ * The author may remove their own post, and a moderator may remove anyone's.
+ *
+ * A thread or a reply that has replies underneath it is blanked rather than
+ * removed, so the conversation below it keeps its shape. A leaf is deleted
+ * outright. This is how Reddit behaves and it is the reason `deletedAt` exists.
+ */
+export async function deletePost(
+  kind: "comment" | "thread" | "reply",
+  id: string,
+): Promise<ActionResult> {
+  if (!db) return { ok: false, message: "Database unavailable." };
+  const account = await currentUser();
+  if (!account) return { ok: false, message: "Sign in first." };
+  const isMod = account.role === "moderator" || account.role === "admin";
+
+  if (kind === "comment") {
+    const [row] = await db.select().from(comment).where(eq(comment.id, id)).limit(1);
+    if (!row) return { ok: false, message: "Already gone." };
+    if (row.userId !== account.id && !isMod) return { ok: false, message: "Not permitted." };
+    await db.delete(comment).where(eq(comment.id, id));
+    revalidatePath(`/answers/${row.articleSlug}`);
+    return { ok: true, message: "Deleted." };
+  }
+
+  if (kind === "reply") {
+    const [row] = await db.select().from(reply).where(eq(reply.id, id)).limit(1);
+    if (!row) return { ok: false, message: "Already gone." };
+    if (row.userId !== account.id && !isMod) return { ok: false, message: "Not permitted." };
+
+    const [child] = await db
+      .select({ id: reply.id })
+      .from(reply)
+      .where(and(eq(reply.parentId, id), eq(reply.status, "approved")))
+      .limit(1);
+
+    if (child) {
+      await db.update(reply).set({ deletedAt: new Date(), body: "" }).where(eq(reply.id, id));
+    } else {
+      await db.delete(reply).where(eq(reply.id, id));
+    }
+    if (row.status === "approved") {
+      await db
+        .update(thread)
+        .set({ replyCount: sql`greatest(${thread.replyCount} - 1, 0)` })
+        .where(eq(thread.id, row.threadId));
+    }
+    const [t] = await db.select({ slug: thread.slug }).from(thread).where(eq(thread.id, row.threadId)).limit(1);
+    if (t) revalidatePath(`/forum/${t.slug}`);
+    revalidatePath("/forum");
+    return { ok: true, message: "Deleted." };
+  }
+
+  const [row] = await db.select().from(thread).where(eq(thread.id, id)).limit(1);
+  if (!row) return { ok: false, message: "Already gone." };
+  if (row.userId !== account.id && !isMod) return { ok: false, message: "Not permitted." };
+
+  if (row.replyCount > 0) {
+    await db.update(thread).set({ deletedAt: new Date(), body: "" }).where(eq(thread.id, id));
+    revalidatePath(`/forum/${row.slug}`);
+    revalidatePath("/forum");
+    return { ok: true, message: "Deleted." };
+  }
+  await db.delete(thread).where(eq(thread.id, id));
+  revalidatePath("/forum");
+  return { ok: true, message: "Deleted." };
 }
 
 /* ---------- moderation ---------- */

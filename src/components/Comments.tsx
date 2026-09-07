@@ -1,12 +1,15 @@
 import { approvedComments, getCurrentUser, formatWhen, initials } from "@/lib/queries";
 import { postComment } from "@/lib/actions";
 import { PostBox } from "@/components/PostBox";
+import { DeleteButton } from "@/components/DeleteButton";
 
 export async function Comments({ articleSlug }: { articleSlug: string }) {
   const [comments, account] = await Promise.all([
     approvedComments(articleSlug),
     getCurrentUser(),
   ]);
+
+  const isModerator = account?.role === "moderator" || account?.role === "admin";
 
   async function submit(body: string) {
     "use server";
@@ -45,6 +48,11 @@ export async function Comments({ articleSlug }: { articleSlug: string }) {
                 </p>
               </div>
               <p className="mt-s mb-0 whitespace-pre-wrap">{c.body}</p>
+              {(account?.id === c.userId || isModerator) && (
+                <div className="cmt-actions">
+                  <DeleteButton kind="comment" id={c.id} />
+                </div>
+              )}
             </li>
           ))}
         </ol>

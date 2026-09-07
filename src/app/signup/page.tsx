@@ -13,7 +13,7 @@ export default function SignUpPage() {
       <div className="mx-auto max-w-[24rem]">
         <h1 className="text-step-3">Create an account</h1>
         <p className="meta mt-2xs mb-l">
-          So you can comment and post in the forum. Posts are reviewed before they appear.
+          So you can comment, post and vote in the forum.
         </p>
         {googleEnabled ? (
           <GoogleButton />

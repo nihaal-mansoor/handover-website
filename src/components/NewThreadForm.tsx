@@ -65,10 +65,7 @@ export function NewThreadForm() {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-s">
-        <p className="meta m-0">
-          Reviewed before it appears. No property advertising.
-        </p>
+      <div className="flex flex-wrap items-center justify-end gap-s">
         <button
           type="submit" className="btn"
           disabled={pending || title.trim().length < 10 || body.trim().length < 15}

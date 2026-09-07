@@ -44,8 +44,10 @@ export default function PrivacyPage() {
       <h2 className="mt-l">Comments and forum posts</h2>
       <p>
         If you post publicly, your display name and the content of your post are
-        visible to everyone. Posts are reviewed before they appear. We keep the
-        account email privately for moderation and to contact you about your account.
+        visible to everyone as soon as you post. Posts are checked automatically
+        before they are stored, and a moderator can remove one afterwards. You can
+        delete your own posts at any time. We keep the account email privately for
+        moderation and to contact you about your account.
       </p>
 
       <h2 className="mt-l">Processors we use</h2>

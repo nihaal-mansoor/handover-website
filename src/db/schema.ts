@@ -125,6 +125,9 @@ export const thread = pgTable(
     moderatedBy: text("moderated_by"),
     ipAddress: text("ip_address"),
     replyCount: integer("reply_count").notNull().default(0),
+    /** Denormalised sum of vote values. See reply.score. */
+    score: integer("score").notNull().default(0),
+    deletedAt: timestamp("deleted_at"),
     lastReplyAt: timestamp("last_reply_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
@@ -140,6 +143,16 @@ export const reply = pgTable(
     id: text("id").primaryKey(),
     threadId: text("thread_id").notNull().references(() => thread.id, { onDelete: "cascade" }),
     userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    /** Null for a top-level reply. Set to another reply's id for a nested one.
+        Deliberately not a self-reference in Drizzle: the cascade is handled in
+        the delete action, which rewrites a removed comment rather than orphaning
+        the replies underneath it. */
+    parentId: text("parent_id"),
+    /** Denormalised sum of vote values, so sorting does not aggregate per read. */
+    score: integer("score").notNull().default(0),
+    /** Set when the author removes their own post. The row stays so the replies
+        beneath it keep their place in the tree, as Reddit does. */
+    deletedAt: timestamp("deleted_at"),
     body: text("body").notNull(),
     status: text("status").notNull().default("pending"),
     autoFlag: text("auto_flag"),
@@ -151,6 +164,7 @@ export const reply = pgTable(
   (t) => [
     index("reply_thread_idx").on(t.threadId, t.status),
     index("reply_status_idx").on(t.status, t.createdAt),
+    index("reply_parent_idx").on(t.parentId),
   ],
 );
 
@@ -218,5 +232,30 @@ export const article = pgTable(
     uniqueIndex("article_slug_idx").on(t.slug),
     index("article_status_idx").on(t.status, t.publishedAt),
     index("article_topic_idx").on(t.topic),
+  ],
+);
+
+/* ---------- votes ---------- */
+
+/**
+ * One row per person per thing voted on, so a vote can be changed or taken back
+ * rather than counted twice. The denormalised `score` on thread and reply is the
+ * sum of these, kept in step by the vote action.
+ */
+export const vote = pgTable(
+  "vote",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    /** thread | reply */
+    targetType: text("target_type").notNull(),
+    targetId: text("target_id").notNull(),
+    /** 1 for an upvote, -1 for a downvote. Removing a vote deletes the row. */
+    value: integer("value").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("vote_once_idx").on(t.userId, t.targetType, t.targetId),
+    index("vote_target_idx").on(t.targetType, t.targetId),
   ],
 );

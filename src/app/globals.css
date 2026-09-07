@@ -476,6 +476,113 @@
   .consent-card { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; width: auto; }
   }
 
+  /* ---------- forum: threads, votes, comment tree ---------- */
+
+  /* Vote column beside a post, and the row variant that sits in a comment's
+     action bar. The score is the only thing that takes the vote colour, so a
+     page of comments does not turn into a field of green and orange. */
+  .votes {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.1rem; flex: none; padding-top: 0.15rem;
+  }
+  .votes-row { flex-direction: row; gap: 0.25rem; padding-top: 0; }
+
+  .vote-arrow {
+    display: grid; place-items: center;
+    width: 1.75rem; height: 1.75rem;
+    padding: 0; border: 0; border-radius: 4px;
+    background: none; color: var(--faint); cursor: pointer;
+    transition: color 0.12s, background 0.12s;
+  }
+  .vote-arrow:hover { color: var(--ink); background: var(--sunk); }
+  .vote-arrow[data-active="up"] { color: var(--accent); }
+  .vote-arrow[data-active="down"] { color: #C2410C; }
+
+  .vote-score {
+    font-family: var(--font-sans); font-size: var(--step--1);
+    font-weight: 600; color: var(--ink-2);
+    font-variant-numeric: tabular-nums; min-width: 1.5rem; text-align: center;
+  }
+  .vote-score[data-state="up"] { color: var(--accent); }
+  .vote-score[data-state="down"] { color: #C2410C; }
+
+  /* A post: votes on the left, everything else in a column that can shrink. */
+  .post-head { display: flex; gap: var(--space-s); align-items: flex-start; }
+
+  /* Sort tabs, shared by the forum index and a thread's comments. */
+  .sort-bar {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: var(--space-s);
+  }
+  .sort-tabs { display: flex; gap: var(--space-2xs); }
+  .sort-tab {
+    font-family: var(--font-sans); font-size: var(--step--1);
+    color: var(--muted); text-decoration: none;
+    padding: 0.3em 0.8em; border-radius: 999px;
+  }
+  .sort-tab:hover { color: var(--ink); background: var(--sunk); }
+  .sort-tab[aria-current="page"] { color: var(--ink); background: var(--sunk); font-weight: 600; }
+
+  /* Comment tree. The thread line is a hairline on the left of each level, and
+     indentation is what carries depth, exactly as Reddit does it. */
+  .cmt-list { list-style: none; margin: 0; padding: 0; }
+  .cmt-item { margin-top: var(--space-s); }
+  .cmt-list .cmt-list { margin-top: var(--space-2xs); }
+
+  .cmt-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem;
+    font-family: var(--font-sans); font-size: var(--step--1); color: var(--muted);
+    cursor: pointer; list-style: none; padding: 0.15rem 0;
+  }
+  .cmt-bar::-webkit-details-marker { display: none; }
+  .cmt-author { color: var(--ink); font-weight: 600; }
+  .cmt-points { font-variant-numeric: tabular-nums; }
+
+  /* The open/closed chevron. Drawn in CSS so the tree needs no icon payload. */
+  .cmt-toggle {
+    width: 0.75rem; height: 0.75rem; flex: none;
+    border-right: 1.5px solid var(--faint); border-bottom: 1.5px solid var(--faint);
+    transform: rotate(45deg); margin-right: 0.2rem;
+    transition: transform 0.12s;
+  }
+  .cmt:not([open]) > .cmt-bar .cmt-toggle { transform: rotate(-45deg); }
+  .cmt-bar:hover .cmt-toggle { border-color: var(--ink); }
+
+  .cmt-inner {
+    border-left: 1px solid var(--rule);
+    padding-left: var(--space-s);
+    margin-left: 0.36rem;
+  }
+  .cmt-inner:hover { border-left-color: var(--rule-2); }
+
+  .cmt-body { margin: var(--space-2xs) 0 0; white-space: pre-wrap; }
+  .cmt-removed {
+    margin: var(--space-2xs) 0 0; color: var(--faint); font-style: italic;
+  }
+
+  .cmt-actions {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--space-2xs); margin-top: var(--space-2xs);
+  }
+
+  /* Text-weight controls, so a comment is not a row of buttons. They are the
+     one place a control is not the accent pill: making every Reply look like a
+     call to action would drown the posts themselves. */
+  .post-action {
+    font-family: var(--font-sans); font-size: var(--step--1); font-weight: 500;
+    color: var(--muted); background: none; border: 0; cursor: pointer;
+    padding: 0.3em 0.6em; border-radius: 4px; list-style: none;
+  }
+  .post-action::-webkit-details-marker { display: none; }
+  .post-action:hover { color: var(--ink); background: var(--sunk); }
+  .post-action-danger { color: #B3271E; }
+  .post-action-danger:hover { color: #B3271E; background: var(--accent-dim); }
+
+  .post-confirm {
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2xs);
+  }
+  .cmt-reply-box { margin: var(--space-2xs) 0 var(--space-s); max-width: 42rem; }
+
   .skip-link {
     position: absolute; left: -9999px; top: 0;
     background: var(--ink); color: var(--paper);
