@@ -28,7 +28,7 @@ const MAP = [
   ["prices-versus-the-cost-of-building", "price-vs-build-cost",
    "Line chart comparing Dubai home prices and construction costs since 2020, both indexed to 2019: prices reach 167 while build costs reach 111."],
   ["two-official-sources-two-answers", "two-sources",
-   "Line chart comparing Dubai house prices from two official sources rebased to 2019: the Land Department median reaches 172 by 2025 while the Statistics Centre index reaches 163."],
+   "Line chart comparing Dubai house prices reported by two official sources rebased to 2019: the Land Department median reaches 172 by 2025 while the Statistics Centre index reaches 163."],
   ["selling-off-plan-before-handover", "off-plan-share",
    "Line chart showing off-plan as a share of Dubai registered sales, rising from about 32 percent in 2015 to 68.5 percent in 2026."],
 ];
