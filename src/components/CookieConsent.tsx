@@ -4,26 +4,48 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { readConsent, writeConsent } from "@/lib/consent";
 
-/**
- * Cookie preferences.
- *
- * A quiet card in the corner rather than a bar across the page, and it can be
- * reopened from the footer, so a decision is revisable rather than one-shot.
- * Analytics defaults to off in the detail view: an unticked box is the honest
- * default when the privacy page says nothing loads without consent.
- */
+const CATEGORIES = [
+  {
+    key: "necessary" as const,
+    name: "Necessary",
+    always: true,
+    text:
+      "Necessary cookies are required to enable the basic features of this site, " +
+      "such as keeping you signed in and remembering your cookie preferences. " +
+      "They cannot be switched off.",
+  },
+  {
+    key: "analytics" as const,
+    name: "Analytics",
+    always: false,
+    text:
+      "Analytics cookies help us understand how visitors interact with the site, " +
+      "such as which answers are read and how people arrive. The information is " +
+      "reported in aggregate and is not used to identify you.",
+  },
+  {
+    key: "performance" as const,
+    name: "Performance",
+    always: false,
+    text:
+      "Performance cookies are used to measure how quickly pages load, which helps " +
+      "us find and fix problems that make the site slower to use.",
+  },
+];
+
 export function CookieConsent() {
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState(false);
-  const [analytics, setAnalytics] = useState(false);
+  const [prefs, setPrefs] = useState({ analytics: false, performance: false });
 
   useEffect(() => {
     const existing = readConsent();
     if (!existing) setOpen(true);
-    else setAnalytics(existing.analytics);
+    else setPrefs({ analytics: existing.analytics, performance: existing.performance });
 
     const reopen = () => {
-      setAnalytics(readConsent()?.analytics ?? false);
+      const c = readConsent();
+      setPrefs({ analytics: c?.analytics ?? false, performance: c?.performance ?? false });
       setDetail(true);
       setOpen(true);
     };
@@ -33,73 +55,85 @@ export function CookieConsent() {
 
   if (!open) return null;
 
-  const decide = (a: boolean) => { writeConsent(a); setOpen(false); setDetail(false); };
+  const decide = (next: { analytics: boolean; performance: boolean }) => {
+    writeConsent(next);
+    setOpen(false);
+    setDetail(false);
+  };
 
   return (
     <div className="consent-card" role="dialog" aria-modal="false" aria-labelledby="consent-h">
       <h2 id="consent-h" className="text-step-0" style={{ fontFamily: "var(--font-sans)" }}>
-        Cookies
+        We value your privacy
       </h2>
 
       {!detail ? (
         <>
           <p className="meta mt-2xs">
-            We use a cookie to keep you signed in, and we would like to count visits so
-            we know which answers are worth writing more of. Nothing is used for
-            advertising.
+            We use cookies to enable essential site functionality and, with your
+            permission, to understand how the site is used so we can improve it. You
+            can accept all cookies, reject all non-essential cookies, or choose which
+            categories to allow. Read our <Link href="/privacy">privacy policy</Link>.
           </p>
           <div className="mt-s flex flex-wrap gap-xs">
-            <button type="button" className="btn" onClick={() => decide(true)}>Accept</button>
-            <button type="button" className="btn btn-quiet" onClick={() => decide(false)}>Reject</button>
-            <button type="button" className="btn btn-quiet" onClick={() => setDetail(true)}>Manage</button>
+            <button type="button" className="btn"
+                    onClick={() => decide({ analytics: true, performance: true })}>
+              Accept all
+            </button>
+            <button type="button" className="btn btn-quiet"
+                    onClick={() => decide({ analytics: false, performance: false })}>
+              Reject all
+            </button>
+            <button type="button" className="btn btn-quiet" onClick={() => setDetail(true)}>
+              Customise
+            </button>
           </div>
         </>
       ) : (
         <>
-          <ul className="mt-s m-0 list-none p-0 space-y-s">
-            <li>
-              <div className="flex items-start justify-between gap-s">
-                <div>
-                  <p className="m-0 text-step--1" style={{ fontWeight: 600 }}>Necessary</p>
-                  <p className="meta m-0">
-                    Keeps you signed in and remembers this choice. Cannot be turned off.
-                  </p>
+          <p className="meta mt-2xs">
+            Choose which categories of cookies you allow. Necessary cookies are always
+            active because the site cannot work without them.
+          </p>
+
+          <ul className="mt-s m-0 list-none p-0">
+            {CATEGORIES.map((c) => (
+              <li key={c.key} className="border-t border-rule py-s">
+                <div className="flex items-start justify-between gap-s">
+                  <p className="m-0 text-step--1" style={{ fontWeight: 600 }}>{c.name}</p>
+                  {c.always ? (
+                    <span className="meta shrink-0" style={{ color: "var(--accent)" }}>
+                      Always active
+                    </span>
+                  ) : (
+                    <label className="shrink-0">
+                      <span className="sr-only">Allow {c.name.toLowerCase()} cookies</span>
+                      <input
+                        type="checkbox"
+                        checked={prefs[c.key as "analytics" | "performance"]}
+                        onChange={(e) =>
+                          setPrefs((p) => ({ ...p, [c.key]: e.target.checked }))
+                        }
+                      />
+                    </label>
+                  )}
                 </div>
-                <span className="meta shrink-0" style={{ color: "var(--accent)" }}>Always on</span>
-              </div>
-            </li>
-            <li className="border-t border-rule pt-s">
-              <div className="flex items-start justify-between gap-s">
-                <div>
-                  <p className="m-0 text-step--1" style={{ fontWeight: 600 }}>Analytics</p>
-                  <p className="meta m-0">
-                    Google Analytics, to count visits. Not loaded at all unless you allow it.
-                  </p>
-                </div>
-                <label className="shrink-0 flex items-center gap-xs text-step--1">
-                  <input
-                    type="checkbox" checked={analytics}
-                    onChange={(e) => setAnalytics(e.target.checked)}
-                  />
-                  <span className="sr-only">Allow analytics</span>
-                </label>
-              </div>
-            </li>
+                <p className="meta m-0 mt-2xs">{c.text}</p>
+              </li>
+            ))}
           </ul>
+
           <div className="mt-m flex flex-wrap gap-xs">
-            <button type="button" className="btn" onClick={() => decide(analytics)}>
-              Save choices
+            <button type="button" className="btn" onClick={() => decide(prefs)}>
+              Save my preferences
             </button>
-            <button type="button" className="btn btn-quiet" onClick={() => decide(true)}>
+            <button type="button" className="btn btn-quiet"
+                    onClick={() => decide({ analytics: true, performance: true })}>
               Accept all
             </button>
           </div>
         </>
       )}
-
-      <p className="meta mt-s mb-0">
-        <Link href="/privacy">How we handle data</Link>
-      </p>
     </div>
   );
 }

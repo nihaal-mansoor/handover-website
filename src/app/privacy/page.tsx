@@ -56,20 +56,29 @@ export default function PrivacyPage() {
         data only to deliver that specific function.
       </p>
 
-      <h2 className="mt-l">Analytics</h2>
+      <h2 className="mt-l">Cookies and analytics</h2>
       <p>
-        <strong>Only if you consent:</strong> Google Analytics, to count visits and
-        see which answers people find useful. It is not loaded, and no request is
-        made to it, unless you choose Allow. Decline and it is never requested. It
-        is not used for advertising or to build a profile of you, and you can change
-        your mind by clearing this site&rsquo;s data in your browser.
+        <strong>Necessary.</strong> A cookie keeps you signed in if you have an
+        account, and another remembers your cookie choice so we do not ask again.
+        These are required for the site to work and cannot be switched off.
       </p>
       <p>
-        <strong>Always on:</strong> Vercel Analytics and Vercel Speed Insights, which
-        are provided by the company that hosts this site. They count page views and
-        measure how quickly pages load. They set no cookies, do not track you between
-        websites, and do not identify you. We use them to know whether the site is
-        fast enough and which pages are worth writing more about.
+        <strong>Analytics.</strong> We use Google Analytics to understand which
+        answers people read and how they arrive. It operates under Google Consent
+        Mode: until you allow analytics cookies, it is prevented from storing
+        anything on your device or identifying you, and only an anonymous,
+        cookieless signal is recorded so we can count visits. If you allow analytics
+        cookies, it measures visits in the ordinary way. Either way it is never used
+        for advertising and we do not use it to build a profile of you.
+      </p>
+      <p>
+        <strong>Performance.</strong> Vercel Analytics and Speed Insights, provided
+        by the company that hosts this site, count page views and measure how quickly
+        pages load. They set no cookies and do not track you between websites.
+      </p>
+      <p>
+        You can change any of this at any time using the{" "}
+        <strong>Cookies</strong> link in the footer.
       </p>
 
       <h2 className="mt-l">How long we keep it</h2>

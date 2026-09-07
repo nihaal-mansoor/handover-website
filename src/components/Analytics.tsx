@@ -1,27 +1,25 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { readConsent } from "@/lib/consent";
+import { readConsent, applyConsentMode } from "@/lib/consent";
 
 /**
- * Analytics, gated.
+ * Analytics under Consent Mode v2.
  *
- * The privacy page states that Google Analytics loads only after opt-in and is
- * "never requested" otherwise. That is a promise, so GA is mounted only once
- * consent is stored, not merely configured to deny.
+ * Google Analytics loads for everyone, but every storage type starts denied,
+ * so nothing is written to the device and no one is identified until consent
+ * is given. Denied traffic still produces a cookieless ping, which is the
+ * difference between usable totals and losing every non-consenting visitor.
  *
- * Vercel Analytics and Speed Insights are first-party and cookieless, and are
- * declared separately in the privacy page. They load for everyone.
+ * Vercel Analytics and Speed Insights are first-party and cookieless.
  */
 export function Analytics({ gaId, nonce }: { gaId?: string; nonce?: string }) {
-  const [granted, setGranted] = useState(false);
-
   useEffect(() => {
-    const sync = () => setGranted(readConsent()?.analytics === true);
-    sync();
+    applyConsentMode(readConsent()?.analytics === true);
+    const sync = () => applyConsentMode(readConsent()?.analytics === true);
     window.addEventListener("handover:consent", sync);
     return () => window.removeEventListener("handover:consent", sync);
   }, []);
@@ -31,15 +29,11 @@ export function Analytics({ gaId, nonce }: { gaId?: string; nonce?: string }) {
       <VercelAnalytics />
       <SpeedInsights />
 
-      {gaId && granted && (
+      {gaId && (
         <>
-          <Script
-            id="ga-src"
-            strategy="afterInteractive"
-            nonce={nonce}
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          />
-          <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
+          {/* Defaults must be registered before the tag loads, or the first
+              hit is sent under the wrong assumption. */}
+          <Script id="ga-consent-default" strategy="beforeInteractive" nonce={nonce}>
             {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
@@ -48,9 +42,17 @@ export function Analytics({ gaId, nonce }: { gaId?: string; nonce?: string }) {
                 ad_storage: 'denied',
                 ad_user_data: 'denied',
                 ad_personalization: 'denied',
-                analytics_storage: 'denied'
+                analytics_storage: 'denied',
+                wait_for_update: 500
               });
-              gtag('consent', 'update', { analytics_storage: 'granted' });
+            `}
+          </Script>
+          <Script
+            id="ga-src" strategy="afterInteractive" nonce={nonce}
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          />
+          <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
+            {`
               gtag('js', new Date());
               gtag('config', '${gaId}', { anonymize_ip: true });
             `}
