@@ -43,10 +43,17 @@ export default async function AnswerPage({
 
   // Database articles render markdown at request time; anything still only in
   // the repo falls back to the compiled MDX module.
-  const Body =
-    article.source === "db"
-      ? null
-      : (await import(`../../../../content/answers/${slug}.mdx`)).default;
+  // A missing MDX module must not 500 the route. If the file is not in the
+  // deployment, treat the article as not found rather than erroring.
+  let Body: React.ComponentType | null = null;
+  if (article.source !== "db") {
+    try {
+      Body = (await import(`../../../../content/answers/${slug}.mdx`)).default;
+    } catch (err) {
+      console.error(`[article] MDX module missing for "${slug}"`, err);
+      notFound();
+    }
+  }
 
   const schema = {
     "@context": "https://schema.org",

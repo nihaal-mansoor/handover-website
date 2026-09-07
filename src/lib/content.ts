@@ -143,7 +143,13 @@ export async function articlesByTopicAsync(slug: string): Promise<Article[]> {
 }
 
 export function allArticlesFromMdx(): Article[] {
-  if (!fs.existsSync(DIR)) return [];
+  if (!fs.existsSync(DIR)) {
+    console.error(
+      `[content] ${DIR} is missing. MDX articles will not render. ` +
+      "Check outputFileTracingIncludes in next.config.mjs.",
+    );
+    return [];
+  }
   return fs
     .readdirSync(DIR)
     .filter((f) => f.endsWith(".mdx"))

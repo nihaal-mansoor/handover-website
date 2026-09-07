@@ -12,6 +12,12 @@ const nextConfig = {
   // will not resolve outside the project root unless the root is widened.
   turbopack: { root: path.resolve(process.cwd(), "..") },
   outputFileTracingRoot: path.resolve(process.cwd(), ".."),
+  // The MDX fallback reads content/ from disk at request time with a path built
+  // at runtime, so tracing cannot infer it. Without this the files are absent
+  // from the deployment, articles 500 and the feed silently renders empty.
+  outputFileTracingIncludes: {
+    "/**": ["./content/**/*"],
+  },
   poweredByHeader: false,
   async headers() {
     // Security headers come from site-kit so all sites stay in step. (§4.3)
