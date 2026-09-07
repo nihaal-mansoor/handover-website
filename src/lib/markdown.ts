@@ -11,7 +11,18 @@ import sanitizeHtml from "sanitize-html";
 marked.setOptions({ gfm: true, breaks: false });
 
 export function renderMarkdown(md: string): string {
-  const raw = marked.parse(md, { async: false }) as string;
+  let raw = marked.parse(md, { async: false }) as string;
+
+  // A markdown image on its own line becomes a figure, with its alt text shown
+  // as the caption. Charts need a caption; decorative images should not be
+  // written on their own line.
+  raw = raw.replace(
+    /<p>(<img [^>]*?alt="([^"]*)"[^>]*>)<\/p>/g,
+    (_m, img: string, alt: string) =>
+      alt.trim()
+        ? `<figure>${img}<figcaption>${alt}</figcaption></figure>`
+        : `<figure>${img}</figure>`,
+  );
   return sanitizeHtml(raw, {
     allowedTags: [
       "h2", "h3", "h4", "p", "a", "ul", "ol", "li", "blockquote", "strong", "em",

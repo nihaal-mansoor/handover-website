@@ -129,6 +129,47 @@ const charts = [];
   })]);
 }
 
+/* 8. Prices against the cost of building — same base, so one scale is honest. */
+{
+  const res = ix.residential_price_index["General Index"];
+  const cci = cc.quarterly_residential_general_index;
+  const q = Object.keys(res).filter((k) => cci[k] != null && +k.slice(0, 4) >= 2020);
+  charts.push(["price-vs-build-cost", lineChart({
+    title: "Prices rose six times faster than the cost of building",
+    subtitle: "Both indexed to 2019 = 100",
+    source: "Sources: Dubai Statistics Center price and construction cost indices",
+    xLabels: q.map((k) => (k.endsWith("Q1") ? k.slice(0, 4) : "")),
+    series: [
+      { name: "Home prices", values: q.map((k) => res[k]) },
+      { name: "Build cost", values: q.map((k) => cci[k]) },
+    ],
+    yFormat: (v) => Math.round(v),
+  })]);
+}
+
+/* 9. The two official sources disagree. */
+{
+  const sq = tx.median_price_per_sqm_by_year;
+  const base = sq["2019"].median_aed_sqm;
+  const res = ix.residential_price_index["General Index"];
+  const years = ["2020", "2021", "2022", "2023", "2024", "2025"];
+  const dsc = years.map((y) => {
+    const v = Object.entries(res).filter(([k]) => k.startsWith(y)).map(([, x]) => x);
+    return v.reduce((a, b) => a + b, 0) / v.length;
+  });
+  charts.push(["two-sources", lineChart({
+    title: "Two official sources, two different answers",
+    subtitle: "Dubai home prices since 2019, both rebased to 2019 = 100",
+    source: "Sources: Dubai Land Department transactions; Dubai Statistics Center index",
+    xLabels: years,
+    series: [
+      { name: "DLD median", values: years.map((y) => (sq[y].median_aed_sqm / base) * 100) },
+      { name: "DSC index", values: dsc },
+    ],
+    yFormat: (v) => Math.round(v),
+  })]);
+}
+
 for (const [name, svg] of charts) {
   await writeFile(path.join(OUT, `${name}.svg`), svg);
   const info = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(path.join(OUT, `${name}.png`));

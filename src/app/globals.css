@@ -55,7 +55,7 @@
   --leading-body: 1.58;
   --leading-tight: 1.15;
 
-  --measure: 42.5rem;  /* 680px */
+  --measure: 46rem;  /* 736px */
   --gutter: clamp(1.25rem, 5vw, 2rem);
 }
 
@@ -290,6 +290,35 @@
   .prose ul, .prose ol { padding-left: 1.3em; }
   .prose li + li { margin-top: var(--space-2xs); }
   .prose li::marker { color: var(--muted); }
+
+  /* Figures inside an article.
+     A chart breaks out past the text measure, because a chart squeezed to the
+     width of a paragraph is unreadable, and the reading column is set for prose
+     rather than for data. Ratios are fixed so nothing shifts as they load. */
+  .prose figure { margin: var(--space-l) 0; }
+  .prose figure img, .prose > p > img, .prose > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+  .prose figcaption {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-top: var(--space-xs);
+    line-height: 1.45;
+  }
+  /* Every figure in an article body is a chart, so all of them break out.
+     Not keyed on a class: the sanitiser strips class attributes from rendered
+     markdown, which silently disabled this. */
+  @media (min-width: 58rem) {
+    .prose figure {
+      width: calc(100% + 8rem);
+      margin-inline: -4rem;
+    }
+  }
 
   .prose table { width: 100%; border-collapse: collapse; font-family: var(--font-sans);
                  font-size: var(--step--1); }
