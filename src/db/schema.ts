@@ -170,3 +170,53 @@ export const subscriber = pgTable(
   },
   (t) => [index("subscriber_created_idx").on(t.createdAt)],
 );
+
+/* ---------- articles ---------- */
+
+/**
+ * Articles live here once imported, with MDX in the repo as the fallback for
+ * anything not yet migrated. Every SEO field is explicit rather than derived,
+ * because the point of an editor is to be able to override the derivation.
+ */
+export const article = pgTable(
+  "article",
+  {
+    id: text("id").primaryKey(),
+    slug: text("slug").notNull(),
+    title: text("title").notNull(),
+    /** The line under the title. Falls back to metaDescription if empty. */
+    dek: text("dek").notNull().default(""),
+    /** Markdown. Rendered and sanitised at request time. */
+    body: text("body").notNull().default(""),
+    topic: text("topic").notNull().default("General"),
+
+    /** draft | published. Only published articles are publicly readable. */
+    status: text("status").notNull().default("draft"),
+
+    /* --- SEO, all optional overrides --- */
+    metaTitle: text("meta_title"),
+    metaDescription: text("meta_description"),
+    canonicalUrl: text("canonical_url"),
+    /** Excluded from indexing and from the sitemap when true. */
+    noindex: boolean("noindex").notNull().default(false),
+    /** Not used for ranking. Kept so the editor can track intent. */
+    focusKeyword: text("focus_keyword"),
+
+    /* --- featured image, as in a WordPress post --- */
+    featuredImageUrl: text("featured_image_url"),
+    featuredImageAlt: text("featured_image_alt"),
+
+    /** Editor's note on where the topic came from. Never rendered. */
+    sourceNote: text("source_note"),
+
+    authorId: text("author_id").references(() => user.id, { onDelete: "set null" }),
+    publishedAt: timestamp("published_at"),
+    updatedAt: timestamp("updated_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("article_slug_idx").on(t.slug),
+    index("article_status_idx").on(t.status, t.publishedAt),
+    index("article_topic_idx").on(t.topic),
+  ],
+);

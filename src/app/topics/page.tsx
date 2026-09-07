@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { allTopics } from "@/lib/content";
+import { allTopicsAsync } from "@/lib/content";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
 
@@ -10,8 +10,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/topics" },
 };
 
-export default function TopicsPage() {
-  const topics = allTopics();
+export const dynamic = "force-dynamic";
+
+export default async function TopicsPage() {
+  const topics = await allTopicsAsync();
   return (
     <div className="shell">
       <div className="app-grid">

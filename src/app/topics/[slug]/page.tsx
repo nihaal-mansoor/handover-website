@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allTopics, articlesByTopic } from "@/lib/content";
+import { allTopicsAsync, articlesByTopicAsync } from "@/lib/content";
 import { ArticleCard } from "@/components/ArticleCard";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
 
-export function generateStaticParams() {
-  return allTopics().map((t) => ({ slug: t.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -15,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const topic = allTopics().find((t) => t.slug === slug);
+  const topic = (await allTopicsAsync()).find((t) => t.slug === slug);
   if (!topic) return {};
   return {
     title: topic.name,
@@ -30,7 +28,7 @@ export default async function TopicPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const topic = allTopics().find((t) => t.slug === slug);
+  const topic = (await allTopicsAsync()).find((t) => t.slug === slug);
   if (!topic) notFound();
 
   return (
@@ -44,7 +42,7 @@ export default async function TopicPage({
         {topic.count} {topic.count === 1 ? "answer" : "answers"}
       </p>
       <div className="mt-l">
-        {articlesByTopic(slug).map((a) => (
+        {(await articlesByTopicAsync(slug)).map((a) => (
           <ArticleCard key={a.slug} article={a} />
         ))}
       </div>

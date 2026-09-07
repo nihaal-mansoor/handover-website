@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { articleSlugs, getArticle, formatDate, topicSlug } from "@/lib/content";
+import { getArticleAsync, formatDate, topicSlug } from "@/lib/content";
+import { renderMarkdown } from "@/lib/markdown";
 import config from "../../../../site.config";
 import { originOf } from "@uaeprop/site-kit";
 import { Comments } from "@/components/Comments";
 
-export function generateStaticParams() {
-  return articleSlugs().map((slug) => ({ slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -16,13 +15,20 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticleAsync(slug);
   if (!article) return {};
+  const image = article.featuredImageUrl;
   return {
-    title: article.title,
-    description: article.dek,
-    alternates: { canonical: `/answers/${slug}` },
-    openGraph: { title: article.title, description: article.dek, type: "article" },
+    title: article.metaTitle ?? article.title,
+    description: article.metaDescription ?? article.dek,
+    alternates: { canonical: article.canonicalUrl ?? `/answers/${slug}` },
+    ...(article.noindex ? { robots: { index: false, follow: true } } : {}),
+    openGraph: {
+      title: article.metaTitle ?? article.title,
+      description: article.metaDescription ?? article.dek,
+      type: "article",
+      ...(image ? { images: [{ url: image, alt: article.featuredImageAlt ?? article.title }] } : {}),
+    },
   };
 }
 
@@ -32,10 +38,15 @@ export default async function AnswerPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticleAsync(slug);
   if (!article) notFound();
 
-  const { default: Body } = await import(`../../../../content/answers/${slug}.mdx`);
+  // Database articles render markdown at request time; anything still only in
+  // the repo falls back to the compiled MDX module.
+  const Body =
+    article.source === "db"
+      ? null
+      : (await import(`../../../../content/answers/${slug}.mdx`)).default;
 
   const schema = {
     "@context": "https://schema.org",
@@ -82,8 +93,23 @@ export default async function AnswerPage({
         </p>
       </div>
 
+      {article.featuredImageUrl && (
+        <figure className="mt-l mb-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={article.featuredImageUrl}
+            alt={article.featuredImageAlt ?? ""}
+            style={{ width: "100%", borderRadius: 4 }}
+          />
+        </figure>
+      )}
+
       <div className="prose mt-l">
-        <Body />
+        {article.source === "db" && article.body ? (
+          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(article.body) }} />
+        ) : Body ? (
+          <Body />
+        ) : null}
       </div>
 
       <div className="mt-l border-t border-rule pt-m">

@@ -7,7 +7,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { scanSubmission } from "@/lib/moderation";
 import { db, dbEnabled } from "@/db";
-import { comment, reply, subscriber, thread, user } from "@/db/schema";
+import { article, comment, reply, subscriber, thread, user } from "@/db/schema";
 
 /**
  * Every write goes through here. The order is deliberate: identity, then shape,
@@ -273,4 +273,113 @@ export async function subscribe(email: string, sourcePage: string): Promise<Acti
     console.error("[subscribe] failed:", err instanceof Error ? err.message : err);
     return { ok: false, message: "Something went wrong. Please try again." };
   }
+}
+
+/* ---------- article editing ---------- */
+
+const slugSchema = z
+  .string()
+  .trim()
+  .min(3)
+  .max(90)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only.");
+
+export interface ArticleInput {
+  id?: string;
+  slug: string;
+  title: string;
+  dek: string;
+  body: string;
+  topic: string;
+  status: "draft" | "published";
+  metaTitle?: string;
+  metaDescription?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  focusKeyword?: string;
+  featuredImageUrl?: string;
+  featuredImageAlt?: string;
+  sourceNote?: string;
+}
+
+export async function saveArticle(input: ArticleInput): Promise<ActionResult & { slug?: string }> {
+  if (!db) return { ok: false, message: "Database unavailable." };
+  const mod = await requireModerator();
+  if (!mod) return { ok: false, message: "Not permitted." };
+
+  const slug = slugSchema.safeParse(input.slug);
+  if (!slug.success) return { ok: false, message: slug.error.issues[0]?.message ?? "Invalid slug." };
+  if (!input.title.trim()) return { ok: false, message: "A title is required." };
+
+  const now = new Date();
+  const values = {
+    slug: slug.data,
+    title: input.title.trim(),
+    dek: input.dek.trim(),
+    body: input.body,
+    topic: input.topic.trim() || "General",
+    status: input.status,
+    metaTitle: input.metaTitle?.trim() || null,
+    metaDescription: input.metaDescription?.trim() || null,
+    canonicalUrl: input.canonicalUrl?.trim() || null,
+    noindex: Boolean(input.noindex),
+    focusKeyword: input.focusKeyword?.trim() || null,
+    featuredImageUrl: input.featuredImageUrl?.trim() || null,
+    featuredImageAlt: input.featuredImageAlt?.trim() || null,
+    sourceNote: input.sourceNote?.trim() || null,
+    authorId: mod.id,
+    updatedAt: now,
+  };
+
+  try {
+    if (input.id) {
+      const [existing] = await db.select().from(article).where(eq(article.id, input.id)).limit(1);
+      await db
+        .update(article)
+        .set({
+          ...values,
+          // Stamp the publish date the first time it actually goes live.
+          publishedAt:
+            input.status === "published" ? existing?.publishedAt ?? now : existing?.publishedAt ?? null,
+        })
+        .where(eq(article.id, input.id));
+    } else {
+      await db.insert(article).values({
+        id: crypto.randomUUID(),
+        ...values,
+        publishedAt: input.status === "published" ? now : null,
+      });
+    }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (/unique|duplicate/i.test(msg)) return { ok: false, message: "That slug is already taken." };
+    console.error("[saveArticle]", msg);
+    return { ok: false, message: "Could not save." };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/topics");
+  revalidatePath(`/answers/${slug.data}`);
+  revalidatePath("/admin/articles");
+  return { ok: true, message: input.status === "published" ? "Published." : "Saved as draft.", slug: slug.data };
+}
+
+export async function deleteArticle(id: string): Promise<ActionResult> {
+  if (!db) return { ok: false, message: "Database unavailable." };
+  if (!(await requireModerator())) return { ok: false, message: "Not permitted." };
+  await db.delete(article).where(eq(article.id, id));
+  revalidatePath("/");
+  revalidatePath("/admin/articles");
+  return { ok: true, message: "Deleted." };
+}
+
+export async function listArticles() {
+  if (!db || !(await requireModerator())) return null;
+  return db.select().from(article).orderBy(desc(article.updatedAt), desc(article.createdAt));
+}
+
+export async function getArticleForEdit(id: string) {
+  if (!db || !(await requireModerator())) return null;
+  const [row] = await db.select().from(article).where(eq(article.id, id)).limit(1);
+  return row ?? null;
 }

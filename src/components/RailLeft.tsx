@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { allTopics } from "@/lib/content";
+import { allTopicsAsync } from "@/lib/content";
 
 const NAV = [
   { href: "/", label: "Home", icon: "M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
@@ -8,8 +8,8 @@ const NAV = [
 ];
 
 /** Persistent nav rail. Sticky, quiet, and it never scrolls away. */
-export function RailLeft({ current }: { current?: string }) {
-  const topics = allTopics().slice(0, 8);
+export async function RailLeft({ current }: { current?: string }) {
+  const topics = (await allTopicsAsync()).slice(0, 8);
 
   return (
     <aside className="rail-left">

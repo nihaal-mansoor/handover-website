@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { allArticles } from "@/lib/content";
+import { allArticlesAsync } from "@/lib/content";
 import { ArticleCard } from "@/components/ArticleCard";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
@@ -19,7 +19,7 @@ export default async function SearchPage({
   const query = (q ?? "").trim().toLowerCase();
 
   const results = query
-    ? allArticles().filter((a) =>
+    ? (await allArticlesAsync()).filter((a) =>
         [a.title, a.dek, a.topic].some((f) => f.toLowerCase().includes(query)),
       )
     : [];

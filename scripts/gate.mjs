@@ -9,7 +9,6 @@ import { spawn } from "node:child_process";
 import net from "node:net";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { runComplianceGate } from "@uaeprop/site-kit/testing";
-import { allArticles, allTopics } from "../src/lib/content.ts";
 
 /** A fixed port collides with whatever else is being served locally. */
 async function freePort() {
@@ -28,17 +27,24 @@ const PORT = await freePort();
 const OUT = ".gate";
 const DOMAIN = "dubairealestateadvice.com";
 
-const routes = [
-  "/",
-  "/topics",
-  "/forum",
-  "/signin",
-  "/signup",
-  "/privacy",
-  "/terms",
-  ...allArticles().map((a) => `/answers/${a.slug}`),
-  ...allTopics().map((t) => `/topics/${t.slug}`),
-];
+/**
+ * Routes are discovered by crawling rather than imported from the content layer.
+ * That covers database-backed articles as well as MDX, and avoids importing
+ * application code that relies on TypeScript path aliases plain Node cannot
+ * resolve.
+ */
+const SEEDS = ["/", "/topics", "/forum", "/signin", "/signup", "/privacy", "/terms"];
+
+async function discover(port) {
+  const found = new Set(SEEDS);
+  for (const seed of ["/", "/topics"]) {
+    const html = await (await fetch(`http://localhost:${port}${seed}`)).text();
+    for (const m of html.matchAll(/href="(\/(?:answers|topics)\/[a-z0-9-]+)"/g)) {
+      found.add(m[1]);
+    }
+  }
+  return [...found];
+}
 
 const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
   stdio: ["ignore", "pipe", "pipe"],
@@ -69,6 +75,8 @@ async function waitForServer(timeoutMs = 30_000) {
 
 try {
   await waitForServer();
+  const routes = await discover(PORT);
+  console.log(`Discovered ${routes.length} routes.`);
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
 

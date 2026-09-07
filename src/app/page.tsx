@@ -1,10 +1,12 @@
-import { allArticles } from "@/lib/content";
+import { allArticlesAsync } from "@/lib/content";
 import { ArticleCard } from "@/components/ArticleCard";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
 
-export default function Home() {
-  const articles = allArticles();
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const articles = await allArticlesAsync();
 
   return (
     <>

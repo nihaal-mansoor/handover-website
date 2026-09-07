@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { allArticles, allTopics } from "@/lib/content";
+import { allArticlesAsync, allTopicsAsync } from "@/lib/content";
 
 /** Side column: where to start, and what else exists. */
-export function RailRight() {
-  const start = allArticles().find((a) => a.sourceNote?.includes("Cornerstone")) ?? allArticles()[0];
-  const topics = allTopics();
+export async function RailRight() {
+  const all = await allArticlesAsync();
+  const start = all.find((a) => a.sourceNote?.includes("Cornerstone")) ?? all[0];
+  const topics = await allTopicsAsync();
 
   return (
     <aside className="rail-right">

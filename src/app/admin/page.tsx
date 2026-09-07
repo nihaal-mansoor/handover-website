@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { queueWithAuthors, isModerator, formatWhen } from "@/lib/queries";
 import { ModerateButtons } from "@/components/ModerateButtons";
@@ -15,7 +16,10 @@ export default async function AdminPage() {
 
   return (
     <div className="shell py-xl">
-      <h1 className="text-step-3">Moderation queue</h1>
+      <div className="flex flex-wrap items-center justify-between gap-s">
+        <h1 className="text-step-3">Moderation queue</h1>
+        <Link href="/admin/articles" className="btn btn-quiet">Articles</Link>
+      </div>
       <p className="meta mt-2xs mb-l">
         {total === 0
           ? "Nothing waiting."
