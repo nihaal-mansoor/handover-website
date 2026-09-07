@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { allArticlesAsync } from "@/lib/content";
 import { ArticleCard } from "@/components/ArticleCard";
 import { RailLeft } from "@/components/RailLeft";
@@ -42,10 +43,20 @@ export default async function SearchPage({
               <ArticleCard key={a.slug} article={a} />
             ))}
             {query && results.length === 0 && (
-              <p className="mt-m text-ink-2">
-                Nothing yet. If that is a question you want answered, send it over and
-                it may become the next one.
-              </p>
+              /* "Send it over" used to be the whole answer here, with nothing to
+                 click. A search that finds nothing is the most likely place to
+                 lose someone, so every route out of it is offered. */
+              <div className="mt-m text-ink-2">
+                <p>
+                  Nothing matches “{query}”. It may be worded differently here, or
+                  it may be something we have not written up yet.
+                </p>
+                <ul className="mt-m space-y-s">
+                  <li><Link href="/topics">Browse every topic</Link></li>
+                  <li><Link href="/forum/new">Ask it in the forum</Link>, where it will be visible straight away</li>
+                  <li><Link href="/">See the most recent articles</Link></li>
+                </ul>
+              </div>
             )}
           </div>
         </div>

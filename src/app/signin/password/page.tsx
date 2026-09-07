@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthForm } from "@/components/AuthForm";
+import { safeNext } from "@/lib/next-path";
 
 /**
  * Password sign-in, deliberately unlinked from the main page.
@@ -15,7 +16,10 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default function PasswordSignInPage() {
+export default async function PasswordSignInPage({
+  searchParams,
+}: { searchParams: Promise<{ next?: string }> }) {
+  const next = safeNext((await searchParams).next);
   return (
     <div className="col py-xl">
       <div className="mx-auto max-w-[24rem]">
@@ -24,7 +28,7 @@ export default function PasswordSignInPage() {
           Most people should <Link href="/signin">continue with Google</Link>. This
           page is a fallback.
         </p>
-        <AuthForm mode="signin" googleEnabled={false} />
+        <AuthForm next={next} mode="signin" googleEnabled={false} />
       </div>
     </div>
   );

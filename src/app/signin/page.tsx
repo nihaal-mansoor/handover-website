@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GoogleButton } from "@/components/GoogleButton";
+import { safeNext } from "@/lib/next-path";
 
 export const metadata: Metadata = { title: "Sign in", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-export default function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: { searchParams: Promise<{ next?: string }> }) {
+  const next = safeNext((await searchParams).next);
   const googleEnabled = Boolean(
     process.env["GOOGLE_CLIENT_ID"] && process.env["GOOGLE_CLIENT_SECRET"],
   );
@@ -19,11 +23,11 @@ export default function SignInPage() {
         </p>
 
         {googleEnabled ? (
-          <GoogleButton />
+          <GoogleButton next={next} />
         ) : (
           <p className="meta">
             Google sign-in is not configured.{" "}
-            <Link href="/signin/password">Use a password instead</Link>.
+            <Link href={next === "/" ? "/signin/password" : `/signin/password?next=${encodeURIComponent(next)}`}>Use a password instead</Link>.
           </p>
         )}
 

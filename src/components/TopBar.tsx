@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignInLink } from "@/components/SignInLink";
 import { getCurrentUser } from "@/lib/queries";
 import { SignOutButton } from "@/components/SignOutButton";
 import config from "../../site.config";
@@ -43,7 +44,7 @@ export async function TopBar() {
             </>
           ) : (
             <>
-              <Link href="/signin" className="meta no-underline hover:text-ink">Sign in</Link>
+              <SignInLink className="meta no-underline hover:text-ink">Sign in</SignInLink>
             </>
           )}
         </nav>

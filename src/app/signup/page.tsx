@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GoogleButton } from "@/components/GoogleButton";
+import { safeNext } from "@/lib/next-path";
 
 export const metadata: Metadata = { title: "Create an account", robots: { index: false } };
 
 export const dynamic = "force-dynamic";
 
-export default function SignUpPage() {
+export default async function SignUpPage({
+  searchParams,
+}: { searchParams: Promise<{ next?: string }> }) {
+  const next = safeNext((await searchParams).next);
   const googleEnabled = Boolean(process.env["GOOGLE_CLIENT_ID"] && process.env["GOOGLE_CLIENT_SECRET"]);
   return (
     <div className="col py-xl">
@@ -16,7 +20,7 @@ export default function SignUpPage() {
           So you can comment, post and vote in the forum.
         </p>
         {googleEnabled ? (
-          <GoogleButton />
+          <GoogleButton next={next} />
         ) : (
           <p className="meta">Google sign-in is not configured.</p>
         )}

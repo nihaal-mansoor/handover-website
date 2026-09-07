@@ -130,7 +130,7 @@ export async function createThread(
   title: string,
   body: string,
   category: string,
-): Promise<ActionResult> {
+): Promise<ActionResult & { slug?: string }> {
   const t = titleSchema.safeParse(title);
   if (!t.success) return { ok: false, message: t.error.issues[0]?.message ?? "Invalid title." };
 
@@ -142,9 +142,10 @@ export async function createThread(
   const titleScan = await scanSubmission(t.data);
   const ok = g.scan.ok && titleScan.ok;
 
+  const slug = `${slugify(t.data)}-${Math.random().toString(36).slice(2, 7)}`;
   await db!.insert(thread).values({
     id: crypto.randomUUID(),
-    slug: `${slugify(t.data)}-${Math.random().toString(36).slice(2, 7)}`,
+    slug,
     title: t.data,
     body: g.body,
     category,
@@ -156,8 +157,10 @@ export async function createThread(
   });
 
   revalidatePath("/forum");
+  // The slug goes back so the form can take the poster straight to the thread
+  // they just created, rather than leaving them on an empty form.
   return ok
-    ? { ok: true, message: POSTED }
+    ? { ok: true, message: POSTED, slug }
     : { ok: false, message: g.scan.message ?? titleScan.message ?? "That post cannot be published." };
 }
 

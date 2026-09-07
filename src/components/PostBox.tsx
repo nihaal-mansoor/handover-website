@@ -2,6 +2,7 @@
 
 import { useId, useState, useTransition } from "react";
 import Link from "next/link";
+import { SignInLink } from "@/components/SignInLink";
 import { useRouter } from "next/navigation";
 
 /**
@@ -36,13 +37,13 @@ export function PostBox({
     if (compact) {
       return (
         <p className="meta m-0">
-          <Link href="/signin">Sign in</Link> to reply.
+          <SignInLink>Sign in</SignInLink> to reply.
         </p>
       );
     }
     return (
       <p className="meta rounded-[6px] p-s" style={{ background: "var(--surface)" }}>
-        <Link href="/signin">Sign in</Link> or <Link href="/signup">create an account</Link> to
+        <SignInLink>Sign in</SignInLink> or <SignInLink route="/signup">create an account</SignInLink> to
         join the discussion. Reading needs no account.
       </p>
     );

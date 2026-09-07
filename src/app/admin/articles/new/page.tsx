@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "New article", robots: { index: false
 export const dynamic = "force-dynamic";
 
 export default async function NewArticle() {
-  if (!(await isModerator())) redirect("/signin");
+  if (!(await isModerator())) redirect("/signin?next=/admin/articles/new");
   return (
     <div className="shell py-xl">
       <p className="meta"><Link href="/admin/articles">Articles</Link></p>

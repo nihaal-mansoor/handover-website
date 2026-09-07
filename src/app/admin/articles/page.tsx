@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Articles", robots: { index: false } 
 export const dynamic = "force-dynamic";
 
 export default async function ArticlesAdmin() {
-  if (!(await isModerator())) redirect("/signin");
+  if (!(await isModerator())) redirect("/signin?next=/admin/articles");
   const rows = (await listArticles()) ?? [];
 
   return (

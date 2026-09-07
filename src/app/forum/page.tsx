@@ -4,6 +4,7 @@ import {
   approvedThreads, getCurrentUser, formatWhen, parseSort, myThreadVotes,
 } from "@/lib/queries";
 import { VoteBox } from "@/components/VoteBox";
+import { SignInLink } from "@/components/SignInLink";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
 
@@ -59,7 +60,7 @@ export default async function ForumPage({
               {account ? (
                 <Link href="/forum/new">Post the first thread</Link>
               ) : (
-                <><Link href="/signup">Create an account</Link> to post the first thread.</>
+                <><SignInLink route="/signup">Create an account</SignInLink> to post the first thread.</>
               )}
             </p>
           ) : (

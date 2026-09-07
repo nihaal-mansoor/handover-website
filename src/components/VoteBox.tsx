@@ -1,7 +1,8 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { signInHref } from "@/lib/next-path";
 import { castVote } from "@/lib/actions";
 
 /**
@@ -30,6 +31,9 @@ export function VoteBox({
   layout?: "column" | "row";
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const search = useSearchParams().toString();
+  const signin = () => router.push(signInHref(search ? `${pathname}?${search}` : pathname));
   const [, start] = useTransition();
   const [state, setState] = useOptimistic(
     { score, myVote },
@@ -43,7 +47,7 @@ export function VoteBox({
     start(async () => {
       setState(value);
       const res = await castVote(targetType, targetId, value, revalidate);
-      if (!res.ok && res.message === "Sign in to vote.") router.push("/signin");
+      if (!res.ok && res.message === "Sign in to vote.") signin();
       router.refresh();
     });
   }
@@ -57,7 +61,7 @@ export function VoteBox({
         aria-pressed={active}
         aria-label={dir === 1 ? "Upvote" : "Downvote"}
         data-active={active ? (dir === 1 ? "up" : "down") : undefined}
-        onClick={() => (signedIn ? send(dir) : router.push("/signin"))}
+        onClick={() => (signedIn ? send(dir) : signin())}
       >
         <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false">
           <path

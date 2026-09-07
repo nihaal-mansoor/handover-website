@@ -28,9 +28,13 @@ export function NewThreadForm() {
         start(async () => {
           const res = await createThread(title, body, category);
           setResult(res);
-          if (res.ok) {
+          if (res.ok && res.slug) {
+            // Straight to the thread. Clearing the form and saying "Posted" left
+            // the poster on a blank page with no way to reach what they wrote.
             setTitle(""); setBody("");
-            router.refresh();
+            router.push(`/forum/${res.slug}`);
+          } else if (res.ok) {
+            router.push("/forum");
           }
         });
       }}

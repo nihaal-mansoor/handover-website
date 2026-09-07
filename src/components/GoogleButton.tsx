@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 
-export function GoogleButton() {
+export function GoogleButton({ next = "/" }: { next?: string }) {
   const [busy, setBusy] = useState(false);
   return (
     <button
@@ -12,7 +12,7 @@ export function GoogleButton() {
       disabled={busy}
       onClick={() => {
         setBusy(true);
-        signIn.social({ provider: "google", callbackURL: "/" });
+        signIn.social({ provider: "google", callbackURL: next });
       }}
     >
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">

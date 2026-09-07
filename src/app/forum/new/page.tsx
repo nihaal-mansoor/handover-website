@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SignInLink } from "@/components/SignInLink";
 import { getCurrentUser } from "@/lib/queries";
 import { NewThreadForm } from "@/components/NewThreadForm";
 
@@ -20,8 +21,8 @@ export default async function NewThreadPage() {
         </div>
       ) : (
         <p className="mt-m text-ink-2">
-          <Link href="/signin">Sign in</Link> or{" "}
-          <Link href="/signup">create an account</Link> to post.
+          <SignInLink>Sign in</SignInLink> or{" "}
+          <SignInLink route="/signup">create an account</SignInLink> to post.
         </p>
       )}
     </div>

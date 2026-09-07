@@ -8,7 +8,16 @@ import { signIn, signUp } from "@/lib/auth-client";
  * One component for both modes. Google first, because it is the path most
  * people will take; email and password below it for everyone else.
  */
-export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; googleEnabled: boolean }) {
+export function AuthForm({
+  mode,
+  googleEnabled,
+  next = "/",
+}: {
+  mode: "signin" | "signup";
+  googleEnabled: boolean;
+  /** Where to land afterwards. Already validated by the page that renders this. */
+  next?: string;
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isSignUp = mode === "signup";
@@ -35,7 +44,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; g
     // A full navigation, not router.push. The session lives in a cookie the
     // server reads when it renders the layout, and a client-side push can win
     // the race and leave you on the sign-in page looking like nothing happened.
-    window.location.assign("/");
+    window.location.assign(next);
   }
 
   return (
@@ -46,7 +55,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; g
             type="button"
             className="btn btn-quiet w-full"
             disabled={busy}
-            onClick={() => signIn.social({ provider: "google", callbackURL: "/" })}
+            onClick={() => signIn.social({ provider: "google", callbackURL: next })}
           >
             <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="#4285F4" d="M22.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h6c-.3 1.4-1.1 2.6-2.3 3.4v2.8h3.7c2.2-2 3.4-5 3.4-8.1z"/>

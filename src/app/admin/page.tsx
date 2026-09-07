@@ -8,9 +8,9 @@ export const metadata: Metadata = { title: "Moderation queue", robots: { index: 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  if (!(await isModerator())) redirect("/signin");
+  if (!(await isModerator())) redirect("/signin?next=/admin");
   const queue = await queueWithAuthors();
-  if (!queue) redirect("/signin");
+  if (!queue) redirect("/signin?next=/admin");
 
   const total = queue.comments.length + queue.threads.length + queue.replies.length;
 
@@ -22,8 +22,8 @@ export default async function AdminPage() {
       </div>
       <p className="meta mt-2xs mb-l">
         {total === 0
-          ? "Nothing waiting."
-          : `${total} ${total === 1 ? "item" : "items"} waiting. Nothing here is publicly visible.`}
+          ? "Nothing waiting. Posts are published as soon as they pass the content checks, so this queue only fills with anything held over from before that changed."
+          : `${total} ${total === 1 ? "item" : "items"} waiting from before posts published immediately. Nothing here is publicly visible until you approve it.`}
       </p>
 
       {queue.threads.length > 0 && (
