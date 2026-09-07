@@ -367,6 +367,25 @@
 
   /* A quiet card in the corner. Full-width bars read as an interruption; this
      sits out of the way and does not shift the page. */
+  /* Fixed ratio so a row's height never depends on the image loading. */
+  .thumb {
+    width: 168px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  /* Article header image: full measure, same ratio, no layout shift. */
+  .featured {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
   .consent-card {
     position: fixed;
     z-index: 60;
@@ -381,7 +400,26 @@
     padding: var(--space-m);
   }
   @media (max-width: 34rem) {
-    .consent-card { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; width: auto; }
+    /* Fixed ratio so a row's height never depends on the image loading. */
+  .thumb {
+    width: 168px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  /* Article header image: full measure, same ratio, no layout shift. */
+  .featured {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  .consent-card { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; width: auto; }
   }
 
   .skip-link {

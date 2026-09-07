@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getArticleAsync, formatDate, topicSlug } from "@/lib/content";
 import { renderMarkdown } from "@/lib/markdown";
@@ -102,11 +103,14 @@ export default async function AnswerPage({
 
       {article.featuredImageUrl && (
         <figure className="mt-l mb-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={article.featuredImageUrl}
             alt={article.featuredImageAlt ?? ""}
-            style={{ width: "100%", borderRadius: 4 }}
+            width={1200}
+            height={630}
+            className="featured"
+            priority
+            sizes="(max-width: 44rem) 100vw, 680px"
           />
         </figure>
       )}

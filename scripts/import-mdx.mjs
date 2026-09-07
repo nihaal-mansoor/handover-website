@@ -24,7 +24,16 @@ for (const file of files) {
   const { data, content } = matter(await readFile(path.join(DIR, file), "utf8"));
 
   const [existing] = await sql`SELECT id, updated_at FROM article WHERE slug = ${slug}`;
-  if (existing?.updated_at) { skipped++; continue; }  // edited in the admin, leave alone
+  const frontUpdated = data.updated ? new Date(`${data.updated}T09:00:00Z`) : null;
+
+  // Skip only when the row was revised in the admin AFTER the date the file
+  // claims. Testing for any updated_at at all conflated "edited here" with
+  // "the article simply carries an updated date", which silently dropped the
+  // Updated badge from the trackers.
+  if (existing?.updated_at && (!frontUpdated || existing.updated_at > frontUpdated)) {
+    skipped++;
+    continue;
+  }
 
   const published = data.published ? new Date(`${data.published}T09:00:00Z`) : new Date();
   const values = {
@@ -38,7 +47,7 @@ for (const file of files) {
     meta_description: data.dek ?? null,
     source_note: data.sourceNote ?? null,
     published_at: published,
-    updated_at: null,
+    updated_at: frontUpdated,
   };
 
   await sql`
@@ -47,7 +56,8 @@ for (const file of files) {
       title = EXCLUDED.title, dek = EXCLUDED.dek, body = EXCLUDED.body,
       topic = EXCLUDED.topic, status = EXCLUDED.status,
       meta_description = EXCLUDED.meta_description,
-      source_note = EXCLUDED.source_note, published_at = EXCLUDED.published_at
+      source_note = EXCLUDED.source_note, published_at = EXCLUDED.published_at,
+      updated_at = EXCLUDED.updated_at
   `;
   created++;
 }
