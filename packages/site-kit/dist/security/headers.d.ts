@@ -21,6 +21,13 @@ export interface CspOptions {
      * 'strict-dynamic' ignores 'self', so a nonce CSP breaks plain <script src>.
      */
     readonly useNonce?: boolean;
+    /**
+     * Add 'strict-dynamic'. Off by default because it makes the browser ignore
+     * 'self' and every host in the allowlist, which blocks any script injected by
+     * a component that cannot attach a nonce — Vercel Analytics and Speed
+     * Insights among them. Turn it on only when every script is nonced.
+     */
+    readonly strictDynamic?: boolean;
 }
 /** Builds the CSP value. `{NONCE}` is substituted per response by middleware. */
 export declare function buildCsp(options?: CspOptions): string;

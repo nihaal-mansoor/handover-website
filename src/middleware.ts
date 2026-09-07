@@ -12,7 +12,15 @@ import { buildCsp, cspWithNonce } from "@uaeprop/site-kit/security";
  * stamps it on the scripts it emits; `strict-dynamic` then covers the chunks
  * those scripts load. (CLAUDE.md §4.3)
  */
-const CSP = buildCsp({ analytics: true, turnstile: true, useNonce: true });
+// strictDynamic stays off: Vercel Analytics and Speed Insights inject scripts
+// they cannot attach a nonce to, and strict-dynamic would make the browser
+// ignore 'self' and block them.
+const CSP = buildCsp({
+  analytics: true,
+  turnstile: true,
+  useNonce: true,
+  strictDynamic: false,
+});
 
 export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");

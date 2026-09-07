@@ -4,6 +4,9 @@ import config from "../../site.config";
 import { originOf } from "@uaeprop/site-kit";
 import { TopBar } from "@/components/TopBar";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Analytics } from "@/components/Analytics";
+import { ConsentBanner } from "@/components/ConsentBanner";
+import { headers } from "next/headers";
 
 const origin = originOf(config);
 
@@ -23,7 +26,11 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Middleware sets this per request; scripts need it under the nonce CSP.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const gaId = process.env["NEXT_PUBLIC_GA_ID"];
+
   return (
     <html lang="en-AE">
       <body>
@@ -31,6 +38,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TopBar />
         <main id="main">{children}</main>
         <SiteFooter />
+        <ConsentBanner />
+        <Analytics gaId={gaId} nonce={nonce} />
       </body>
     </html>
   );

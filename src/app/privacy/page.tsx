@@ -59,10 +59,18 @@ export default function PrivacyPage() {
 
       <h2 className="mt-l">Analytics</h2>
       <p>
-        If you consent, we use Google Analytics to count visits and Microsoft Clarity
-        to see which parts of an answer people actually read. Both load only after
-        you opt in. Decline and neither is ever requested. Neither is used for
-        advertising or to build a profile of you.
+        <strong>Only if you consent:</strong> Google Analytics, to count visits and
+        see which answers people find useful. It is not loaded, and no request is
+        made to it, unless you choose Allow. Decline and it is never requested. It
+        is not used for advertising or to build a profile of you, and you can change
+        your mind by clearing this site&rsquo;s data in your browser.
+      </p>
+      <p>
+        <strong>Always on:</strong> Vercel Analytics and Vercel Speed Insights, which
+        are provided by the company that hosts this site. They count page views and
+        measure how quickly pages load. They set no cookies, do not track you between
+        websites, and do not identify you. We use them to know whether the site is
+        fast enough and which pages are worth writing more about.
       </p>
 
       <h2 className="mt-l">How long we keep it</h2>

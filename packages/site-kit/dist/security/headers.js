@@ -7,8 +7,14 @@
 const ANALYTICS_SCRIPT = [
     "https://www.googletagmanager.com",
     "https://www.clarity.ms",
+    // Vercel Analytics and Speed Insights. Production serves these from the same
+    // origin under /_vercel/insights, but development and some configurations
+    // load them from this host instead.
+    "https://va.vercel-scripts.com",
 ];
 const ANALYTICS_CONNECT = [
+    "https://va.vercel-scripts.com",
+    "https://vitals.vercel-insights.com",
     "https://www.google-analytics.com",
     "https://analytics.google.com",
     "https://www.googletagmanager.com",
@@ -25,7 +31,14 @@ export function buildCsp(options = {}) {
     const useAnalytics = options.analytics !== false;
     const useTurnstile = options.turnstile !== false;
     const script = options.useNonce
-        ? ["'self'", "'nonce-{NONCE}'", "'strict-dynamic'", ...(options.scriptSrc ?? [])]
+        ? [
+            "'self'",
+            "'nonce-{NONCE}'",
+            ...(options.strictDynamic ? ["'strict-dynamic'"] : []),
+            ...(useAnalytics ? ANALYTICS_SCRIPT : []),
+            ...(useTurnstile ? TURNSTILE : []),
+            ...(options.scriptSrc ?? []),
+        ]
         : [
             "'self'",
             ...(useAnalytics ? ANALYTICS_SCRIPT : []),
