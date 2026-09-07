@@ -1,0 +1,124 @@
+---
+title: "Dubai property transactions, tracked"
+dek: "Registered sales, value and median price, updated each release. 1.77 million transactions back to 2000."
+topic: "Market data"
+published: "2026-09-07"
+updated: "2026-09-07"
+sourceNote: "LIVING PAGE. Refresh: download the DLD export, rerun data/transactions.py, update tables, bump `updated`. Check the streak and peak claims specifically."
+---
+
+This page tracks registered property transactions in Dubai and is updated as new
+data is published. It is a record, not a forecast.
+
+Latest data runs to **3 September 2026**.
+
+## Sales, year to date
+
+Every year cut to 3 September, so the partial year compares fairly.
+
+| Year | Sales | Total value | Median price |
+| --- | --- | --- | --- |
+| 2024 | 112,818 | AED 331.3bn | AED 1,550,000 |
+| 2025 | 139,601 | AED 448.4bn | AED 1,600,000 |
+| 2026 | 113,792 | AED 355.4bn | AED 1,422,450 |
+
+2026 sits within a percent of 2024 on volume. 2025 stands out as the peak year rather
+than 2026 standing out as a bad one.
+
+## Price per square metre
+
+Residential, median, full years except 2026.
+
+| Year | AED per sqm | Change | Sales in sample |
+| --- | --- | --- | --- |
+| 2019 | 10,370 | −5.0% | 31,661 |
+| 2020 | 9,785 | −5.6% | 27,218 |
+| 2021 | 10,888 | +11.3% | 49,815 |
+| 2022 | 13,129 | +20.6% | 83,050 |
+| 2023 | 14,957 | +13.9% | 116,268 |
+| 2024 | 16,475 | +10.1% | 164,539 |
+| 2025 | 17,870 | +8.5% | 190,886 |
+| 2026 | 18,422 | +3.1% | 101,431 |
+
+Growth has slowed in every year since 2022 without turning negative. Note also 2019
+and 2020: the index fell two years running, which is worth remembering whenever
+someone describes Dubai property as one-directional.
+
+## Off-plan share of sales
+
+| Year | Off-plan |
+| --- | --- |
+| 2021 | 39.4% |
+| 2022 | 44.4% |
+| 2023 | 51.3% |
+| 2024 | 60.2% |
+| 2025 | 62.5% |
+| 2026 | **68.5%** |
+
+More than two thirds of registered sales are now off-plan. This is the single biggest
+structural change in the dataset, and it pulls the median transaction price down
+independently of what any completed property is worth.
+
+## Mortgages per 100 sales
+
+| Year | Mortgages | |
+| --- | --- | --- |
+| 2018 | 43.2 | |
+| 2021 | 32.7 | |
+| 2022 | 20.4 | halved |
+| 2024 | 20.0 | |
+| 2025 | 20.0 | |
+| 2026 | **23.7** | rising again |
+
+Dubai is a cash market by the standards of most cities. The 2026 uptick is the first
+meaningful move in four years.
+
+## Price bands
+
+| Year | Below AED 1m | At or above AED 2m |
+| --- | --- | --- |
+| 2020 | 43.5% | 20.9% |
+| 2022 | 31.3% | 33.7% |
+| 2023 | 33.9% | **38.4%** |
+| 2024 | 30.3% | 37.4% |
+| 2025 | **27.8%** | 35.6% |
+| 2026 | 33.1% | 33.7% |
+
+The AED 2m line matters because it is the Golden Visa threshold. A third of the
+market clears it, down from a peak of 38.4% in 2023.
+
+## When people buy
+
+Average monthly sales, 2022 to 2025:
+
+| | Jan | Feb | Mar | Apr | May | Jun |
+| --- | --- | --- | --- | --- | --- | --- |
+| Sales | 8,909 | 9,590 | 10,747 | 9,622 | 11,800 | 10,930 |
+
+| | Jul | Aug | Sep | Oct | Nov | Dec |
+| --- | --- | --- | --- | --- | --- | --- |
+| Sales | 12,238 | 12,525 | 13,741 | **13,744** | 12,547 | 12,308 |
+
+October is the busiest month and January the quietest, a **54% difference**. If you
+are buying rather than selling, the quiet months are where the negotiating room is.
+
+## What this data is and is not
+
+- **Registered transactions**, not asking prices. It is what actually completed, and
+  it lags the market by the time registration takes.
+- **Medians, Dubai-wide.** Your building is not the median.
+- **A falling median is not a discount.** Price per square metre and median
+  transaction price have moved in opposite directions during 2026, because the mix of
+  what sells has changed.
+- **2026 is partial**, to 3 September. Every comparison here is cut to the same date.
+
+## Method
+
+Dubai Land Department registered transactions, downloaded 4 September 2026:
+1,771,170 records from 2000 to 3 September 2026, after excluding 5,760 rows with
+impossible dates, one of them recorded in the year 1416.
+
+Price-per-square-metre figures are residential only and clipped to 500–200,000 AED
+per sqm. Figures are produced by a script kept with this site.
+
+Updated as new data is published.
