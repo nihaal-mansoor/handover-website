@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, signUp } from "@/lib/auth-client";
 
@@ -10,7 +9,6 @@ import { signIn, signUp } from "@/lib/auth-client";
  * people will take; email and password below it for everyone else.
  */
 export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; googleEnabled: boolean }) {
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isSignUp = mode === "signup";
@@ -34,8 +32,10 @@ export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; g
       setBusy(false);
       return;
     }
-    router.push("/");
-    router.refresh();
+    // A full navigation, not router.push. The session lives in a cookie the
+    // server reads when it renders the layout, and a client-side push can win
+    // the race and leave you on the sign-in page looking like nothing happened.
+    window.location.assign("/");
   }
 
   return (
