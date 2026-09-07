@@ -6,10 +6,17 @@
 export function defineSiteConfig(config) {
     return config;
 }
-/** Portfolio-wide contact defaults. A site may override either. */
+/**
+ * Portfolio-wide contact defaults.
+ *
+ * Deliberately blank. These repositories are public, so a personal address or
+ * number must never be committed here. Set real values per site in that site's
+ * environment, and prefer a role address on the site's own domain over a
+ * personal one.
+ */
 export const DEFAULT_CONTACT = {
-    whatsapp: "+971527276585",
-    email: "nihaal.mansoor@outlook.com",
+    whatsapp: "",
+    email: "",
 };
 /** Canonical origin for a site, no trailing slash. */
 export function originOf(config) {

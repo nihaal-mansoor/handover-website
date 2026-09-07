@@ -7,7 +7,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { scanSubmission } from "@/lib/moderation";
 import { db, dbEnabled } from "@/db";
-import { comment, reply, thread, user } from "@/db/schema";
+import { comment, reply, subscriber, thread, user } from "@/db/schema";
 
 /**
  * Every write goes through here. The order is deliberate: identity, then shape,
@@ -231,4 +231,46 @@ export async function pendingQueue() {
     db.select().from(reply).where(eq(reply.status, "pending")).orderBy(desc(reply.createdAt)).limit(50),
   ]);
   return { comments, threads, replies };
+}
+
+/* ---------- newsletter ---------- */
+
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .max(254)
+  .email("Enter a valid email address.");
+
+/**
+ * Newsletter signup. Deliberately the lightest write on the site: no account,
+ * no moderation, one field. The goal at this stage is reach, not leads.
+ */
+export async function subscribe(email: string, sourcePage: string): Promise<ActionResult> {
+  if (!dbEnabled || !db) {
+    return { ok: false, message: "Sign-up is temporarily unavailable. Please try again later." };
+  }
+
+  const parsed = emailSchema.safeParse(email);
+  if (!parsed.success) {
+    return { ok: false, message: parsed.error.issues[0]?.message ?? "Enter a valid email address." };
+  }
+
+  try {
+    await db
+      .insert(subscriber)
+      .values({
+        id: crypto.randomUUID(),
+        email: parsed.data,
+        sourcePage: sourcePage.slice(0, 300),
+        ipAddress: await clientIp(),
+      })
+      // Already subscribed is not an error worth showing. Say the same thing
+      // either way, which also avoids confirming whether an address is on the list.
+      .onConflictDoNothing({ target: subscriber.email });
+    return { ok: true, message: "Thanks. You will get an email when something new goes up." };
+  } catch (err) {
+    console.error("[subscribe] failed:", err instanceof Error ? err.message : err);
+    return { ok: false, message: "Something went wrong. Please try again." };
+  }
 }

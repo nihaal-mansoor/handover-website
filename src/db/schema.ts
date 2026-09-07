@@ -153,3 +153,20 @@ export const reply = pgTable(
     index("reply_status_idx").on(t.status, t.createdAt),
   ],
 );
+
+/* ---------- newsletter ---------- */
+
+export const subscriber = pgTable(
+  "subscriber",
+  {
+    id: text("id").primaryKey(),
+    email: text("email").notNull().unique(),
+    /** Which page they subscribed from, so we know what earns signups. */
+    sourcePage: text("source_page"),
+    /** Set when they click the unsubscribe link. Rows are kept, not deleted. */
+    unsubscribedAt: timestamp("unsubscribed_at"),
+    ipAddress: text("ip_address"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [index("subscriber_created_idx").on(t.createdAt)],
+);

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import config from "../../../site.config";
 import { CONSENT_TEXT } from "@uaeprop/site-kit";
 
 export const metadata: Metadata = {
@@ -75,10 +74,12 @@ export default function PrivacyPage() {
 
       <h2 className="mt-l">How long we keep it</h2>
       <p>
-        Enquiries are deleted 24 months after they are submitted. To have yours
+        Anything you send is deleted 24 months after submission. To have yours
         removed sooner, email{" "}
-        <a href={`mailto:${config.contact.email}`}>{config.contact.email}</a>. You do
-        not have to give a reason, and we will confirm when it is done.
+        <a href="mailto:privacy@dubairealestateadvice.com">
+          privacy@dubairealestateadvice.com
+        </a>
+        . You do not have to give a reason, and we will confirm when it is done.
       </p>
 
       <h2 className="mt-l">Your rights</h2>

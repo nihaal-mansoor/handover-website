@@ -2,15 +2,10 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/queries";
 import { SignOutButton } from "@/components/SignOutButton";
 import config from "../../site.config";
-import { whatsappUrl } from "@uaeprop/site-kit/leads";
 
 /** Full-width, sticky, quiet. Search posts to /search so it works without JS. */
 export async function TopBar() {
   const account = await getCurrentUser();
-  const wa = whatsappUrl(config, {
-    message: `Hi, I'm reading ${config.brand}. I have a question about buying in Dubai.`,
-  });
-
   return (
     <header className="sticky top-0 z-50 border-b border-rule bg-[var(--paper)]">
       <div className="shell flex items-center gap-s py-xs">
@@ -49,9 +44,6 @@ export async function TopBar() {
           ) : (
             <>
               <Link href="/signin" className="meta no-underline hover:text-ink">Sign in</Link>
-              <a href={wa} rel="noopener noreferrer" target="_blank" className="btn shrink-0">
-                Ask a question
-              </a>
             </>
           )}
         </nav>
