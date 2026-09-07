@@ -1,0 +1,451 @@
+{
+  "source": "Dubai Land Department transaction records",
+  "downloaded": "2026-09-04",
+  "rows_after_filtering": 1771170,
+  "coverage": {
+    "from": "2000-01-03",
+    "to": "2026-09-03"
+  },
+  "caveats": [
+    "2026 is a partial year to 3 September and is never compared to a full year",
+    "5,760 source rows carry dates before 2000 and are excluded",
+    "price per sqm clipped to 500-200,000 AED to drop outliers"
+  ],
+  "year_to_date_3_september": {
+    "2024": {
+      "sales": 112818,
+      "value_aed_bn": 331.3,
+      "median_price_aed": 1550000.0
+    },
+    "2025": {
+      "sales": 139601,
+      "value_aed_bn": 448.4,
+      "median_price_aed": 1600000.0
+    },
+    "2026": {
+      "sales": 113792,
+      "value_aed_bn": 355.4,
+      "median_price_aed": 1422450.0
+    }
+  },
+  "median_price_per_sqm_by_year": {
+    "2015": {
+      "median_aed_sqm": 10171.0,
+      "sales": 34502,
+      "yoy_pct": -5.6
+    },
+    "2016": {
+      "median_aed_sqm": 10424.0,
+      "sales": 33106,
+      "yoy_pct": 2.5
+    },
+    "2017": {
+      "median_aed_sqm": 10540.0,
+      "sales": 38161,
+      "yoy_pct": 1.1
+    },
+    "2018": {
+      "median_aed_sqm": 10921.0,
+      "sales": 25943,
+      "yoy_pct": 3.6
+    },
+    "2019": {
+      "median_aed_sqm": 10370.0,
+      "sales": 31661,
+      "yoy_pct": -5.0
+    },
+    "2020": {
+      "median_aed_sqm": 9785.0,
+      "sales": 27218,
+      "yoy_pct": -5.6
+    },
+    "2021": {
+      "median_aed_sqm": 10888.0,
+      "sales": 49815,
+      "yoy_pct": 11.3
+    },
+    "2022": {
+      "median_aed_sqm": 13129.0,
+      "sales": 83050,
+      "yoy_pct": 20.6
+    },
+    "2023": {
+      "median_aed_sqm": 14957.0,
+      "sales": 116268,
+      "yoy_pct": 13.9
+    },
+    "2024": {
+      "median_aed_sqm": 16475.0,
+      "sales": 164539,
+      "yoy_pct": 10.1
+    },
+    "2025": {
+      "median_aed_sqm": 17870.0,
+      "sales": 190886,
+      "yoy_pct": 8.5
+    },
+    "2026": {
+      "median_aed_sqm": 18422.0,
+      "sales": 101431,
+      "yoy_pct": 3.1
+    }
+  },
+  "off_plan_share_pct_by_year": {
+    "2015": 32.3,
+    "2016": 40.0,
+    "2017": 48.5,
+    "2018": 47.6,
+    "2019": 55.0,
+    "2020": 44.2,
+    "2021": 39.4,
+    "2022": 44.4,
+    "2023": 51.3,
+    "2024": 60.2,
+    "2025": 62.5,
+    "2026": 68.5
+  },
+  "villa_vs_apartment_aed_sqm": {
+    "2020": {
+      "apartment": 10971.0,
+      "villa": 7420.0
+    },
+    "2021": {
+      "apartment": 12172.0,
+      "villa": 8597.0
+    },
+    "2022": {
+      "apartment": 15938.0,
+      "villa": 9022.0
+    },
+    "2023": {
+      "apartment": 16181.0,
+      "villa": 11328.0
+    },
+    "2024": {
+      "apartment": 17461.0,
+      "villa": 14286.0
+    },
+    "2025": {
+      "apartment": 18528.0,
+      "villa": 15792.0
+    },
+    "2026": {
+      "apartment": 18493.0,
+      "villa": 18511.0
+    }
+  },
+  "by_bedroom_count": {
+    "Studio": {
+      "aed_sqm_2024": 16950.0,
+      "aed_sqm_2026": 18755.0,
+      "change_pct": 10.6
+    },
+    "1 B/R": {
+      "aed_sqm_2024": 16428.0,
+      "aed_sqm_2026": 17611.0,
+      "change_pct": 7.2
+    },
+    "2 B/R": {
+      "aed_sqm_2024": 19112.0,
+      "aed_sqm_2026": 18769.0,
+      "change_pct": -1.8
+    },
+    "3 B/R": {
+      "aed_sqm_2024": 16956.0,
+      "aed_sqm_2026": 20372.0,
+      "change_pct": 20.1
+    },
+    "4 B/R": {
+      "aed_sqm_2024": 14016.0,
+      "aed_sqm_2026": 19610.0,
+      "change_pct": 39.9
+    }
+  },
+  "by_nearest_metro": {
+    "Al Sufouh": {
+      "sales": 2111,
+      "median_aed_sqm": 29278.0
+    },
+    "Al Ghubaiba Metro Station": {
+      "sales": 5079,
+      "median_aed_sqm": 27897.0
+    },
+    "Palm Deira Metro Stations": {
+      "sales": 2115,
+      "median_aed_sqm": 26694.0
+    },
+    "Al Jafiliya Metro Station": {
+      "sales": 5513,
+      "median_aed_sqm": 22655.0
+    },
+    "Financial Centre": {
+      "sales": 3459,
+      "median_aed_sqm": 22378.0
+    },
+    "Creek Metro Station": {
+      "sales": 24134,
+      "median_aed_sqm": 21529.0
+    },
+    "Trade Centre Metro Station": {
+      "sales": 6202,
+      "median_aed_sqm": 20593.0
+    },
+    "Business Bay Metro Station": {
+      "sales": 65405,
+      "median_aed_sqm": 19871.0
+    },
+    "Buj Khalifa Dubai Mall Metro Station": {
+      "sales": 85250,
+      "median_aed_sqm": 19591.0
+    },
+    "Al Jadaf Metro Station": {
+      "sales": 6693,
+      "median_aed_sqm": 17139.0
+    },
+    "Marina Towers": {
+      "sales": 13136,
+      "median_aed_sqm": 16215.0
+    },
+    "First Abu Dhabi Bank Metro Station": {
+      "sales": 35502,
+      "median_aed_sqm": 16070.0
+    },
+    "Palm Jumeirah": {
+      "sales": 17456,
+      "median_aed_sqm": 15836.0
+    },
+    "Healthcare City Metro Station": {
+      "sales": 2364,
+      "median_aed_sqm": 15428.0
+    },
+    "Dubai Marina": {
+      "sales": 8117,
+      "median_aed_sqm": 14370.0
+    },
+    "ENERGY Metro Station": {
+      "sales": 4999,
+      "median_aed_sqm": 14202.0
+    },
+    "UAE Exchange Metro Station": {
+      "sales": 5163,
+      "median_aed_sqm": 14099.0
+    },
+    "Mina Seyahi": {
+      "sales": 16957,
+      "median_aed_sqm": 13905.0
+    },
+    "Marina Mall Metro Station": {
+      "sales": 8923,
+      "median_aed_sqm": 13781.0
+    },
+    "Jumeirah Beach Resdency": {
+      "sales": 18838,
+      "median_aed_sqm": 13774.0
+    },
+    "Jumeirah Beach Residency": {
+      "sales": 21691,
+      "median_aed_sqm": 13766.0
+    },
+    "Sharaf Dg Metro Station": {
+      "sales": 38541,
+      "median_aed_sqm": 12338.0
+    },
+    "Dubai Internet City": {
+      "sales": 81383,
+      "median_aed_sqm": 12066.0
+    },
+    "Jumeirah Lakes Towers": {
+      "sales": 34082,
+      "median_aed_sqm": 11979.0
+    },
+    "Nakheel Metro Station": {
+      "sales": 71219,
+      "median_aed_sqm": 10957.0
+    },
+    "Ibn Battuta Metro Station": {
+      "sales": 15834,
+      "median_aed_sqm": 10945.0
+    },
+    "Damac Properties": {
+      "sales": 49254,
+      "median_aed_sqm": 10618.0
+    },
+    "Noor Bank Metro Station": {
+      "sales": 9803,
+      "median_aed_sqm": 9796.0
+    },
+    "Harbour Tower": {
+      "sales": 21136,
+      "median_aed_sqm": 9376.0
+    },
+    "DANUBE Metro Station": {
+      "sales": 4254,
+      "median_aed_sqm": 7509.0
+    },
+    "Rashidiya Metro Station": {
+      "sales": 57451,
+      "median_aed_sqm": 6146.0
+    },
+    "Etisalat Metro Station": {
+      "sales": 2783,
+      "median_aed_sqm": 2718.0
+    }
+  },
+  "top_areas_by_volume": {
+    "Marsa Dubai": {
+      "sales": 100384,
+      "median_price_aed": 1688995.0,
+      "median_aed_sqm": 15124.0
+    },
+    "Al Barsha South Fourth": {
+      "sales": 87327,
+      "median_price_aed": 809437.0,
+      "median_aed_sqm": 12096.0
+    },
+    "Business Bay": {
+      "sales": 66540,
+      "median_price_aed": 1405000.0,
+      "median_aed_sqm": 19837.0
+    },
+    "Wadi Al Safa 5": {
+      "sales": 48576,
+      "median_price_aed": 1152357.0,
+      "median_aed_sqm": 11304.0
+    },
+    "Burj Khalifa": {
+      "sales": 46653,
+      "median_price_aed": 2200000.0,
+      "median_aed_sqm": 22271.0
+    },
+    "Al Warsan First": {
+      "sales": 44181,
+      "median_price_aed": 350000.0,
+      "median_aed_sqm": 6045.0
+    },
+    "Al Thanyah Fifth": {
+      "sales": 42573,
+      "median_price_aed": 1000000.0,
+      "median_aed_sqm": 11149.0
+    },
+    "Madinat Al Mataar": {
+      "sales": 40341,
+      "median_price_aed": 1150000.0,
+      "median_aed_sqm": 15469.0
+    },
+    "Jabal Ali First": {
+      "sales": 39439,
+      "median_price_aed": 939000.0,
+      "median_aed_sqm": 10952.0
+    },
+    "Hadaeq Sheikh Mohammed Bin Rashid": {
+      "sales": 34460,
+      "median_price_aed": 2056018.0,
+      "median_aed_sqm": 19524.0
+    },
+    "Al Merkadh": {
+      "sales": 33889,
+      "median_price_aed": 1200000.0,
+      "median_aed_sqm": 18839.0
+    },
+    "Al Hebiah Fourth": {
+      "sales": 33010,
+      "median_price_aed": 715000.0,
+      "median_aed_sqm": 10112.0
+    },
+    "Al Hebiah Fifth": {
+      "sales": 25890,
+      "median_price_aed": 1666000.0,
+      "median_aed_sqm": 12271.0
+    },
+    "Al Khairan First": {
+      "sales": 25087,
+      "median_price_aed": 2075000.0,
+      "median_aed_sqm": 22119.0
+    },
+    "Palm Jumeirah": {
+      "sales": 24139,
+      "median_price_aed": 2800000.0,
+      "median_aed_sqm": 17941.0
+    },
+    "Me'Aisem First": {
+      "sales": 24122,
+      "median_price_aed": 697986.0,
+      "median_aed_sqm": 11728.0
+    },
+    "Nadd Hessa": {
+      "sales": 23945,
+      "median_price_aed": 600000.0,
+      "median_aed_sqm": 8921.0
+    },
+    "Al Barshaa South Third": {
+      "sales": 23873,
+      "median_price_aed": 736213.0,
+      "median_aed_sqm": 13058.0
+    },
+    "Wadi Al Safa 3": {
+      "sales": 20934,
+      "median_price_aed": 1184000.0,
+      "median_aed_sqm": 14707.0
+    },
+    "Al Thanyah Third": {
+      "sales": 19482,
+      "median_price_aed": 1308388.0,
+      "median_aed_sqm": 12231.0
+    }
+  },
+  "threshold_shares_by_year": {
+    "2020": {
+      "at_or_above_2m_pct": 20.9,
+      "below_1m_pct": 43.5
+    },
+    "2021": {
+      "at_or_above_2m_pct": 30.3,
+      "below_1m_pct": 36.3
+    },
+    "2022": {
+      "at_or_above_2m_pct": 33.7,
+      "below_1m_pct": 31.3
+    },
+    "2023": {
+      "at_or_above_2m_pct": 38.4,
+      "below_1m_pct": 33.9
+    },
+    "2024": {
+      "at_or_above_2m_pct": 37.4,
+      "below_1m_pct": 30.3
+    },
+    "2025": {
+      "at_or_above_2m_pct": 35.6,
+      "below_1m_pct": 27.8
+    },
+    "2026": {
+      "at_or_above_2m_pct": 33.7,
+      "below_1m_pct": 33.1
+    }
+  },
+  "mortgages_per_100_sales": {
+    "2018": 43.2,
+    "2019": 33.6,
+    "2020": 38.7,
+    "2021": 32.7,
+    "2022": 20.4,
+    "2023": 19.6,
+    "2024": 20.0,
+    "2025": 20.0,
+    "2026": 23.7
+  },
+  "average_sales_by_month_2022_2025": {
+    "1": 8909,
+    "2": 9590,
+    "3": 10747,
+    "4": 9622,
+    "5": 11800,
+    "6": 10930,
+    "7": 12238,
+    "8": 12525,
+    "9": 13741,
+    "10": 13744,
+    "11": 12547,
+    "12": 12308
+  }
+}

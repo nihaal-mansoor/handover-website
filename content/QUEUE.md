@@ -139,9 +139,8 @@ Still available from the same data:
 | E4 | The 2020 dip. The index fell below its 2019 base and did not recover until 2021, which is a useful counterweight to "costs only go up" |
 | E5 | A running quarterly cost tracker, updated each release. Cheap to maintain once the script exists, and the sort of page that earns links |
 
-Not yet held: DLD transaction data, rental index data, supply and completion data.
-Those would unlock B1 to B7 in the market cluster. Worth downloading from the same
-portal.
+DLD transaction data arrived 4 Sep 2026 — see the transaction section at the end.
+Still not held: supply and completion pipeline, building permits.
 
 
 ---
@@ -188,5 +187,82 @@ Still available from the same files:
 | F3 | Yield compression: prices and rents on different bases, so it needs care, but the direction is arguable from 2024 onward |
 | F4 | Hotel rooms as a case study in why demand for a service does not imply appreciation in the asset |
 
-Still not held: DLD transaction volumes, completions and supply pipeline, building
-permits. Those remain the gap.
+DLD transaction data arrived 4 Sep 2026. Still missing: completions and supply
+pipeline, building permits.
+
+
+---
+
+# DLD transaction data — what we can write
+
+1.77M registered transactions, 2000 to 3 Sep 2026. Every figure below is from
+`data/transactions.py` → `data/transactions.json`, reproducible from the raw export.
+
+## The headline: the market turned in 2026
+
+Like for like, 1 January to 3 September:
+
+| | Sales | Value | Median price |
+|---|---|---|---|
+| 2024 | 112,818 | AED 331.3bn | 1,550,000 |
+| 2025 | 139,601 | AED 448.4bn | 1,600,000 |
+| **2026** | **113,792** | **AED 355.4bn** | **1,422,450** |
+
+Volume −18.5% on 2025, value −20.7%, median price −11.1%. **2026 is back at 2024
+volumes**, which is the fairer way to say it: 2025 was the peak, not a new normal.
+
+Price per sqm growth has decelerated every year since 2022: +20%, +14%, +10%, +8%,
++3%. It has not gone negative.
+
+## Article backlog
+
+### G. Living trackers, refreshed each release
+
+| # | Title | The number |
+|---|---|---|
+| G1 | Dubai property transactions, tracked | Volume, value and median, year to date, updated monthly |
+| G2 | Has the Dubai market turned? | The like-for-like table above. The most link-worthy page we could publish |
+
+### H. Structural shifts
+
+| # | Angle | The finding |
+|---|---|---|
+| H1 | Off-plan is now more than two thirds of every sale | 32.3% in 2015 → 62.5% in 2025 → **68.5% in 2026** |
+| H2 | Villas have caught up with apartments per square metre | 2020: villa 7,420 vs apartment 10,971, villas **32% cheaper**. 2026: 18,511 vs 18,493, **level**. Villa AED/sqm +149%, apartments +69% |
+| H3 | Dubai is a cash market, and mortgages are creeping back | Mortgages per 100 sales: 43 (2018) → 20 (2022–25) → **23.7 (2026)** |
+| H4 | Big homes rose, mid-size did not | 2024→2026 AED/sqm: 4-bed **+39.9%**, 3-bed **+20.1%**, studio +10.6%, 1-bed +7.1%, 2-bed **−1.8%** |
+
+### I. Place
+
+| # | Angle | The finding |
+|---|---|---|
+| I1 | What your nearest metro station says about the price | Al Sufouh 29,278 AED/sqm against Etisalat 2,713. A **10.8x spread** across 32 stations with enough volume to rank |
+| I2 | Dubai's communities ranked by price per sqm | 258 areas. Burj Khalifa 22,267, Business Bay 19,833, Al Warsan First 6,044 |
+| I3 | Where the transactions actually happen | Marsa Dubai 100,485 sales, Al Barsha South Fourth 87,352, Business Bay 66,561 |
+| I4 | The most transacted buildings in Dubai | Seven City JLT 3,560; Princess Tower 2,410; Burj Khalifa 2,335 at a median of AED 4.5m |
+
+### J. Decisions a reader is actually making
+
+| # | Angle | The finding |
+|---|---|---|
+| J1 | How much of the market clears the AED 2m Golden Visa threshold | Peaked at **38.4% in 2023**, now 33.7%. Pairs directly with the Golden Visa cluster |
+| J2 | Is Dubai getting cheaper to buy into? | Sales under AED 1m: 43.5% (2020) → 27.8% (2025) → **33.1% (2026)**. Affordability improved this year |
+| J3 | The cheapest month to buy | January averages 8,909 sales against 13,744 in October. A **54% swing**, and the quiet months are where negotiating room is |
+| J4 | How to price-check any Dubai property yourself | Method piece using the public record. Teaches a skill, needs no opinion, earns links |
+
+### K. Tools, larger build
+
+| # | Idea |
+|---|---|
+| K1 | Area price lookup: pick a community, see median AED/sqm and how it moved |
+| K2 | Building-level history across 5,025 buildings |
+| K3 | "Is this price fair?" — enter area, size and bedrooms, get the distribution |
+
+## Do not publish without care
+
+- **Parking looks like a 2.2x price effect (18,342 against 8,242 AED/sqm) and almost
+  certainly is not.** Only 7,252 unit sales record no parking against 383,562 with;
+  it is a different property mix, not the value of a space. Left out deliberately.
+- **2026 is partial**, to 3 September. Only ever compare it like for like.
+- **Metro proximity is correlation.** Al Sufouh is expensive because of where it is,
+  not because of the station.
