@@ -22,7 +22,15 @@ export const auth = betterAuth({
     },
   }),
 
-  secret: process.env["BETTER_AUTH_SECRET"] ?? "",
+  // better-auth throws when the secret is missing, and that error propagates
+  // out of the layout and 500s every page. A generated fallback keeps the site
+  // readable; sessions signed with it simply do not survive a redeploy.
+  secret:
+    process.env["BETTER_AUTH_SECRET"] ||
+    (() => {
+      console.error("[auth] BETTER_AUTH_SECRET is not set. Sessions will not persist.");
+      return crypto.randomUUID() + crypto.randomUUID();
+    })(),
   baseURL: process.env["BETTER_AUTH_URL"] ?? "http://localhost:4330",
 
   emailAndPassword: {

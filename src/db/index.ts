@@ -29,7 +29,18 @@ function makeClient() {
     }
     return null;
   }
-  return globalForDb.__sql ?? postgres(url, { max: 10, onnotice: () => {} });
+  return (
+    globalForDb.__sql ??
+    postgres(url, {
+      max: 10,
+      onnotice: () => {},
+      // Without these an unreachable host holds the request open until the
+      // serverless function times out, which surfaces as a 500 rather than
+      // falling back to the MDX content.
+      connect_timeout: 5,
+      idle_timeout: 20,
+    })
+  );
 }
 
 const client = makeClient();
