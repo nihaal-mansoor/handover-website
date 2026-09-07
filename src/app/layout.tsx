@@ -5,7 +5,7 @@ import { originOf } from "@uaeprop/site-kit";
 import { TopBar } from "@/components/TopBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Analytics } from "@/components/Analytics";
-import { ConsentBanner } from "@/components/ConsentBanner";
+import { CookieConsent } from "@/components/CookieConsent";
 import { headers } from "next/headers";
 
 const origin = originOf(config);
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <TopBar />
         <main id="main">{children}</main>
         <SiteFooter />
-        <ConsentBanner />
+        <CookieConsent />
         <Analytics gaId={gaId} nonce={nonce} />
       </body>
     </html>

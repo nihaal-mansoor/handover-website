@@ -20,7 +20,7 @@ export function Analytics({ gaId, nonce }: { gaId?: string; nonce?: string }) {
   const [granted, setGranted] = useState(false);
 
   useEffect(() => {
-    const sync = () => setGranted(readConsent() === "granted");
+    const sync = () => setGranted(readConsent()?.analytics === true);
     sync();
     window.addEventListener("handover:consent", sync);
     return () => window.removeEventListener("handover:consent", sync);

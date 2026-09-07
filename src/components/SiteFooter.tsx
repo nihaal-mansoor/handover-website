@@ -2,6 +2,7 @@ import Link from "next/link";
 import config from "../../site.config";
 import { disclaimer } from "@uaeprop/site-kit";
 import { Subscribe } from "@/components/Subscribe";
+import { CookieSettingsLink } from "@/components/CookieSettingsLink";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -27,6 +28,7 @@ export function SiteFooter() {
             <li><Link href="/privacy" className="meta">Privacy</Link></li>
             <li><Link href="/terms" className="meta">Terms</Link></li>
             <li><Link href="/forum" className="meta">Forum</Link></li>
+            <li><CookieSettingsLink /></li>
           </ul>
         </nav>
       </div>

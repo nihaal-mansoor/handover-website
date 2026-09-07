@@ -365,6 +365,25 @@
     flex: none;
   }
 
+  /* A quiet card in the corner. Full-width bars read as an interruption; this
+     sits out of the way and does not shift the page. */
+  .consent-card {
+    position: fixed;
+    z-index: 60;
+    left: var(--gutter);
+    bottom: var(--gutter);
+    width: min(26rem, calc(100vw - 2 * var(--gutter)));
+    max-height: calc(100vh - 2 * var(--gutter));
+    overflow-y: auto;
+    background: var(--paper);
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    padding: var(--space-m);
+  }
+  @media (max-width: 34rem) {
+    .consent-card { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; width: auto; }
+  }
+
   .skip-link {
     position: absolute; left: -9999px; top: 0;
     background: var(--ink); color: var(--paper);
