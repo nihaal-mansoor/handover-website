@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { AuthForm } from "@/components/AuthForm";
+import Link from "next/link";
+import { GoogleButton } from "@/components/GoogleButton";
 
 export const metadata: Metadata = { title: "Create an account", robots: { index: false } };
+
+export const dynamic = "force-dynamic";
 
 export default function SignUpPage() {
   const googleEnabled = Boolean(process.env["GOOGLE_CLIENT_ID"] && process.env["GOOGLE_CLIENT_SECRET"]);
@@ -12,7 +15,15 @@ export default function SignUpPage() {
         <p className="meta mt-2xs mb-l">
           So you can comment and post in the forum. Posts are reviewed before they appear.
         </p>
-        <AuthForm mode="signup" googleEnabled={googleEnabled} />
+        {googleEnabled ? (
+          <GoogleButton />
+        ) : (
+          <p className="meta">Google sign-in is not configured.</p>
+        )}
+        <p className="meta mt-l">
+          By continuing you agree to our <Link href="/terms">terms</Link> and{" "}
+          <Link href="/privacy">privacy policy</Link>.
+        </p>
       </div>
     </div>
   );

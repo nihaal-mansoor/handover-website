@@ -53,6 +53,17 @@ export const auth = betterAuth({
     },
   },
 
+  account: {
+    accountLinking: {
+      // Link a Google sign-in to an existing account with the same address.
+      // Without this, signing in with Google creates a second user and the
+      // original account's role — including admin — is left behind.
+      enabled: true,
+      // Safe to trust: Google verifies email ownership before we see it.
+      trustedProviders: ["google"],
+    },
+  },
+
   session: {
     expiresIn: 60 * 60 * 24 * 30,
     updateAge: 60 * 60 * 24,

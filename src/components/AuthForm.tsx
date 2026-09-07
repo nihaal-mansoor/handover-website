@@ -90,11 +90,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "signin" | "signup"; g
       </form>
 
       <p className="meta mt-m text-center">
-        {isSignUp ? (
-          <>Already have an account? <Link href="/signin">Sign in</Link></>
-        ) : (
-          <>No account? <Link href="/signup">Create one</Link></>
-        )}
+        <Link href="/signin">Back to Google sign-in</Link>
       </p>
     </div>
   );
