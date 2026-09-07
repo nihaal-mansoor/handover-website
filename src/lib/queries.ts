@@ -74,7 +74,36 @@ export function parseSort(v: string | undefined): Sort {
  */
 const HOT = sql`(${thread.score} - extract(epoch from (now() - ${thread.createdAt})) / 86400.0)`;
 
-export async function approvedThreads(sort: Sort = "best") {
+/** The categories a thread can be filed under, and what they are called. */
+export const CATEGORIES = [
+  ["buying", "Buying"],
+  ["renting", "Renting"],
+  ["off-plan", "Off-plan and handover"],
+  ["service-charges", "Service charges"],
+  ["mortgages", "Mortgages"],
+  ["general", "General"],
+] as const;
+
+export type Category = (typeof CATEGORIES)[number][0];
+
+export function parseCategory(v: string | undefined): Category | null {
+  return CATEGORIES.some(([k]) => k === v) ? (v as Category) : null;
+}
+
+/** How many live threads sit in each category, for the rail. */
+export async function categoryCounts(): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  if (!db) return out;
+  const rows = await db
+    .select({ category: thread.category, n: sql<number>`count(*)::int` })
+    .from(thread)
+    .where(eq(thread.status, "approved"))
+    .groupBy(thread.category);
+  rows.forEach((r) => out.set(r.category, r.n));
+  return out;
+}
+
+export async function approvedThreads(sort: Sort = "best", category?: Category | null) {
   if (!db) return [];
   const order =
     sort === "new" ? desc(thread.createdAt)
@@ -96,7 +125,11 @@ export async function approvedThreads(sort: Sort = "best") {
     })
     .from(thread)
     .innerJoin(user, eq(thread.userId, user.id))
-    .where(eq(thread.status, "approved"))
+    .where(
+      category
+        ? and(eq(thread.status, "approved"), eq(thread.category, category))
+        : eq(thread.status, "approved"),
+    )
     .orderBy(order, desc(thread.createdAt))
     .limit(50);
 }

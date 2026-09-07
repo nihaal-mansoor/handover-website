@@ -4,7 +4,7 @@ import { allTopicsAsync } from "@/lib/content";
 const NAV = [
   { href: "/", label: "Home", icon: "M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
   { href: "/topics", label: "Topics", icon: "M4 6h16M4 12h16M4 18h10" },
-  { href: "/forum", label: "Forum", icon: "M21 12a8 8 0 1 1-3.1-6.3L21 4v6h-6" },
+  { href: "/forum", label: "Discussions", icon: "M21 12a8 8 0 1 1-3.1-6.3L21 4v6h-6" },
 ];
 
 /** Persistent nav rail. Sticky, quiet, and it never scrolls away. */

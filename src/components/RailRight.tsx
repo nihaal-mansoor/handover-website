@@ -34,10 +34,10 @@ export async function RailRight() {
         </section>
 
         <section className="mt-l border-t border-rule pt-m">
-          <p className="rail-heading">From the forum</p>
+          <p className="rail-heading">Discussions</p>
           <p className="meta m-0">
-            Opening soon. It will be a place to post what actually happened, not what
-            a brochure promised.
+            <Link href="/forum">What actually happened</Link>, posted by people who
+            went through it rather than by a brochure.
           </p>
         </section>
       </div>

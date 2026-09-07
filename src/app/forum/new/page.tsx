@@ -4,7 +4,7 @@ import { SignInLink } from "@/components/SignInLink";
 import { getCurrentUser } from "@/lib/queries";
 import { NewThreadForm } from "@/components/NewThreadForm";
 
-export const metadata: Metadata = { title: "Start a thread", robots: { index: false } };
+export const metadata: Metadata = { title: "Start a discussion", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function NewThreadPage() {
@@ -12,8 +12,8 @@ export default async function NewThreadPage() {
 
   return (
     <div className="col py-xl">
-      <p className="meta"><Link href="/forum">Forum</Link></p>
-      <h1 className="mt-2xs text-step-3">Start a thread</h1>
+      <p className="meta"><Link href="/forum">Discussions</Link></p>
+      <h1 className="mt-2xs text-step-3">Start a discussion</h1>
 
       {account ? (
         <div className="mt-l">

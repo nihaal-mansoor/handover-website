@@ -30,7 +30,7 @@ export async function TopBar() {
             Topics
           </Link>
           <Link href="/forum" className="meta hidden no-underline hover:text-ink sm:block">
-            Forum
+            Discussions
           </Link>
           {account ? (
             <>

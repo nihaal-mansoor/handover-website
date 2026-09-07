@@ -74,7 +74,7 @@ export function NewThreadForm() {
           type="submit" className="btn"
           disabled={pending || title.trim().length < 10 || body.trim().length < 15}
         >
-          {pending ? "Sending…" : "Post thread"}
+          {pending ? "Posting…" : "Post discussion"}
         </button>
       </div>
 

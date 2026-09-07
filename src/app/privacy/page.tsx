@@ -41,7 +41,7 @@ export default function PrivacyPage() {
         not standing permission to keep circulating them.
       </p>
 
-      <h2 className="mt-l">Comments and forum posts</h2>
+      <h2 className="mt-l">Comments and discussion posts</h2>
       <p>
         If you post publicly, your display name and the content of your post are
         visible to everyone as soon as you post. Posts are checked automatically

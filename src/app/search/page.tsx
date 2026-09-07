@@ -53,7 +53,7 @@ export default async function SearchPage({
                 </p>
                 <ul className="mt-m space-y-s">
                   <li><Link href="/topics">Browse every topic</Link></li>
-                  <li><Link href="/forum/new">Ask it in the forum</Link>, where it will be visible straight away</li>
+                  <li><Link href="/forum/new">Ask it in the discussions</Link>, where it will be visible straight away</li>
                   <li><Link href="/">See the most recent articles</Link></li>
                 </ul>
               </div>

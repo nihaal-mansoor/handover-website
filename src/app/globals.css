@@ -209,6 +209,9 @@
   }
   @media (min-width: 84rem) {
     .app-grid { grid-template-columns: 13.5rem minmax(0, 1fr) 21rem; }
+    /* Discussions runs without a right column, so the feed takes that space
+       rather than leaving a gap where the third track used to be. */
+    .app-grid-2 { grid-template-columns: 13.5rem minmax(0, 1fr); }
   }
 
   .rail-left {
@@ -228,6 +231,9 @@
   .rail-sticky { position: sticky; top: 4.5rem; }
 
   .feed { padding: var(--space-m) 0; }
+  /* Without a right column the feed would run the full width of the shell, and
+     a thread title stretched across 1,100px is hard to scan. */
+  .feed-narrow > * { max-width: 58rem; }
   @media (min-width: 60rem) { .feed { padding-inline: var(--space-l); } }
 
   .rail-heading {
@@ -515,6 +521,19 @@
     justify-content: space-between; gap: var(--space-s);
   }
   .sort-tabs { display: flex; gap: var(--space-2xs); }
+
+  /* Categories on a phone. Scrolls in its own box so the page never does, and
+     disappears at the width where the rail takes the job over. */
+  .cat-bar {
+    display: flex; gap: var(--space-2xs);
+    overflow-x: auto; scrollbar-width: none;
+    padding-bottom: var(--space-2xs);
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .cat-bar::-webkit-scrollbar { display: none; }
+  .cat-bar > * { flex: none; white-space: nowrap; }
+  @media (min-width: 60rem) { .cat-bar { display: none; } }
   .sort-tab {
     font-family: var(--font-sans); font-size: var(--step--1);
     color: var(--muted); text-decoration: none;

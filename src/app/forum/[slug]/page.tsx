@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  threadBySlug, replyTree, getCurrentUser, formatWhen, initials, parseSort,
+  threadBySlug, replyTree, getCurrentUser, formatWhen, initials, parseSort, CATEGORIES,
 } from "@/lib/queries";
 import { db } from "@/db";
 import { vote } from "@/db/schema";
@@ -70,7 +70,10 @@ export default async function ThreadPage({
 
   return (
     <article className="col py-xl">
-      <p className="meta"><Link href="/forum">Forum</Link> · {t.category}</p>
+      <p className="meta"><Link href="/forum">Discussions</Link> ·{" "}
+        <Link href={`/forum?category=${t.category}`}>
+          {CATEGORIES.find(([k]) => k === t.category)?.[1] ?? t.category}
+        </Link></p>
 
       <div className="post-head">
         <VoteBox

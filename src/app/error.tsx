@@ -35,7 +35,7 @@ export default function Error({
         <div className="mt-l flex flex-wrap items-center gap-s">
           <button type="button" className="btn" onClick={reset}>Try again</button>
           <Link href="/" className="post-action">All articles</Link>
-          <Link href="/forum" className="post-action">The forum</Link>
+          <Link href="/forum" className="post-action">Discussions</Link>
         </div>
       </div>
     </div>

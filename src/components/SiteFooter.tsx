@@ -27,7 +27,7 @@ export function SiteFooter() {
           <ul className="m-0 flex list-none gap-m p-0">
             <li><Link href="/privacy" className="meta">Privacy</Link></li>
             <li><Link href="/terms" className="meta">Terms</Link></li>
-            <li><Link href="/forum" className="meta">Forum</Link></li>
+            <li><Link href="/forum" className="meta">Discussions</Link></li>
             <li><CookieSettingsLink /></li>
           </ul>
         </nav>

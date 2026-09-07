@@ -25,7 +25,7 @@ export default function NotFound() {
         <ul className="mt-l space-y-s">
           <li><Link href="/">All articles</Link></li>
           <li><Link href="/topics">Browse by topic</Link></li>
-          <li><Link href="/forum">The forum</Link></li>
+          <li><Link href="/forum">Discussions</Link></li>
           <li><Link href="/search">Search</Link></li>
         </ul>
       </div>
