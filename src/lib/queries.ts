@@ -1,4 +1,4 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { db, dbEnabled } from "@/db";
@@ -205,7 +205,10 @@ export async function myThreadVotes(ids: string[], viewerId?: string) {
     .where(and(
       eq(vote.userId, viewerId),
       eq(vote.targetType, "thread"),
-      sql`${vote.targetId} = any(${ids})`,
+      // inArray, not a hand-written any(): passing the array into raw sql binds
+      // it as one parameter, and Postgres then tries to read a single id as an
+      // array literal and errors.
+      inArray(vote.targetId, ids),
     ));
   rows.forEach((r) => out.set(r.targetId, r.value));
   return out;
