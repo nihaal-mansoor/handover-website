@@ -32,7 +32,9 @@ const charts = [];
     labels: ["2024", "2025", "2026"],
     values: [y["2024"].sales, y["2025"].sales, y["2026"].sales],
     valueLabels: Object.values(y).map((v) => `${(v.sales / 1000).toFixed(1)}k`),
-    highlight: 2,
+    // No highlight. Painting 2026 in the second hue marked it as the exception
+    // when the article's whole point is that 2026 is ordinary and 2025 was the
+    // outlier. The bar heights and the labels carry that without colouring it.
   })]);
 }
 
@@ -62,6 +64,27 @@ const charts = [];
       { name: "Villas", values: q.map((k) => r["Villas"][k] ?? null) },
       { name: "All homes", values: q.map((k) => r["General Index"][k] ?? null) },
       { name: "Flats", values: q.map((k) => r["Flats"][k] ?? null) },
+    ],
+    yFormat: (v) => Math.round(v),
+  })]);
+}
+
+/* 3b. The villa/flat gap on its own.
+   The levels chart above belongs to the price tracker. This article argues that
+   the two series separated and never converged, so it gets the spread itself:
+   one series, one scale, and the claim is the shape of the line. */
+{
+  const r = ix.residential_price_index;
+  const q = Object.keys(r["General Index"]).filter(
+    (k) => r["Villas"][k] != null && r["Flats"][k] != null,
+  );
+  charts.push(["villa-flat-gap", lineChart({
+    title: "The gap has widened in almost every quarter since 2021",
+    subtitle: "Villa price index minus flat price index, in index points",
+    source: DSC,
+    xLabels: q.map((k) => (k.endsWith("Q1") ? k.slice(0, 4) : "")),
+    series: [
+      { name: "Villas minus flats", values: q.map((k) => r["Villas"][k] - r["Flats"][k]) },
     ],
     yFormat: (v) => Math.round(v),
   })]);

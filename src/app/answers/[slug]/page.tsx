@@ -56,6 +56,15 @@ export default async function AnswerPage({
     }
   }
 
+  // True when the body already shows the featured image somewhere in the prose.
+  // Only the database path can be inspected; MDX bodies are compiled modules, and
+  // none of them embed images.
+  const embedsFeaturedImage = Boolean(
+    article.featuredImageUrl &&
+      article.source === "db" &&
+      article.body?.includes(article.featuredImageUrl),
+  );
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -101,7 +110,13 @@ export default async function AnswerPage({
         </p>
       </div>
 
-      {article.featuredImageUrl && (
+      {/* The featured image is also the card thumbnail and the Open Graph image,
+          so it stays set even when it is not drawn here. Drawing it at the top of
+          an article that already embeds the same chart next to the paragraph it
+          supports showed the reader the identical figure twice, which is why the
+          data articles looked inconsistent against each other. Inline wins: a
+          chart belongs beside its argument. */}
+      {article.featuredImageUrl && !embedsFeaturedImage && (
         <figure className="mt-l mb-0">
           <Image
             src={article.featuredImageUrl}
