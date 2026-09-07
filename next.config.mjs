@@ -1,4 +1,3 @@
-import path from "node:path";
 import createMDX from "@next/mdx";
 
 /** @type {import('next').NextConfig} */
@@ -8,10 +7,9 @@ const nextConfig = {
   // site-kit ships TypeScript source rather than a build, so it has to be
   // transpiled by the app that consumes it.
   transpilePackages: ["@uaeprop/site-kit"],
-  // site-kit is a file: dependency symlinked to a sibling directory. Turbopack
-  // will not resolve outside the project root unless the root is widened.
-  turbopack: { root: path.resolve(process.cwd(), "..") },
-  outputFileTracingRoot: path.resolve(process.cwd(), ".."),
+  // site-kit is vendored into packages/, so nothing resolves outside this
+  // directory any more. The tracing root must stay at the project root: setting
+  // it to the parent stopped content/ being included in the deployment.
   // The MDX fallback reads content/ from disk at request time with a path built
   // at runtime, so tracing cannot infer it. Without this the files are absent
   // from the deployment, articles 500 and the feed silently renders empty.
