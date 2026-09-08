@@ -47,11 +47,16 @@ export function Analytics({ gaId, nonce }: { gaId?: string; nonce?: string }) {
               });
             `}
           </Script>
+          {/* lazyOnload, not afterInteractive: the tag is 170 KB, a third of
+              the weight of a page, and §4.1 requires analytics to load after the
+              load event rather than merely after hydration. The consent defaults
+              above still register first, so nothing is measured under the wrong
+              assumption while the tag is on its way. */}
           <Script
-            id="ga-src" strategy="afterInteractive" nonce={nonce}
+            id="ga-src" strategy="lazyOnload" nonce={nonce}
             src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           />
-          <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
+          <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
             {`
               gtag('js', new Date());
               gtag('config', '${gaId}', { anonymize_ip: true });
