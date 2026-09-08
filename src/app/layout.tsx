@@ -7,7 +7,32 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Analytics } from "@/components/Analytics";
 import { CookieConsent } from "@/components/CookieConsent";
 import { headers } from "next/headers";
-import { sans, serif } from "@/lib/fonts";
+import localFont from "next/font/local";
+
+/**
+ * Declared here rather than re-exported from a helper: next/font attaches its
+ * preload hints to the module that calls localFont, and going through an
+ * intermediate module meant no <link rel="preload"> was emitted at all.
+ *
+ * The metrics-matched fallback each of these generates is what removed the
+ * 0.206 layout shift the article body was taking when the real face swapped in.
+ */
+const sans = localFont({
+  src: "../fonts/inter.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-sans-next",
+  preload: true,
+  fallback: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica", "sans-serif"],
+});
+const serif = localFont({
+  src: "../fonts/source-serif-4.woff2",
+  weight: "200 900",
+  display: "swap",
+  variable: "--font-serif-next",
+  preload: true,
+  fallback: ["Charter", "Georgia", "Times New Roman", "serif"],
+});
 
 const origin = originOf(config);
 
