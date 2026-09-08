@@ -37,9 +37,22 @@ const SEEDS = ["/", "/topics", "/forum", "/signin", "/signup", "/privacy", "/ter
 
 async function discover(port) {
   const found = new Set(SEEDS);
-  for (const seed of ["/", "/topics"]) {
+  /*
+   * Forum threads are crawled from every sort and category view, not just the
+   * default one. The listing shows fifty at a time, so a thread that has fallen
+   * past that on "best" can still be reachable under "new" or inside its
+   * category, and a thread the gate never renders is a thread the §1.1 scanner
+   * never reads. Reader-written posts are the likeliest place a listing appears,
+   * so missing them defeats the point of the check.
+   */
+  const seeds = [
+    "/", "/topics", "/forum", "/forum?sort=new", "/forum?sort=top",
+    ...["buying", "renting", "off-plan", "service-charges", "mortgages", "general"]
+      .map((c) => `/forum?category=${c}`),
+  ];
+  for (const seed of seeds) {
     const html = await (await fetch(`http://localhost:${port}${seed}`)).text();
-    for (const m of html.matchAll(/href="(\/(?:answers|topics)\/[a-z0-9-]+)"/g)) {
+    for (const m of html.matchAll(/href="(\/(?:answers|topics|forum)\/[a-z0-9-]+)"/g)) {
       found.add(m[1]);
     }
   }
