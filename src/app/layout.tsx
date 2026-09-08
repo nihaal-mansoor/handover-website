@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Analytics } from "@/components/Analytics";
 import { CookieConsent } from "@/components/CookieConsent";
 import { headers } from "next/headers";
+import { sans, serif } from "@/lib/fonts";
 
 const origin = originOf(config);
 
@@ -43,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const gaId = process.env["NEXT_PUBLIC_GA_ID"];
 
   return (
-    <html lang="en-AE">
+    <html lang="en-AE" className={`${sans.variable} ${serif.variable}`}>
       <body>
         {/* Organization and WebSite, once for the whole site (§4.5). It names
             the publication and nothing else: we hold no credentials to claim,
