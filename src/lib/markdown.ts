@@ -1,5 +1,23 @@
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
+import sizes from "./image-sizes.json";
+
+/**
+ * Markdown has no syntax for image dimensions, so an <img> from an article body
+ * arrives with none and the browser cannot reserve its space. Sizes come from a
+ * manifest measured at build time (scripts/image-manifest.mjs).
+ */
+const SIZES = sizes as Record<string, { w: number; h: number }>;
+
+function withDimensions(html: string): string {
+  return html.replace(/<img\b[^>]*>/g, (tag) => {
+    if (/\bwidth=/.test(tag)) return tag;
+    const src = tag.match(/\bsrc="([^"]+)"/)?.[1];
+    const dim = src ? SIZES[src] : undefined;
+    if (!dim) return tag;
+    return tag.replace(/<img\b/, `<img width="${dim.w}" height="${dim.h}"`);
+  });
+}
 
 /**
  * Markdown from the database, rendered at request time.
@@ -16,6 +34,8 @@ export function renderMarkdown(md: string): string {
   // A markdown image on its own line becomes a figure, with its alt text shown
   // as the caption. Charts need a caption; decorative images should not be
   // written on their own line.
+  raw = withDimensions(raw);
+
   raw = raw.replace(
     /<p>(<img [^>]*?alt="([^"]*)"[^>]*>)<\/p>/g,
     (_m, img: string, alt: string) =>
