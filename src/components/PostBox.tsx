@@ -3,6 +3,7 @@
 import { useId, useState, useTransition } from "react";
 import Link from "next/link";
 import { SignInLink } from "@/components/SignInLink";
+import { ImagePicker, type PickedImage } from "@/components/ImagePicker";
 import { useRouter } from "next/navigation";
 
 /**
@@ -18,7 +19,7 @@ export function PostBox({
   submitLabel,
   compact = false,
 }: {
-  action: (body: string) => Promise<{ ok: boolean; message: string }>;
+  action: (body: string, image: PickedImage | null) => Promise<{ ok: boolean; message: string }>;
   signedIn: boolean;
   placeholder: string;
   submitLabel: string;
@@ -30,6 +31,7 @@ export function PostBox({
   // duplicate ids break the label association and fail HTML validation.
   const fieldId = useId();
   const [body, setBody] = useState("");
+  const [image, setImage] = useState<PickedImage | null>(null);
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [pending, start] = useTransition();
 
@@ -54,10 +56,11 @@ export function PostBox({
       onSubmit={(e) => {
         e.preventDefault();
         start(async () => {
-          const res = await action(body);
+          const res = await action(body, image);
           setResult(res);
           if (res.ok) {
             setBody("");
+            setImage(null);
             router.refresh();
           }
         });
@@ -73,8 +76,12 @@ export function PostBox({
         maxLength={5000}
         required
       />
+      <div className="mt-s">
+        <ImagePicker value={image} onChange={setImage} disabled={pending} />
+      </div>
+
       <div className="mt-s flex flex-wrap items-center justify-end gap-s">
-        <button type="submit" className="btn" disabled={pending || body.trim().length < 15}>
+        <button type="submit" className="btn" disabled={pending || (body.trim().length < 15 && !image)}>
           {pending ? "Sending…" : submitLabel}
         </button>
       </div>

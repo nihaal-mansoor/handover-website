@@ -29,7 +29,7 @@ export function ReplyForm({
       compact={compact}
       placeholder={placeholder}
       submitLabel="Reply"
-      action={(body) => postReply(threadId, threadSlug, body, parentId)}
+      action={(body, image) => postReply(threadId, threadSlug, body, parentId, image)}
     />
   );
 }

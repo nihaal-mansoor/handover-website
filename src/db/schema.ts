@@ -128,6 +128,10 @@ export const thread = pgTable(
     /** Denormalised sum of vote values. See reply.score. */
     score: integer("score").notNull().default(0),
     deletedAt: timestamp("deleted_at"),
+    /** One optional image per post, stored in blob storage. */
+    imageUrl: text("image_url"),
+    imageWidth: integer("image_width"),
+    imageHeight: integer("image_height"),
     lastReplyAt: timestamp("last_reply_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
@@ -150,6 +154,9 @@ export const reply = pgTable(
     parentId: text("parent_id"),
     /** Denormalised sum of vote values, so sorting does not aggregate per read. */
     score: integer("score").notNull().default(0),
+    imageUrl: text("image_url"),
+    imageWidth: integer("image_width"),
+    imageHeight: integer("image_height"),
     /** Set when the author removes their own post. The row stays so the replies
         beneath it keep their place in the tree, as Reddit does. */
     deletedAt: timestamp("deleted_at"),

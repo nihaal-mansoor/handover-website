@@ -126,10 +126,34 @@ function slugify(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 70);
 }
 
+export interface PostImage {
+  readonly url: string;
+  readonly width: number;
+  readonly height: number;
+}
+
+/** Only ever our own blob host: a post must not be able to hotlink elsewhere. */
+function safeImage(img?: PostImage | null): PostImage | null {
+  if (!img?.url) return null;
+  try {
+    const u = new URL(img.url);
+    if (u.protocol !== "https:") return null;
+    if (!u.hostname.endsWith(".public.blob.vercel-storage.com")) return null;
+  } catch {
+    return null;
+  }
+  return {
+    url: img.url,
+    width: Math.max(1, Math.min(4000, Math.round(img.width || 1))),
+    height: Math.max(1, Math.min(20000, Math.round(img.height || 1))),
+  };
+}
+
 export async function createThread(
   title: string,
   body: string,
   category: string,
+  image?: PostImage | null,
 ): Promise<ActionResult & { slug?: string }> {
   const t = titleSchema.safeParse(title);
   if (!t.success) return { ok: false, message: t.error.issues[0]?.message ?? "Invalid title." };
@@ -150,6 +174,10 @@ export async function createThread(
     body: g.body,
     category,
     userId: g.account.id,
+    ...(() => {
+      const i = safeImage(image);
+      return i ? { imageUrl: i.url, imageWidth: i.width, imageHeight: i.height } : {};
+    })(),
     status: ok ? "approved" : "rejected",
     autoFlag: g.scan.flag ?? titleScan.flag ?? null,
     ipAddress: await clientIp(),
@@ -169,6 +197,7 @@ export async function postReply(
   threadSlug: string,
   body: string,
   parentId?: string,
+  image?: PostImage | null,
 ): Promise<ActionResult> {
   const g = await guard(body);
   if ("error" in g && g.error) return { ok: false, message: g.error };
@@ -194,6 +223,10 @@ export async function postReply(
     userId: g.account.id,
     body: g.body,
     parentId: parent,
+    ...(() => {
+      const i = safeImage(image);
+      return i ? { imageUrl: i.url, imageWidth: i.width, imageHeight: i.height } : {};
+    })(),
     status: g.scan.ok ? "approved" : "rejected",
     autoFlag: g.scan.flag ?? null,
     ipAddress: await clientIp(),

@@ -20,6 +20,10 @@ const CSP = buildCsp({
   turnstile: true,
   useNonce: true,
   strictDynamic: false,
+  // Post images. Named explicitly rather than allowing the whole
+  // blob.vercel-storage.com wildcard, so only this site's own store can
+  // render here and another tenant's bucket cannot.
+  imgSrc: ["https://aihs1f78isvq5ifj.public.blob.vercel-storage.com"],
 });
 
 export function middleware(request: NextRequest) {

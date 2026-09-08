@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createThread } from "@/lib/actions";
+import { ImagePicker, type PickedImage } from "@/components/ImagePicker";
 
 const CATEGORIES = [
   ["buying", "Buying"],
@@ -18,6 +19,7 @@ export function NewThreadForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [category, setCategory] = useState<string>("general");
+  const [image, setImage] = useState<PickedImage | null>(null);
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [pending, start] = useTransition();
 
@@ -26,7 +28,7 @@ export function NewThreadForm() {
       onSubmit={(e) => {
         e.preventDefault();
         start(async () => {
-          const res = await createThread(title, body, category);
+          const res = await createThread(title, body, category, image);
           setResult(res);
           if (res.ok && res.slug) {
             // Straight to the thread. Clearing the form and saying "Posted" left
@@ -68,6 +70,12 @@ export function NewThreadForm() {
           placeholder="What happened. Dates, amounts and names of processes are what make a post useful to the next person."
         />
       </div>
+
+      <ImagePicker value={image} onChange={setImage} disabled={pending} />
+
+      <p className="meta">
+        Markdown works: **bold**, links, lists, quotes and tables.
+      </p>
 
       <div className="flex flex-wrap items-center justify-end gap-s">
         <button

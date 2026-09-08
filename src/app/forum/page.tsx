@@ -7,6 +7,7 @@ import {
 import { VoteBox } from "@/components/VoteBox";
 import { SignInLink } from "@/components/SignInLink";
 import { RailDiscussions } from "@/components/RailDiscussions";
+import { DiscussionsAbout } from "@/components/DiscussionsAbout";
 
 export const metadata: Metadata = {
   title: "Discussions",
@@ -42,10 +43,10 @@ export default async function ForumPage({
 
   return (
     <div className="shell">
-      <div className="app-grid app-grid-2">
+      <div className="app-grid">
         <RailDiscussions current={category} />
 
-        <div className="feed feed-narrow">
+        <div className="feed">
           <div className="flex flex-wrap items-center justify-between gap-s">
             <h1 className="text-step-3">{categoryLabel ?? "Discussions"}</h1>
             <Link href="/forum/new" className="btn">Start a discussion</Link>
@@ -117,6 +118,18 @@ export default async function ForumPage({
                       revalidate="/forum"
                       signedIn={Boolean(account)}
                     />
+                    {t.imageUrl && !t.deletedAt && (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={t.imageUrl}
+                        alt=""
+                        width={t.imageWidth ?? 176}
+                        height={t.imageHeight ?? 128}
+                        className="row-thumb"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
                     <div className="min-w-0">
                       <Link href={`/forum/${t.slug}`} className="no-underline">
                         <h2 className="text-step-1 hover:underline decoration-1 underline-offset-4">
@@ -141,6 +154,8 @@ export default async function ForumPage({
             </ol>
           )}
         </div>
+
+        <DiscussionsAbout />
       </div>
     </div>
   );

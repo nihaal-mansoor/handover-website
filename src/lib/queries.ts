@@ -119,6 +119,9 @@ export async function approvedThreads(sort: Sort = "best", category?: Category |
       replyCount: thread.replyCount,
       score: thread.score,
       deletedAt: thread.deletedAt,
+      imageUrl: thread.imageUrl,
+      imageWidth: thread.imageWidth,
+      imageHeight: thread.imageHeight,
       lastReplyAt: thread.lastReplyAt,
       createdAt: thread.createdAt,
       authorName: user.name,
@@ -147,6 +150,9 @@ export async function threadBySlug(slug: string) {
       score: thread.score,
       replyCount: thread.replyCount,
       deletedAt: thread.deletedAt,
+      imageUrl: thread.imageUrl,
+      imageWidth: thread.imageWidth,
+      imageHeight: thread.imageHeight,
       userId: thread.userId,
       authorName: user.name,
     })
@@ -166,6 +172,9 @@ export interface ReplyNode {
   readonly parentId: string | null;
   readonly score: number;
   readonly deletedAt: Date | null;
+  readonly imageUrl: string | null;
+  readonly imageWidth: number | null;
+  readonly imageHeight: number | null;
   readonly myVote: number;
   readonly children: ReplyNode[];
 }
@@ -191,6 +200,9 @@ export async function replyTree(
       parentId: reply.parentId,
       score: reply.score,
       deletedAt: reply.deletedAt,
+      imageUrl: reply.imageUrl,
+      imageWidth: reply.imageWidth,
+      imageHeight: reply.imageHeight,
       myVote: viewerId
         ? sql<number>`coalesce((select v.value from ${vote} v
              where v.target_type = 'reply' and v.target_id = ${reply.id}
@@ -272,4 +284,15 @@ export function formatWhen(d: Date): string {
 
 export function initials(name: string): string {
   return name.trim().slice(0, 1).toUpperCase() || "?";
+}
+
+/** Counts for the About panel. */
+export async function discussionStats() {
+  if (!db) return { threads: 0, replies: 0, members: 0 };
+  const [[t], [r], [m]] = await Promise.all([
+    db.select({ n: sql<number>`count(*)::int` }).from(thread).where(eq(thread.status, "approved")),
+    db.select({ n: sql<number>`count(*)::int` }).from(reply).where(eq(reply.status, "approved")),
+    db.select({ n: sql<number>`count(*)::int` }).from(user),
+  ]);
+  return { threads: t?.n ?? 0, replies: r?.n ?? 0, members: m?.n ?? 0 };
 }

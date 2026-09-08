@@ -11,6 +11,10 @@ import { VoteBox } from "@/components/VoteBox";
 import { DeleteButton } from "@/components/DeleteButton";
 import { ReplyForm } from "@/components/ReplyForm";
 import { CommentTree } from "@/components/CommentTree";
+import { renderPost } from "@/lib/markdown";
+import { PostImage } from "@/components/PostImage";
+import { RailDiscussions } from "@/components/RailDiscussions";
+import { DiscussionsAbout } from "@/components/DiscussionsAbout";
 
 export const dynamic = "force-dynamic";
 
@@ -69,7 +73,11 @@ export default async function ThreadPage({
   const removed = Boolean(t.deletedAt);
 
   return (
-    <article className="col py-xl">
+    <div className="shell">
+      <div className="app-grid">
+        <RailDiscussions current={t.category} />
+
+        <article className="feed thread-col">
       <p className="meta"><Link href="/forum">Discussions</Link> ·{" "}
         <Link href={`/forum?category=${t.category}`}>
           {CATEGORIES.find(([k]) => k === t.category)?.[1] ?? t.category}
@@ -100,7 +108,20 @@ export default async function ThreadPage({
           {removed ? (
             <p className="cmt-removed mt-m">Post removed by its author.</p>
           ) : (
-            <p className="mt-m whitespace-pre-wrap">{t.body}</p>
+            <>
+              {t.body.trim() && (
+                <div
+                  className="post-body mt-m"
+                  dangerouslySetInnerHTML={{ __html: renderPost(t.body) }}
+                />
+              )}
+              <PostImage
+                url={t.imageUrl}
+                width={t.imageWidth}
+                height={t.imageHeight}
+                alt={`Image posted with ${t.title}`}
+              />
+            </>
           )}
 
           {(mine || isModerator) && !removed && (
@@ -153,7 +174,11 @@ export default async function ThreadPage({
             isModerator={isModerator}
           />
         </div>
-      </section>
-    </article>
+        </section>
+        </article>
+
+        <DiscussionsAbout />
+      </div>
+    </div>
   );
 }

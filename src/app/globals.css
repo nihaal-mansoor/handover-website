@@ -602,6 +602,83 @@
   }
   .cmt-reply-box { margin: var(--space-2xs) 0 var(--space-s); max-width: 42rem; }
 
+  /* A thread is still reading matter, so it keeps a measure even though the
+     page around it is the full app shell. */
+  .thread-col { max-width: 46rem; }
+
+  /* Post images. Capped by height rather than width: a tall screenshot would
+     otherwise push every reply off the screen. */
+  .post-image-wrap { margin: var(--space-s) 0 0; }
+  .post-image {
+    display: block;
+    width: auto; max-width: 100%;
+    height: auto; max-height: 32rem;
+    border-radius: 6px;
+    background: var(--surface);
+    object-fit: contain;
+  }
+  .post-image-small .post-image { max-height: 20rem; }
+  .post-image-edit { margin: 0; }
+  .image-add { display: inline-flex; align-items: center; gap: 0.4em; cursor: pointer; }
+
+  /* Reader-written markdown. Tighter than .prose: this is a comment, not an
+     article, and it must not start competing with the page's own headings. */
+  .post-body > * + * { margin-top: var(--space-s); }
+  .post-body :is(p, ul, ol, blockquote, table) { margin-bottom: 0; }
+  .post-body ul { list-style: disc; }
+  .post-body ol { list-style: decimal; }
+  .post-body :is(ul, ol) { padding-left: 1.3em; }
+  .post-body li + li { margin-top: var(--space-2xs); }
+  .post-body li::marker { color: var(--muted); }
+  .post-body blockquote {
+    margin: 0; padding-left: var(--space-s);
+    border-left: 3px solid var(--rule-2); font-style: normal; color: var(--ink-2);
+  }
+  .post-body code {
+    font-size: 0.9em; background: var(--sunk);
+    padding: 0.1em 0.35em; border-radius: 3px;
+  }
+  .post-body pre {
+    background: var(--sunk); padding: var(--space-s);
+    border-radius: 6px; overflow-x: auto;
+  }
+  .post-body pre code { background: none; padding: 0; }
+  .post-body table {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--font-sans); font-size: var(--step--1);
+    display: block; overflow-x: auto;
+  }
+  .post-body th { text-align: left; font-weight: 600; padding: 0.5em 0.7em 0.5em 0;
+                  border-bottom: 2px solid var(--rule-2); }
+  .post-body td { padding: 0.5em 0.7em 0.5em 0; border-bottom: 1px solid var(--rule);
+                  vertical-align: top; }
+
+  /* About panel */
+  .stat-row { display: flex; gap: var(--space-m); margin: 0; }
+  .stat-row div { margin: 0; }
+  .stat-row dt { margin: 0; }
+  .stat-row dd {
+    margin: 0; font-family: var(--font-sans); font-size: var(--step-1);
+    font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .stat-n { line-height: 1.1; }
+  .guideline-list {
+    margin: 0; padding-left: 1.1em; list-style: decimal;
+    font-family: var(--font-sans); font-size: var(--step--1);
+    color: var(--ink-2); line-height: 1.45;
+  }
+  .guideline-list li + li { margin-top: var(--space-xs); }
+  .guideline-list li::marker { color: var(--faint); }
+  .guideline-list strong { color: var(--ink); }
+  .guideline-note { border-top: 1px solid var(--rule); padding-top: var(--space-m); }
+  .guideline-note > summary { list-style: none; padding-left: 0; }
+
+  /* Thumbnail beside a thread row that has an image. */
+  .row-thumb {
+    width: 5.5rem; height: 4rem; flex: none;
+    object-fit: cover; border-radius: 4px; background: var(--surface);
+  }
+
   .skip-link {
     position: absolute; left: -9999px; top: 0;
     background: var(--ink); color: var(--paper);

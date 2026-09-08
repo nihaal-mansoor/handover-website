@@ -63,3 +63,37 @@ export function readingMinutes(md: string): number {
   const words = md.trim().split(/\s+/).length;
   return Math.max(1, Math.round(words / 200));
 }
+
+/**
+ * Markdown written by a reader, not an admin.
+ *
+ * Same sanitiser, deliberately narrower: no images (a post's image goes through
+ * the upload path, which re-encodes it, rather than letting anyone embed a
+ * remote URL that would leak the reader's IP to whoever hosts it), no headings
+ * competing with the page's own outline, and every link forced to
+ * rel="nofollow noopener noreferrer" so the forum cannot be farmed for SEO.
+ */
+export function renderPost(md: string): string {
+  const raw = marked.parse(md, { async: false }) as string;
+  return sanitizeHtml(raw, {
+    allowedTags: [
+      "p", "a", "ul", "ol", "li", "blockquote", "strong", "em", "code", "pre",
+      "hr", "br", "table", "thead", "tbody", "tr", "th", "td", "del",
+    ],
+    allowedAttributes: {
+      a: ["href", "title", "rel", "target"],
+      th: ["scope"],
+      td: ["colspan", "rowspan"],
+    },
+    allowedSchemes: ["https", "http", "mailto"],
+    transformTags: {
+      a: (name, attrs) => ({
+        tagName: "a",
+        attribs: { ...attrs, rel: "nofollow noopener noreferrer", target: "_blank" },
+      }),
+      // A reader's heading would sit at the same level as the page's own and
+      // break the single-outline rule in §4.2.
+      h1: "strong", h2: "strong", h3: "strong", h4: "strong", h5: "strong", h6: "strong",
+    },
+  });
+}

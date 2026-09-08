@@ -2,6 +2,8 @@ import { VoteBox } from "@/components/VoteBox";
 import { DeleteButton } from "@/components/DeleteButton";
 import { ReplyForm } from "@/components/ReplyForm";
 import { formatWhen, type ReplyNode } from "@/lib/queries";
+import { renderPost } from "@/lib/markdown";
+import { PostImage } from "@/components/PostImage";
 
 /**
  * The comment tree, as Reddit lays it out: a thread line down the left of each
@@ -62,7 +64,19 @@ export function CommentTree({
                   <p className="cmt-removed">Comment removed by its author.</p>
                 ) : (
                   <>
-                    <p className="cmt-body">{n.body}</p>
+                    {n.body.trim() && (
+                      <div
+                        className="cmt-body post-body"
+                        dangerouslySetInnerHTML={{ __html: renderPost(n.body) }}
+                      />
+                    )}
+                    <PostImage
+                      url={n.imageUrl}
+                      width={n.imageWidth}
+                      height={n.imageHeight}
+                      alt={`Image posted by ${n.authorName}`}
+                      small
+                    />
 
                     <div className="cmt-actions">
                       <VoteBox

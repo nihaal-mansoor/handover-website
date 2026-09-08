@@ -13,6 +13,7 @@ export async function Comments({ articleSlug }: { articleSlug: string }) {
 
   async function submit(body: string) {
     "use server";
+    // Article comments stay text-only; images belong in the discussions.
     return postComment(articleSlug, body);
   }
 
