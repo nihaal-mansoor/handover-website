@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
@@ -6,16 +7,21 @@ import { comment, reply, thread, user, vote } from "@/db/schema";
 
 /** Reads. Every public query filters on status = 'approved'. */
 
-export async function getSession() {
+/**
+ * Deduped for the life of a render. The top bar asks who is signed in, and so
+ * does the page under it; without this each of those is a separate round trip
+ * for an answer that cannot have changed in between.
+ */
+export const getSession = cache(async function getSession() {
   if (!dbEnabled) return null;
   try {
     return await auth.api.getSession({ headers: await headers() });
   } catch {
     return null;
   }
-}
+})
 
-export async function getCurrentUser() {
+export const getCurrentUser = cache(async function getCurrentUser() {
   if (!db) return null;
   const s = await getSession();
   if (!s?.user) return null;
@@ -25,7 +31,7 @@ export async function getCurrentUser() {
   } catch {
     return null;
   }
-}
+})
 
 export async function isModerator() {
   const u = await getCurrentUser();

@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -96,53 +98,70 @@ function fromRow(r: typeof articleTable.$inferSelect): Article {
  * no database, which today includes production. Once a slug exists in the
  * database it wins, so an imported article is edited in one place only.
  */
-export async function allArticlesAsync(): Promise<Article[]> {
-  const mdx = allArticlesFromMdx();
-  if (!db) return mdx;
-  try {
-    const rows = await db
-      .select()
-      .from(articleTable)
-      .where(eq(articleTable.status, "published"))
-      .orderBy(desc(articleTable.publishedAt));
-    if (rows.length === 0) return mdx;
-    const fromDb = rows.map(fromRow);
-    const seen = new Set(fromDb.map((a) => a.slug));
-    return [...fromDb, ...mdx.filter((a) => !seen.has(a.slug))].sort((a, b) =>
-      (b.updated ?? b.published).localeCompare(a.updated ?? a.published),
-    );
-  } catch {
-    return mdx;
-  }
-}
+/**
+ * The tag every article read is filed under. Writing an article revalidates it,
+ * so an edit in the admin is live immediately rather than after the window.
+ */
+export const ARTICLES_TAG = "articles";
 
-export async function getArticleAsync(slug: string): Promise<Article | undefined> {
-  if (db) {
+/**
+ * Cross-request cache. Every page on the site reads this list, and the database
+ * is a round trip away, so without it each visitor pays for a query returning
+ * exactly what the last visitor already fetched.
+ *
+ * fromRow runs inside the cache, so what is stored is plain strings and numbers.
+ * Caching the raw rows would put Date objects through JSON and hand back strings
+ * on a hit and Dates on a miss.
+ */
+const cachedPublished = unstable_cache(
+  async (): Promise<Article[]> => {
+    if (!db) return [];
     try {
-      const [row] = await db
+      const rows = await db
         .select()
         .from(articleTable)
-        .where(and(eq(articleTable.slug, slug), eq(articleTable.status, "published")))
-        .limit(1);
-      if (row) return fromRow(row);
+        .where(eq(articleTable.status, "published"))
+        .orderBy(desc(articleTable.publishedAt));
+      return rows.map(fromRow);
     } catch {
-      /* fall through to MDX */
+      return [];
     }
-  }
-  return allArticlesFromMdx().find((a) => a.slug === slug);
-}
+  },
+  ["articles:published:v1"],
+  { revalidate: 300, tags: [ARTICLES_TAG] },
+);
 
-export async function allTopicsAsync(): Promise<Topic[]> {
+/**
+ * Within-request cache. A single page render asks for this four to six times:
+ * once for the page, once in the left rail, twice in the right rail. React's
+ * cache collapses those into one call for the life of the render.
+ */
+export const allArticlesAsync = cache(async (): Promise<Article[]> => {
+  const mdx = allArticlesFromMdx();
+  const fromDb = await cachedPublished();
+  if (fromDb.length === 0) return mdx;
+  const seen = new Set(fromDb.map((a) => a.slug));
+  return [...fromDb, ...mdx.filter((a) => !seen.has(a.slug))].sort((a, b) =>
+    (b.updated ?? b.published).localeCompare(a.updated ?? a.published),
+  );
+});
+
+/** Derived from the cached list, so an article page makes no query of its own. */
+export const getArticleAsync = cache(async (slug: string): Promise<Article | undefined> => {
+  const all = await allArticlesAsync();
+  return all.find((a) => a.slug === slug);
+});
+
+export const allTopicsAsync = cache(async (): Promise<Topic[]> => {
   const counts = new Map<string, number>();
   for (const a of await allArticlesAsync()) counts.set(a.topic, (counts.get(a.topic) ?? 0) + 1);
   return [...counts.entries()]
     .map(([name, count]) => ({ name, slug: topicSlug(name), count }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-}
+});
 
-export async function articlesByTopicAsync(slug: string): Promise<Article[]> {
-  return (await allArticlesAsync()).filter((a) => topicSlug(a.topic) === slug);
-}
+export const articlesByTopicAsync = cache(async (slug: string): Promise<Article[]> =>
+  (await allArticlesAsync()).filter((a) => topicSlug(a.topic) === slug));
 
 export function allArticlesFromMdx(): Article[] {
   if (!fs.existsSync(DIR)) {

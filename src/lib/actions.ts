@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
+import { ARTICLES_TAG } from "@/lib/content";
 import { headers } from "next/headers";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -593,6 +594,10 @@ export async function saveArticle(input: ArticleInput): Promise<ActionResult & {
   revalidatePath("/topics");
   revalidatePath(`/answers/${slug.data}`);
   revalidatePath("/admin/articles");
+  // The published list is cached for five minutes. updateTag, not
+  // revalidateTag: inside a Server Action revalidateTag only marks the entry
+  // stale, so the editor could still be shown the old copy on the way back.
+  updateTag(ARTICLES_TAG);
   return { ok: true, message: input.status === "published" ? "Published." : "Saved as draft.", slug: slug.data };
 }
 
@@ -602,6 +607,7 @@ export async function deleteArticle(id: string): Promise<ActionResult> {
   await db.delete(article).where(eq(article.id, id));
   revalidatePath("/");
   revalidatePath("/admin/articles");
+  updateTag(ARTICLES_TAG);
   return { ok: true, message: "Deleted." };
 }
 

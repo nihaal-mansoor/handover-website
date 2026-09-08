@@ -690,6 +690,31 @@
     object-fit: cover; border-radius: 4px; background: var(--surface);
   }
 
+  /* ---------- loading skeletons ---------- */
+
+  /* Shown while a route is still on the server. The shape matters more than the
+     animation: a block where the text will be tells the reader the click landed
+     and the page is coming, which is what was missing entirely. */
+  .sk {
+    background: var(--sunk);
+    border-radius: 4px;
+    animation: sk-pulse 1.4s ease-in-out infinite;
+  }
+  .sk-line { height: 0.85em; margin-bottom: 0.6em; }
+  .sk-title { height: 1.9em; margin-bottom: var(--space-s); border-radius: 5px; }
+  .sk-block { height: 12rem; border-radius: 6px; }
+
+  @keyframes sk-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+
+  /* An animation that pulses forever is exactly what §4.2 asks to suppress. The
+     skeleton still shows, it simply stops moving. */
+  @media (prefers-reduced-motion: reduce) {
+    .sk { animation: none; }
+  }
+
   .skip-link {
     position: absolute; left: -9999px; top: 0;
     background: var(--ink); color: var(--paper);
