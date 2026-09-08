@@ -14,7 +14,7 @@ export async function DiscussionsAbout() {
   const stats = await discussionStats();
 
   return (
-    <aside className="rail-right">
+    <aside className="rail-right" aria-label="About the discussions">
       <div className="rail-sticky">
         <section>
           <p className="rail-heading">About</p>

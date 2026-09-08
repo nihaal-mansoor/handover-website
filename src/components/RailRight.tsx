@@ -8,7 +8,7 @@ export async function RailRight() {
   const topics = await allTopicsAsync();
 
   return (
-    <aside className="rail-right">
+    <aside className="rail-right" aria-label="Where to start">
       <div className="rail-sticky">
         {start && (
           <section>

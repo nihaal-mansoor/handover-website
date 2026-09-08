@@ -69,6 +69,8 @@ export function PostBox({
       <label className="sr-only" htmlFor={fieldId}>Your post</label>
       <textarea
         id={fieldId}
+        aria-invalid={result && !result.ok ? true : undefined}
+        aria-describedby={result && !result.ok ? `${fieldId}-msg` : undefined}
         className="field"
         value={body}
         onChange={(e) => setBody(e.target.value)}
@@ -88,6 +90,7 @@ export function PostBox({
 
       {result && (
         <p
+          id={`${fieldId}-msg`}
           role="status"
           className="meta mt-s"
           style={{ color: result.ok ? "var(--accent)" : "#B3271E" }}

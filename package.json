@@ -12,7 +12,9 @@
     "db:push": "drizzle-kit push",
     "gate:compliance": "node scripts/gate.mjs",
     "gate": "npm run build && npm run typecheck && npm run gate:compliance",
-    "sync:kit": "node scripts/sync-kit.mjs"
+    "sync:kit": "node scripts/sync-kit.mjs",
+    "gate:a11y": "node scripts/gate-a11y.mjs",
+    "gate:html": "node scripts/gate-html.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -44,7 +46,9 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@types/sanitize-html": "^2.16.1",
+    "axe-core": "^4.13.0",
     "drizzle-kit": "^0.31.10",
+    "html-validate": "^11.15.0",
     "png-to-ico": "^3.0.2",
     "postcss": "^8.5.27",
     "puppeteer-core": "^25.10.0",

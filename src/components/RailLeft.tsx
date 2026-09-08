@@ -12,7 +12,7 @@ export async function RailLeft({ current }: { current?: string }) {
   const topics = (await allTopicsAsync()).slice(0, 8);
 
   return (
-    <aside className="rail-left">
+    <aside className="rail-left" aria-label="Sections and topics">
       <div className="rail-sticky">
         <nav aria-label="Sections">
           <ul className="m-0 list-none p-0">

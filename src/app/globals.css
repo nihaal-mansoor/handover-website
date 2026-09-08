@@ -140,6 +140,10 @@
 
   body {
     margin: 0;
+    /* A long unbroken string, an email address or a URL, is wider than a 320px
+       screen and pushes the whole document sideways. Wrapping it is correct; an
+       overflow container is for tables and code, not for a single word. */
+    overflow-wrap: break-word;
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-serif);
@@ -265,6 +269,15 @@
     padding: 0.45rem 0.9rem;
     min-width: 0;
   }
+  /* The pill takes the focus ring rather than the bare input inside it, so the
+     indicator follows the shape of the control someone is actually typing into.
+     WCAG 2.4.7: suppressing the input's own outline without putting one back is
+     what left this field with no visible focus at all. */
+  .search:focus-within {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
   .search input {
     border: 0;
     background: transparent;

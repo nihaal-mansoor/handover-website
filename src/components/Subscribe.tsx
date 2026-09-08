@@ -36,6 +36,10 @@ export function Subscribe() {
         <input
           id="subscribe-email"
           className="field"
+          /* WCAG 3.3.1: the error is announced by the live region below, and
+             these tie it to the field so it is also read when focus lands here. */
+          aria-invalid={result && !result.ok ? true : undefined}
+          aria-describedby={result && !result.ok ? "subscribe-error" : undefined}
           style={{ flex: "1 1 14rem", minWidth: 0 }}
           type="email"
           required
@@ -49,7 +53,7 @@ export function Subscribe() {
         </button>
       </div>
       {result && !result.ok && (
-        <p role="alert" className="meta mt-2xs" style={{ color: "#B3271E" }}>
+        <p id="subscribe-error" role="alert" className="meta mt-2xs" style={{ color: "#B3271E" }}>
           {result.message}
         </p>
       )}

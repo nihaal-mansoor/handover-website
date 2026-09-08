@@ -22,7 +22,7 @@ export async function RailDiscussions({ current }: { current: string | null }) {
   const counts = await categoryCounts();
 
   return (
-    <aside className="rail-left">
+    <aside className="rail-left" aria-label="Discussion categories">
       <div className="rail-sticky">
         <nav aria-label="Sections">
           <ul className="m-0 list-none p-0">

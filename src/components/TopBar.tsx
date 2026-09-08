@@ -23,6 +23,9 @@ export async function TopBar() {
           </svg>
           <label htmlFor="q" className="sr-only">Search answers</label>
           <input id="q" name="q" type="search" placeholder="Search" autoComplete="off" />
+          {/* WCAG H32. Pressing Enter works, but a form with no submit control
+              leaves anyone who does not know that with no way to run the search. */}
+          <button type="submit" className="sr-only">Search</button>
         </form>
 
         <nav aria-label="Main" className="ml-auto flex items-center gap-s">
