@@ -19,6 +19,7 @@ export default async function AdminPage() {
       <div className="flex flex-wrap items-center justify-between gap-s">
         <h1 className="text-step-3">Moderation queue</h1>
         <Link href="/admin/articles" className="btn btn-quiet">Articles</Link>
+        <Link href="/admin/subscribers" className="btn btn-quiet">Subscribers</Link>
       </div>
       <p className="meta mt-2xs mb-l">
         {total === 0

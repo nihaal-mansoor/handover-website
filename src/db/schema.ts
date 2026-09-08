@@ -184,6 +184,12 @@ export const subscriber = pgTable(
     email: text("email").notNull().unique(),
     /** Which page they subscribed from, so we know what earns signups. */
     sourcePage: text("source_page"),
+    /**
+     * The exact wording shown above the field when they subscribed. §4.4 wants
+     * documented consent, and you cannot reconstruct afterwards what the form
+     * said at the time once the copy changes.
+     */
+    consentText: text("consent_text"),
     /** Set when they click the unsubscribe link. Rows are kept, not deleted. */
     unsubscribedAt: timestamp("unsubscribed_at"),
     ipAddress: text("ip_address"),

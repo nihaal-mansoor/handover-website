@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { subscribe } from "@/lib/actions";
 
@@ -11,6 +11,10 @@ import { subscribe } from "@/lib/actions";
 export function Subscribe() {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
+  // A field no person can see, and the moment the form appeared. A script fills
+  // the first and submits far faster than the second allows.
+  const [trap, setTrap] = useState("");
+  const shownAt = useRef(Date.now());
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [pending, start] = useTransition();
 
@@ -26,12 +30,30 @@ export function Subscribe() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        start(async () => setResult(await subscribe(email, pathname)));
+        start(async () =>
+          setResult(await subscribe(email, pathname, trap, Date.now() - shownAt.current)),
+        );
       }}
     >
       <label className="meta mb-2xs block" htmlFor="subscribe-email">
         New answers, when they go up. No more than one email a week.
       </label>
+
+      {/* aria-hidden and off the tab order, so it is invisible to a person and
+          to a screen reader, but present in the DOM for anything filling fields
+          blind. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
+        <label htmlFor="subscribe-company">Company</label>
+        <input
+          id="subscribe-company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={trap}
+          onChange={(e) => setTrap(e.target.value)}
+        />
+      </div>
       <div className="flex flex-wrap gap-xs">
         <input
           id="subscribe-email"

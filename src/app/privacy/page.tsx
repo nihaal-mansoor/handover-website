@@ -19,9 +19,11 @@ export default function PrivacyPage() {
       <h2 className="mt-l">If you subscribe to the newsletter</h2>
       <p>
         We store your email address, the page you subscribed from, the date and time,
-        and your IP address. The IP is kept because it is how we evidence that the
-        subscription was genuine and how we detect automated abuse. Every email we
-        send carries an unsubscribe link, and unsubscribing stops all further email.
+        the exact wording you agreed to, and your IP address. The IP is kept
+        because it is how we evidence that the subscription was genuine and how we
+        detect automated abuse. We are not sending anything yet. When we do, every
+        email will carry an unsubscribe link; in the meantime, email us and we will
+        take you off the list.
       </p>
       <p>
         We do not sell your address, and we do not pass it to anyone for marketing.
@@ -91,7 +93,7 @@ export default function PrivacyPage() {
       <h2 className="mt-l">How long we keep it</h2>
       <p>
         Posts stay until you delete them or ask us to. Newsletter records are kept
-        until you unsubscribe, and are cleared within 24 months of that. Account
+        until you ask to come off the list. Account
         records are kept while the account exists. To have anything removed sooner,
         email{" "}
         <a href="mailto:privacy@dubairealestateadvice.com">

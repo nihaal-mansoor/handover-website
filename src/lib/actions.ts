@@ -440,14 +440,51 @@ const emailSchema = z
  * Newsletter signup. Deliberately the lightest write on the site: no account,
  * no moderation, one field. The goal at this stage is reach, not leads.
  */
-export async function subscribe(email: string, sourcePage: string): Promise<ActionResult> {
+/** The wording shown above the field. Stored with each row (§4.4).
+    Not exported: a "use server" module may only export async functions. */
+const SUBSCRIBE_CONSENT =
+  "New answers, when they go up. No more than one email a week.";
+
+/**
+ * Ten addresses an hour from one IP. The posting limit counts per account, but
+ * subscribing needs none, so without this the table can be filled with other
+ * people's addresses by anyone.
+ */
+async function subscribeRateLimited(ip: string | null): Promise<boolean> {
+  if (!db || !ip) return false;
+  const [row] = await db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(subscriber)
+    .where(and(eq(subscriber.ipAddress, ip), sql`${subscriber.createdAt} > now() - interval '1 hour'`));
+  return (row?.n ?? 0) >= 10;
+}
+
+export async function subscribe(
+  email: string,
+  sourcePage: string,
+  /** Honeypot. A real person never fills a field they cannot see. */
+  trap?: string,
+  /** Milliseconds the form was on screen before submitting. */
+  elapsedMs?: number,
+): Promise<ActionResult> {
   if (!dbEnabled || !db) {
     return { ok: false, message: "Sign-up is temporarily unavailable. Please try again later." };
   }
 
+  // Both bot checks answer exactly as a success would, so a script learns
+  // nothing from the response about which layer stopped it.
+  const DONE = { ok: true, message: "Thanks. Your email is on the list." };
+  if (trap) return DONE;
+  if (typeof elapsedMs === "number" && elapsedMs < 2000) return DONE;
+
   const parsed = emailSchema.safeParse(email);
   if (!parsed.success) {
     return { ok: false, message: parsed.error.issues[0]?.message ?? "Enter a valid email address." };
+  }
+
+  const ip = await clientIp();
+  if (await subscribeRateLimited(ip)) {
+    return { ok: false, message: "Too many sign-ups from here just now. Try again later." };
   }
 
   try {
@@ -457,12 +494,13 @@ export async function subscribe(email: string, sourcePage: string): Promise<Acti
         id: crypto.randomUUID(),
         email: parsed.data,
         sourcePage: sourcePage.slice(0, 300),
-        ipAddress: await clientIp(),
+        consentText: SUBSCRIBE_CONSENT,
+        ipAddress: ip,
       })
       // Already subscribed is not an error worth showing. Say the same thing
       // either way, which also avoids confirming whether an address is on the list.
       .onConflictDoNothing({ target: subscriber.email });
-    return { ok: true, message: "Thanks. You will get an email when something new goes up." };
+    return DONE;
   } catch (err) {
     console.error("[subscribe] failed:", err instanceof Error ? err.message : err);
     return { ok: false, message: "Something went wrong. Please try again." };
