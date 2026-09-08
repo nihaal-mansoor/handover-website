@@ -226,6 +226,10 @@ export const article = pgTable(
     /* --- featured image, as in a WordPress post --- */
     featuredImageUrl: text("featured_image_url"),
     featuredImageAlt: text("featured_image_alt"),
+    /** Share card. Used for og:image when there is no featured image, and never
+        drawn on the page: a title card at the top of the article it titles is
+        just the headline twice. */
+    ogImageUrl: text("og_image_url"),
 
     /** Editor's note on where the topic came from. Never rendered. */
     sourceNote: text("source_note"),

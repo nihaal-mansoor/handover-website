@@ -34,6 +34,40 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-AE">
       <body>
+        {/* Organization and WebSite, once for the whole site (§4.5). It names
+            the publication and nothing else: we hold no credentials to claim,
+            so there is no address, no founder and no rating here (§1.2).
+            The nonce is required because CSP has no unsafe-inline. */}
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: config.brand,
+                url: origin,
+                description:
+                  "Independent property research for the UAE. Not a licensed broker.",
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: config.brand,
+                url: origin,
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target: {
+                    "@type": "EntryPoint",
+                    urlTemplate: `${origin}/search?q={search_term_string}`,
+                  },
+                  "query-input": "required name=search_term_string",
+                },
+              },
+            ]),
+          }}
+        />
         <a className="skip-link" href="#main">Skip to content</a>
         <TopBar />
         <main id="main">{children}</main>

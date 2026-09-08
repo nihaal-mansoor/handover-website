@@ -18,7 +18,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await getArticleAsync(slug);
   if (!article) return {};
-  const image = article.featuredImageUrl;
+  // Falls back to the generated share card, so an article with no chart of
+  // its own still shares as something rather than an empty box.
+  const image = article.featuredImageUrl ?? article.ogImageUrl;
   return {
     title: article.metaTitle ?? article.title,
     description: article.metaDescription ?? article.dek,
@@ -30,6 +32,9 @@ export async function generateMetadata({
       type: "article",
       ...(image ? { images: [{ url: image, alt: article.featuredImageAlt ?? article.title }] } : {}),
     },
+    ...(image
+      ? { twitter: { card: "summary_large_image" as const, images: [image] } }
+      : {}),
   };
 }
 

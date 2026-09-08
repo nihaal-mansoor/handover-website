@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7F4ED"/>
+  <rect x="0" y="0" width="10" height="630" fill="#1A7F4B"/>
+  <text x="72" y="92" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#242424" letter-spacing="-0.4">Handover</text>
+  <text x="205" y="92" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" fill="#A79F91">Dubai property, explained</text>
+  <text x="72" y="257.08" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="74" font-weight="700" fill="#242424" letter-spacing="-2">What happens if you cannot</text>
+  <text x="72" y="339.96" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="74" font-weight="700" fill="#242424" letter-spacing="-2">pay your mortgage</text>
+  <text x="72" y="554" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="25" fill="#6B6B6B">The sequence, and where it can still be stopped</text>
+  <rect x="72" y="584" width="56" height="4" fill="#1A7F4B"/>
+</svg>

@@ -27,6 +27,7 @@ export interface Article {
   readonly canonicalUrl?: string;
   readonly noindex?: boolean;
   readonly featuredImageUrl?: string;
+  readonly ogImageUrl?: string;
   readonly featuredImageAlt?: string;
   readonly slug: string;
   /** The question, as someone would actually ask it. */
@@ -83,6 +84,7 @@ function fromRow(r: typeof articleTable.$inferSelect): Article {
     ...(r.canonicalUrl ? { canonicalUrl: r.canonicalUrl } : {}),
     noindex: r.noindex,
     ...(r.featuredImageUrl ? { featuredImageUrl: r.featuredImageUrl } : {}),
+    ...(r.ogImageUrl ? { ogImageUrl: r.ogImageUrl } : {}),
     ...(r.featuredImageAlt ? { featuredImageAlt: r.featuredImageAlt } : {}),
   };
 }
