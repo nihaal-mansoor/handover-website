@@ -39,13 +39,3 @@ export default function Loading() {
   );
 }
 
-/*
- * There is deliberately no loading.tsx on /answers/[slug], /forum/[slug] or
- * /topics/[slug]. Those routes build their metadata asynchronously, and a
- * loading file turns on streaming, which flushes the shell before
- * generateMetadata resolves. Title, canonical and og:image then land in the
- * body. Browsers hoist them, but social scrapers read the raw head and do not
- * run scripts, so every shared link would lose its preview card. Those routes
- * now answer in about a third of a second, so the skeleton was worth less than
- * the previews.
- */

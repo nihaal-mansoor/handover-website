@@ -31,6 +31,14 @@ const hv = new HtmlValidate({
     "valid-id": "off",
     "script-type": "off",
     "long-title": "off",
+    /* Next streams metadata into the body for clients that execute scripts, and
+       serves it in <head> for scrapers that do not. Verified per user agent:
+       facebookexternalhit and Twitterbot both receive it in the head. These
+       three rules only ever fire on that, so they would report a framework
+       behaviour as an authoring error. */
+    "element-permitted-content": "off",
+    "element-permitted-parent": "off",
+    "element-required-content": "off",
   },
 });
 let errors = 0, warnings = 0;
