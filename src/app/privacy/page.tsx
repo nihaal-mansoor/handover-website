@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { CONSENT_TEXT } from "@uaeprop/site-kit";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -12,33 +11,33 @@ export default function PrivacyPage() {
     <article className="col py-xl">
       <h1>What we collect and why</h1>
       <p className="mt-m text-ink-2">
-        Short version: nothing unless you send it. There is no account, no login and
-        no advertising trackers on this site.
+        Short version: you can read everything here without an account and without
+        being tracked for advertising. We only hold something about you if you
+        subscribe, create an account, or post.
       </p>
 
-      <h2 className="mt-l">If you send us a message</h2>
+      <h2 className="mt-l">If you subscribe to the newsletter</h2>
       <p>
-        We store the name, email address, phone number and message you submit,
-        together with the page you sent it from, the date and time, your IP address
-        and browser user agent. The IP and user agent are kept because they are how
-        we evidence that consent was genuinely given, and how we detect automated
-        abuse.
+        We store your email address, the page you subscribed from, the date and time,
+        and your IP address. The IP is kept because it is how we evidence that the
+        subscription was genuine and how we detect automated abuse. Every email we
+        send carries an unsubscribe link, and unsubscribing stops all further email.
       </p>
       <p>
-        We also store the exact wording of the consent you agreed to, which at the
-        time of writing reads: “{CONSENT_TEXT}”
+        We do not sell your address, and we do not pass it to anyone for marketing.
       </p>
 
-      <h2 className="mt-l">Who it is shared with</h2>
+      <h2 className="mt-l">If you create an account</h2>
       <p>
-        If you ask to be introduced to a broker, we pass your name, contact details
-        and the substance of your enquiry to a licensed UAE real estate brokerage.
-        That is the point of the introduction and it is what you consent to when you
-        submit the form. We may be paid by that brokerage for the introduction.
+        You can sign in with Google or with an email address and password. We store
+        your display name, your email address, and, where you use Google, the account
+        identifier Google returns so we can recognise you next time. We never receive
+        your Google password. If you set a password here it is stored hashed, never
+        in plain text.
       </p>
       <p>
-        We do not sell your details into marketing databases, and one introduction is
-        not standing permission to keep circulating them.
+        Your display name is public on anything you post. Your email address is not,
+        and is used only for moderation and to contact you about your account.
       </p>
 
       <h2 className="mt-l">Comments and discussion posts</h2>
@@ -46,15 +45,21 @@ export default function PrivacyPage() {
         If you post publicly, your display name and the content of your post are
         visible to everyone as soon as you post. Posts are checked automatically
         before they are stored, and a moderator can remove one afterwards. You can
-        delete your own posts at any time. We keep the account email privately for
-        moderation and to contact you about your account.
+        delete your own posts at any time.
+      </p>
+      <p>
+        We record the IP address a post was made from, to handle abuse. It is never
+        shown publicly. If you attach an image it is re-encoded before it is stored,
+        which removes any camera metadata it carried, including location. The image
+        itself is public and stays public until you or a moderator deletes it.
       </p>
 
       <h2 className="mt-l">Processors we use</h2>
       <p>
-        Your submission is stored in a managed Postgres database and delivered to us
-        by a transactional email provider. Form submissions are screened by
-        Cloudflare Turnstile to block automated abuse. Each provider processes the
+        Accounts, posts and subscriptions are stored in a managed Postgres database.
+        Uploaded images are held in managed file storage. The site is hosted on
+        Vercel. If you sign in with Google, Google confirms your identity to us and
+        tells you what it shares at the point you agree. Each provider processes the
         data only to deliver that specific function.
       </p>
 
@@ -85,8 +90,10 @@ export default function PrivacyPage() {
 
       <h2 className="mt-l">How long we keep it</h2>
       <p>
-        Anything you send is deleted 24 months after submission. To have yours
-        removed sooner, email{" "}
+        Posts stay until you delete them or ask us to. Newsletter records are kept
+        until you unsubscribe, and are cleared within 24 months of that. Account
+        records are kept while the account exists. To have anything removed sooner,
+        email{" "}
         <a href="mailto:privacy@dubairealestateadvice.com">
           privacy@dubairealestateadvice.com
         </a>
@@ -97,8 +104,8 @@ export default function PrivacyPage() {
       <p>
         Under the UAE Personal Data Protection Law you can ask what we hold about
         you, ask for it to be corrected or deleted, and withdraw consent at any time.
-        Withdrawing consent does not undo an introduction already made, but it stops
-        any further contact from us.
+        Deleting your account removes your posts along with it, so tell us if you
+        would rather keep the posts and remove only the account.
       </p>
     </article>
   );

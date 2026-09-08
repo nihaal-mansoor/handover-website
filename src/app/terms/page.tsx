@@ -40,14 +40,17 @@ export default function TermsPage() {
 
       <h2 className="mt-l">What other people post</h2>
       <p>
-        Comments and forum posts are written by readers, not by us. They are reviewed
-        before publication, but review is not verification: we do not check that any
-        account of events is accurate, and publishing a post is not an endorsement of
-        it. Do not treat another reader’s experience as advice about your own.
+        Comments and discussion posts are written by readers, not by us. They are
+        screened automatically and appear immediately, and screening is not
+        verification: we do not check that any account of events is accurate, and a
+        post appearing here is not an endorsement of it. Do not treat another
+        reader’s experience as advice about your own. Tell us about anything that
+        should not be here and we will remove it.
       </p>
       <p>
         Posting a property advertisement, a price attached to a specific unit, or
-        any other listing is not permitted and will be rejected. Advertising
+        any other listing is not permitted. Text is rejected automatically; an
+        image cannot be screened the same way and is removed when found. Advertising
         property in Dubai requires a permit that neither we nor most posters hold.
       </p>
 
