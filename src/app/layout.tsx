@@ -10,10 +10,21 @@ import { headers } from "next/headers";
 
 const origin = originOf(config);
 
+/**
+ * The colour the mobile browser paints its own chrome. Two entries so the bar
+ * matches the page in both themes rather than staying light behind a dark page.
+ */
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F7F4ED" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F0F0E" },
+  ],
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(origin),
   title: {
-    default: `${config.brand} — ${config.tagline}`,
+    default: `${config.brand}: ${config.tagline}`,
     template: `%s | ${config.brand}`,
   },
   description: config.tagline,

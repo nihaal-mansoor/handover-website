@@ -51,7 +51,7 @@ export default async function ArticlesAdmin() {
                     </span>
                   </td>
                   <td className="py-s pr-s text-step--1">
-                    {a.publishedAt ? formatWhen(a.publishedAt) : "—"}
+                    {a.publishedAt ? formatWhen(a.publishedAt) : "Draft"}
                   </td>
                   <td className="py-s pr-s text-step--1">
                     {a.noindex ? (

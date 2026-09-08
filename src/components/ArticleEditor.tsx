@@ -19,7 +19,7 @@ function Counter({ n, max }: { n: number; max: number }) {
   return (
     <span className="meta" style={{ color: colour }}>
       {n}/{max}
-      {state === "over" ? " — Google will truncate this" : ""}
+      {state === "over" ? ": Google will truncate this" : ""}
     </span>
   );
 }
