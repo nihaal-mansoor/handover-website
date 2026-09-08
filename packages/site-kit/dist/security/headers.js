@@ -4,9 +4,11 @@
  * No `unsafe-inline` and no `unsafe-eval` for scripts. Inline scripts carry a
  * per-response nonce instead — see cspWithNonce.
  */
+const CLARITY_SCRIPT = ["https://www.clarity.ms"];
+const CLARITY_CONNECT = ["https://*.clarity.ms"];
+const CLARITY_IMG = ["https://*.clarity.ms"];
 const ANALYTICS_SCRIPT = [
     "https://www.googletagmanager.com",
-    "https://www.clarity.ms",
     // Vercel Analytics and Speed Insights. Production serves these from the same
     // origin under /_vercel/insights, but development and some configurations
     // load them from this host instead.
@@ -18,40 +20,46 @@ const ANALYTICS_CONNECT = [
     "https://www.google-analytics.com",
     "https://analytics.google.com",
     "https://www.googletagmanager.com",
-    "https://*.clarity.ms",
 ];
 const ANALYTICS_IMG = [
     "https://www.google-analytics.com",
     "https://www.googletagmanager.com",
-    "https://*.clarity.ms",
 ];
 const TURNSTILE = ["https://challenges.cloudflare.com"];
 /** Builds the CSP value. `{NONCE}` is substituted per response by middleware. */
 export function buildCsp(options = {}) {
     const useAnalytics = options.analytics !== false;
     const useTurnstile = options.turnstile !== false;
+    // Defaults true so existing sites keep the CSP they were reviewed with.
+    const useClarity = options.clarity !== false;
     const script = options.useNonce
         ? [
             "'self'",
             "'nonce-{NONCE}'",
             ...(options.strictDynamic ? ["'strict-dynamic'"] : []),
             ...(useAnalytics ? ANALYTICS_SCRIPT : []),
+            ...(useAnalytics && useClarity ? CLARITY_SCRIPT : []),
             ...(useTurnstile ? TURNSTILE : []),
             ...(options.scriptSrc ?? []),
         ]
         : [
             "'self'",
             ...(useAnalytics ? ANALYTICS_SCRIPT : []),
+            ...(useAnalytics && useClarity ? CLARITY_SCRIPT : []),
             ...(useTurnstile ? TURNSTILE : []),
             ...(options.scriptSrc ?? []),
         ];
     const connect = [
         "'self'",
         ...(useAnalytics ? ANALYTICS_CONNECT : []),
+        ...(useAnalytics && useClarity ? CLARITY_CONNECT : []),
         ...(useTurnstile ? TURNSTILE : []),
         ...(options.connectSrc ?? []),
     ];
-    const img = ["'self'", "data:", ...(useAnalytics ? ANALYTICS_IMG : []), ...(options.imgSrc ?? [])];
+    const img = ["'self'", "data:",
+        ...(useAnalytics ? ANALYTICS_IMG : []),
+        ...(useAnalytics && useClarity ? CLARITY_IMG : []),
+        ...(options.imgSrc ?? [])];
     const frame = useTurnstile ? TURNSTILE : ["'none'"];
     return [
         `default-src 'self'`,

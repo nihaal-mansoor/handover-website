@@ -16,6 +16,13 @@ export interface CspOptions {
     /** Set false for sites with no Turnstile widget. */
     readonly turnstile?: boolean;
     /**
+     * Set false for sites that do not run Microsoft Clarity. Separate from
+     * `analytics` because Clarity brings a wildcard origin, https://*.clarity.ms,
+     * and a wildcard for a product a site does not use is allowlist that an
+     * injection could aim at for nothing in return.
+     */
+    readonly clarity?: boolean;
+    /**
      * Nonce mode. Requires per-response middleware to substitute {NONCE}.
      * Static sites should leave this false and serve all scripts as files —
      * 'strict-dynamic' ignores 'self', so a nonce CSP breaks plain <script src>.

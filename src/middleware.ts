@@ -17,7 +17,13 @@ import { buildCsp, cspWithNonce } from "@uaeprop/site-kit/security";
 // ignore 'self' and block them.
 const CSP = buildCsp({
   analytics: true,
-  turnstile: true,
+  // Turnstile is not wired to any form on this site, so allowing scripts and
+  // frames from challenges.cloudflare.com only widens what an injection could
+  // load. Turn this back on in the same commit that adds the widget.
+  turnstile: false,
+  // Clarity is not installed either: site.config has no project id, so the
+  // wildcard https://*.clarity.ms was allowlist with nothing behind it.
+  clarity: false,
   useNonce: true,
   strictDynamic: false,
   // Post images. Named explicitly rather than allowing the whole
