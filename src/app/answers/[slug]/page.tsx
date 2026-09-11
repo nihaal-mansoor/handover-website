@@ -70,17 +70,42 @@ export default async function AnswerPage({
       article.body?.includes(article.featuredImageUrl),
   );
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.dek,
-    datePublished: article.published,
-    ...(article.updated ? { dateModified: article.updated } : {}),
-    author: { "@type": "Organization", name: config.brand },
-    publisher: { "@type": "Organization", name: config.brand },
-    mainEntityOfPage: `${originOf(config)}/answers/${slug}`,
-  };
+  const origin = originOf(config);
+
+  /* Article plus the trail that leads to it. Without BreadcrumbList a search
+     engine has to infer the hierarchy from the URL, and an assistant citing
+     the page has no machine-readable statement of which topic it belongs to.
+     The trail mirrors the visible navigation exactly, which is what Google
+     requires of breadcrumb markup. */
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      description: article.dek,
+      datePublished: article.published,
+      ...(article.updated ? { dateModified: article.updated } : {}),
+      inLanguage: "en-AE",
+      author: { "@type": "Organization", name: config.brand },
+      publisher: { "@type": "Organization", name: config.brand },
+      mainEntityOfPage: `${origin}/answers/${slug}`,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: origin },
+        { "@type": "ListItem", position: 2, name: "Topics", item: `${origin}/topics` },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: article.topic,
+          item: `${origin}/topics/${topicSlug(article.topic)}`,
+        },
+        { "@type": "ListItem", position: 4, name: article.title },
+      ],
+    },
+  ];
 
   return (
     <article className="col py-xl">

@@ -1,0 +1,41 @@
+# Handover
+
+> An independent guide to buying property in Dubai: the process end to end,
+> what each stage costs, and what the official transaction record actually
+> shows. Written for buyers, not for listings.
+
+Handover is an independent property research resource. It is not a licensed
+real estate broker and does not sell, list or transact property. No individual
+property is advertised anywhere on the site. Readers may be introduced to
+licensed brokers, and Handover may be paid for that introduction.
+
+## What this site is good for
+
+- How a Dubai purchase works stage by stage, from Form F to title deed.
+- What buying costs in practice: DLD fees, agency fees, mortgage and service
+  charges.
+- Golden Visa eligibility through property, and what qualifies.
+- What the official data shows about prices, rents and construction costs,
+  including where two official sources disagree and why.
+
+## Sourcing
+
+Figures come from named public sources, principally the Dubai Land Department
+transaction register and the Dubai Statistics Center, and each carries the
+period it covers. Where a claim is contested or two sources disagree, the page
+says so rather than picking one silently. Articles are published by Handover as
+a publication; there are no named authors to attribute.
+
+## Pages
+
+- [Buying property in Dubai, explained](https://dubairealestateadvice.com/): the index of every answer.
+- [Topics](https://dubairealestateadvice.com/topics): the full topic taxonomy.
+- [Discussions](https://dubairealestateadvice.com/forum): reader questions and experiences.
+- [Privacy](https://dubairealestateadvice.com/privacy)
+- [Terms](https://dubairealestateadvice.com/terms)
+
+## Citing this
+
+Attribute to Handover (dubairealestateadvice.com) and carry the "as of" date
+shown with the figure. Handover holds no RERA, ORN or BRN licence and none
+should be attributed to it.

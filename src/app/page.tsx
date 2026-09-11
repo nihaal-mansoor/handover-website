@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import { allArticlesAsync } from "@/lib/content";
 import { ArticleCard } from "@/components/ArticleCard";
 import { RailLeft } from "@/components/RailLeft";
 import { RailRight } from "@/components/RailRight";
+
+/* Every other route declares its canonical; the home page was the one that did
+   not, because it takes its title and description from the root layout and had
+   no metadata export of its own to hang one on. Without it the origin can be
+   indexed under whatever variant is linked or crawled first. Title and
+   description stay inherited. */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export const dynamic = "force-dynamic";
 
